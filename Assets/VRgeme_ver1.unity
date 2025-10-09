@@ -235,6 +235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   m_bulletPrefab: {fileID: 3235429458386667837, guid: 27190bb70c8668f4ea0eac922b7dae17, type: 3}
   m_muzzlePos: {fileID: 971159344}
+  m_audioSource: {fileID: 971159345}
 --- !u!114 &125082757
 MonoBehaviour:
   m_ObjectHideFlags: 0

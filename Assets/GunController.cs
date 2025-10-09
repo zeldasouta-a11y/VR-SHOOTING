@@ -19,12 +19,15 @@ public class GunController : MonoBehaviour
     [SerializeField]
     private Transform m_muzzlePos = null;
 
+    [SerializeField] AudioSource m_audioSource = null;
+
     /// <summary>
     /// VRコントローラーのトリガーが握られた時に呼び出す。
     /// </summary>
     public void Activate()
 	{
         ShootAmmo();
+        m_audioSource.Play();
     }
 
     /// <summary>
@@ -65,7 +68,7 @@ public class GunControllerEditor : Editor
         EditorGUILayout.Space(8);
         if (GUILayout.Button("Shot (Editor)"))
         {
-            gun.ShootAmmo();
+            gun.Activate();
         }
     }
 }
