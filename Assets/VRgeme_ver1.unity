@@ -235,6 +235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   m_bulletPrefab: {fileID: 3235429458386667837, guid: 27190bb70c8668f4ea0eac922b7dae17, type: 3}
   m_muzzlePos: {fileID: 971159344}
+  m_muzzleaudio: {fileID: 971159345}
 --- !u!114 &125082757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1874,6 +1875,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 410678886995482376, guid: be0c86f67bf3f46659373b3776d9ecbb, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -20
+      objectReference: {fileID: 0}
     - target: {fileID: 4371884039492262807, guid: be0c86f67bf3f46659373b3776d9ecbb, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1972,7 +1977,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8640641445779114434, guid: be0c86f67bf3f46659373b3776d9ecbb, type: 3}
       propertyPath: m_Name
-      value: XR Interaction Simulator UI
+      value: Canvas XR Interaction SimulatorUI
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
