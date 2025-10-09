@@ -19,6 +19,7 @@ public class GunController : MonoBehaviour
     [SerializeField]
     private Transform m_muzzlePos = null;
 
+    [SerializeField] AudioSource m_muzzleaudio = null;
     /// <summary>
     /// VRコントローラーのトリガーが握られた時に呼び出す。
     /// </summary>
@@ -39,6 +40,8 @@ public class GunController : MonoBehaviour
             Debug.Log(" Inspector の設定が間違ってるでww m9(^Д^)ﾌﾟｷﾞｬｰ ");
             return;
 		}
+        //音を出す
+        m_muzzleaudio.Play();
 
         //弾を生成する。
         GameObject bulletObj = Instantiate(m_bulletPrefab);
@@ -48,6 +51,7 @@ public class GunController : MonoBehaviour
 
         //弾の向きを、銃口の向きと同一にする。
         bulletObj.transform.rotation = m_muzzlePos.rotation;
+        
 
     }
 }
