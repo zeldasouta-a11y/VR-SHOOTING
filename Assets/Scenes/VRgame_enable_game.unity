@@ -516,7 +516,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreateTargetManager
   mainCamera: {fileID: 752074434}
-  baseprefab: {fileID: 4897060822646410914, guid: 8c80323e3065d224091611b961b6017d, type: 3}
+  baseprefab: {fileID: 4897060822646410914, guid: ba3755a610e593f44a461f8c0441b5d9, type: 3}
   prefabModels:
   - {fileID: 5587836066146359011, guid: df777f1a66a444443bfbfbb2f7fadd6d, type: 3}
   targetPrefabs:
@@ -1639,6 +1639,7 @@ GameObject:
   - component: {fileID: 1100138087}
   - component: {fileID: 1100138086}
   - component: {fileID: 1100138088}
+  - component: {fileID: 1100138089}
   m_Layer: 6
   m_Name: XR Origin (VR)
   m_TagString: Untagged
@@ -1768,6 +1769,26 @@ MonoBehaviour:
   m_MotionControllerModeEnded:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1100138089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100138082}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9b3d17eeb2e6bc47ada81d8f7f638d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Gaze.XRGazeAssistance
+  m_GazeInteractor: {fileID: 0}
+  m_FallbackDivergence: 60
+  m_HideCursorWithNoActiveRays: 1
+  m_RayInteractors: []
+  m_AimAssistRequiredAngle: 30
+  m_AimAssistRequiredSpeed: 0.25
+  m_AimAssistPercent: 0.8
+  m_AimAssistMaxSpeedPercent: 10
 --- !u!1 &1218511614
 GameObject:
   m_ObjectHideFlags: 0

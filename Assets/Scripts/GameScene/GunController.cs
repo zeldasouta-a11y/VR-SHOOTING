@@ -24,7 +24,6 @@ public class GunController : MonoBehaviour
     private bool isShooting = false;
     private bool isfullAutoPlaying = false;
 
-    [SerializeField] AudioSource m_audioSource = null;
 
     /// <summary>
     /// VRコントローラーのトリガーが握られた時に呼び出す。
@@ -34,7 +33,6 @@ public class GunController : MonoBehaviour
         if (!isFullAuto) shootSound?.Play();
         isShooting = true;
         ShootAmmo();
-        m_audioSource.Play();
     }
     public void Deactivate()
     {

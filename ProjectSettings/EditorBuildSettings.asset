@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 55daccc09a3b69647bbab145b54a3ab3
   - enabled: 1
-    path: Assets/StartMenuScene.unity
+    path: Assets/Scenes/StartMenuScene.unity
     guid: 4bfc31c3d93dae8428b783cc98b558a0
   - enabled: 1
     path: Assets/VRgeme_ver1.unity
