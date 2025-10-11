@@ -4,11 +4,25 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class TargetCollisionManager : MonoBehaviour
 {
-    [SerializeField] private int hitcount = 0;
     [SerializeField] public GameObject targetModel;
     [SerializeField] GameObject pointCanvas;
+    [SerializeField] private int hitScore = 0;
+    [SerializeField] private bool isVanish = false;
     [SerializeField] private float vanishTime = 30.0f;
-    
+
+
+    /// <summary>
+    /// 必ず、インスタンス作成直後に呼ぶこと
+    /// </summary>
+    /// <param name="score"></param>
+    /// <param name="time"></param>
+    public void Init(GameObject model,int score,bool isvanish,float time)
+    {
+        targetModel = model;
+        hitScore = score;
+        isVanish = isvanish;
+        vanishTime = time;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,7 +35,11 @@ public class TargetCollisionManager : MonoBehaviour
             Debug.LogError("TargetModel is not assigned in the inspector.");
         }
         pointCanvas.SetActive(false);
-        Destroy(this.gameObject, vanishTime);
+        if (isVanish) 
+        {
+            Destroy(this.gameObject, vanishTime);
+        }
+        
     }
     void OnTriggerEnter(Collider collision)
     {
@@ -35,10 +53,10 @@ public class TargetCollisionManager : MonoBehaviour
             {
                 hittext = pointCanvas.AddComponent<TextMeshProUGUI>();
             }
-            hittext.text = hitcount.ToString();
+            hittext.text = hitScore.ToString();
             pointCanvas.SetActive(true);
 
-            GameManager.Instance.AddScore(hitcount);
+            GameManager.Instance.AddScore(hitScore);
             
             Destroy(this.gameObject,3.0f);
         }

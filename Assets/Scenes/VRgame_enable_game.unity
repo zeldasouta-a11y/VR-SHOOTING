@@ -517,10 +517,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CreateTargetManager
   mainCamera: {fileID: 752074434}
   baseprefab: {fileID: 4897060822646410914, guid: ba3755a610e593f44a461f8c0441b5d9, type: 3}
-  prefabModels:
-  - {fileID: 5587836066146359011, guid: df777f1a66a444443bfbfbb2f7fadd6d, type: 3}
-  targetPrefabs:
-  - {fileID: 8286129184700176470, guid: 428328b393e1a814aa6f2f8058b1cf2d, type: 3}
+  targetModels:
+  - targetModel: {fileID: 4897060822646410914, guid: ba3755a610e593f44a461f8c0441b5d9, type: 3}
+    hitScore: 100
+    isVanish: 1
+    vanishTime: 20
 --- !u!4 &355095604
 Transform:
   m_ObjectHideFlags: 0
@@ -1014,7 +1015,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   minPosition: {x: -15, y: 0, z: 10}
   maxPosition: {x: 15, y: 10, z: 100}
-  score: 0
+  totalScore: 0
   createDuration: 1
   _createTargetManager: {fileID: 355095603}
   scoreText: {fileID: 865984234}
@@ -2454,8 +2455,8 @@ Canvas:
   m_GameObject: {fileID: 1657991154}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 752074434}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -5969,6 +5970,10 @@ PrefabInstance:
     - target: {fileID: 7172347456452843824, guid: 428328b393e1a814aa6f2f8058b1cf2d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8114110813343030833, guid: 428328b393e1a814aa6f2f8058b1cf2d, type: 3}
+      propertyPath: vanishTime
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8286129184700176470, guid: 428328b393e1a814aa6f2f8058b1cf2d, type: 3}
       propertyPath: m_Name

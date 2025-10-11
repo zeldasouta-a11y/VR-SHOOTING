@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     [SerializeField] Vector3 minPosition = new Vector3(-15, 0, 20);
     [SerializeField] Vector3 maxPosition = new Vector3(15, 10, 50);
-    [SerializeField] private int score = 0;
+    [SerializeField] private int totalScore = 0;
     [SerializeField] private float createDuration = 1.0f;
     [SerializeField] private CreateTargetManager _createTargetManager;
     [SerializeField] TextMeshProUGUI scoreText
@@ -42,12 +42,12 @@ public class GameManager : MonoBehaviour
     }
     public void AddScore(int point)
     {
-        score += point;
+        totalScore += point;
         if (scoreText != null)
         {
-            scoreText.text = "Score: " + score.ToString();
+            scoreText.text = "Score: " + totalScore.ToString();
         }
-        Debug.Log("Score: " + score);
+        Debug.Log("Score: " + totalScore);
     }
 
 }

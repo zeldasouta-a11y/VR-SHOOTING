@@ -6,33 +6,48 @@ public class CreateTargetManager : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private GameObject baseprefab;
-    [SerializeField] private List<GameObject> prefabModels;
-    [SerializeField] private List<GameObject> targetPrefabs;
+    [SerializeField] private List<TargetDeta> targetModels;
+    //[SerializeField] private List<TargetDeta> targetPrefabs;
 
     // Start is called before the first frame update
 
-    public GameObject CreateInstanceAndSetCamera(int listIndex, Vector3 localPosition)
-    {
-        Debug.Log("CreateInstance");
-        GameObject clone = Instantiate(targetPrefabs[listIndex], localPosition, Quaternion.identity);
-        Canvas canvas = clone.GetComponentInChildren<Canvas>();
-        if (canvas == null) canvas = clone.AddComponent<Canvas>();
-        canvas.worldCamera = mainCamera;
-        return clone;
-    }
+    //public GameObject CreateInstanceAndSetCamera(int listIndex, Vector3 localPosition)
+    //{
+    //    Debug.Log("CreateInstance");
+    //    GameObject clone = Instantiate(targetPrefabs[listIndex].TarGetModel, localPosition, Quaternion.identity);
+    //    Canvas canvas = clone.GetComponentInChildren<Canvas>();
+    //    if (canvas == null) canvas = clone.AddComponent<Canvas>();
+    //    canvas.worldCamera = mainCamera;
+    //    return clone;
+    //}
     public GameObject CreateInstanceAndSetCameraAndScripts(int listIndex, Vector3 localPosition)
     {
         Debug.Log("CreateInstance with Scripts");
         GameObject cloneBase = Instantiate(baseprefab, localPosition, Quaternion.identity);
-        GameObject cloneModel = Instantiate(prefabModels[listIndex], localPosition, Quaternion.Euler(0,180,0), cloneBase.transform);
+        GameObject cloneModel = Instantiate(targetModels[listIndex].targetModel, localPosition, Quaternion.Euler(0,180,0), cloneBase.transform);
+        //コライダー追加
         if (cloneModel.GetComponent<Collider>() == null) cloneModel.AddComponent<BoxCollider>();
-
+        //固有値設定
         TargetCollisionManager _maneger = cloneBase.GetComponent<TargetCollisionManager>();
-        _maneger.targetModel = cloneModel;
+        _maneger.Init(cloneModel, targetModels[listIndex].hitScore, targetModels[listIndex].isVanish, targetModels[listIndex].vanishTime);
+        //カメラ設定
         Canvas canvas = cloneBase.GetComponentInChildren<Canvas>();
         if (canvas == null) canvas = cloneBase.AddComponent<Canvas>();
         canvas.worldCamera = mainCamera;
+
         return cloneBase;
+    }
+
+    private void Reset()
+    {
+        if (mainCamera == null)
+        {
+            GameObject cameraObject = GameObject.FindWithTag("MainCamera");
+            if (cameraObject != null) 
+            {
+                mainCamera = cameraObject.GetComponent<Camera>();
+            }
+        }
     }
 }
 
@@ -54,10 +69,10 @@ public class CreateTargetManagerEditor : Editor
         z = createAt.z;
         serializedObject.Update();
         CreateTargetManager manager = (CreateTargetManager)target;
-        if (GUILayout.Button("Spawn Targets"))
-        {
-            manager.CreateInstanceAndSetCamera(listIndex, createAt);
-        }
+        //if (GUILayout.Button("Spawn Targets"))
+        //{
+        //    manager.CreateInstanceAndSetCamera(listIndex, createAt);
+        //}
         if (GUILayout.Button("Spawn Targets with Scripts"))
         {
             manager.CreateInstanceAndSetCameraAndScripts(listIndex, createAt);
