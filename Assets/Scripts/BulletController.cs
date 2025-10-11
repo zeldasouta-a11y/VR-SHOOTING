@@ -12,11 +12,10 @@ public class BulletController : MonoBehaviour
     [Header("球を消す時間")]
     [SerializeField]
     private float m_destoryTime = 10.0f;
-    private float time = 0;
 
     void Start()
     {
-        time = m_destoryTime;
+        Destroy(gameObject, m_destoryTime);
     }
     // Update is called once per frame
     void Update()
@@ -25,9 +24,5 @@ public class BulletController : MonoBehaviour
         transform.position +=
             transform.forward * m_bulletSpeed * Time.deltaTime;
 
-        time -= Time.deltaTime;
-        if (time < 0){
-            Destroy(gameObject);
-        }
     }
 }

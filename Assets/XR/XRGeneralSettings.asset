@@ -93,7 +93,7 @@ MonoBehaviour:
   - {fileID: -8196854396901781169}
   - {fileID: 332800863423338148}
   - {fileID: -6546576050900071261}
-  - {fileID: 3550284765439553032}
+  - {fileID: 4423732070046385933}
 --- !u!114 &332800863423338148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,9 +125,7 @@ MonoBehaviour:
   m_AutomaticRunning: 0
   m_Loaders:
   - {fileID: 11400000, guid: 28fe04729daeb2345bebc951fad25769, type: 2}
-  - {fileID: 11400000, guid: 13be7dbe6263579459c2b578050ca739, type: 2}
-  - {fileID: 11400000, guid: 425f6e10f74ac3048b78db71d0dbd998, type: 2}
---- !u!114 &3550284765439553032
+--- !u!114 &4423732070046385933
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -139,8 +137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d236b7d11115f2143951f1e14045df39, type: 3}
   m_Name: WebGL Settings
   m_EditorClassIdentifier: Unity.XR.Management::UnityEngine.XR.Management.XRGeneralSettings
-  m_LoaderManagerInstance: {fileID: 6733458260620551964}
-  m_InitManagerOnStart: 0
+  m_LoaderManagerInstance: {fileID: 4945258910770834716}
+  m_InitManagerOnStart: 1
 --- !u!114 &4897379186331661704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,7 +155,7 @@ MonoBehaviour:
   m_AutomaticLoading: 0
   m_AutomaticRunning: 0
   m_Loaders: []
---- !u!114 &6733458260620551964
+--- !u!114 &4945258910770834716
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

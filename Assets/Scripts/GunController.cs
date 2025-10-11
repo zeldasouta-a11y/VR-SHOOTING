@@ -5,6 +5,9 @@ using UnityEditor;
 
 public class GunController : MonoBehaviour
 {
+    [SerializeField] bool isFullAuto = false;
+    [SerializeField] AudioSource shootSound = null;
+    [SerializeField] AudioSource fullAutoSound = null;
     /// <summary>
     /// 銃弾のプレハブ。
     /// 発砲した際に、このオブジェクトを弾として実体化する。
@@ -18,30 +21,57 @@ public class GunController : MonoBehaviour
     /// </summary>
     [SerializeField]
     private Transform m_muzzlePos = null;
+    private bool isShooting = false;
+    private bool isfullAutoPlaying = false;
+
+    [SerializeField] AudioSource m_audioSource = null;
 
     [SerializeField] AudioSource m_muzzleaudio = null;
     /// <summary>
     /// VRコントローラーのトリガーが握られた時に呼び出す。
     /// </summary>
     public void Activate()
-	{
+    {
+        if (!isFullAuto) shootSound?.Play();
+        isShooting = true;
         ShootAmmo();
+        m_audioSource.Play();
+    }
+    public void Deactivate()
+    {
+        isShooting = false;
     }
 
+    void Update()
+    {
+        if (isFullAuto && isShooting)
+        {
+            ShootAmmo();
+            if (!isfullAutoPlaying)
+            {
+                fullAutoSound?.Play();
+                isfullAutoPlaying = true;
+            }
+        }
+        else
+        {
+            isfullAutoPlaying = false;
+            fullAutoSound?.Stop();
+        }
+    }
+    
     /// <summary>
     /// 銃弾を生成する。
     /// </summary>
     public void ShootAmmo()
-	{
+    {
         //弾のプレハブか銃口位置が設定されていなければ処理を行わず帰る。ついでに煽る。
-        if(m_bulletPrefab == null ||
+        if (m_bulletPrefab == null ||
             m_muzzlePos == null)
-		{
+        {
             Debug.Log(" Inspector の設定が間違ってるでww m9(^Д^)ﾌﾟｷﾞｬｰ ");
             return;
-		}
-        //音を出す
-        m_muzzleaudio.Play();
+        }
 
         //弾を生成する。
         GameObject bulletObj = Instantiate(m_bulletPrefab);
@@ -69,7 +99,7 @@ public class GunControllerEditor : Editor
         EditorGUILayout.Space(8);
         if (GUILayout.Button("Shot (Editor)"))
         {
-            gun.ShootAmmo();
+            gun.Activate();
         }
     }
 }
