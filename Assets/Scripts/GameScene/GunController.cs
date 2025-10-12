@@ -2,18 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using JetBrains.Annotations;
+using System.Threading.Tasks;
+using TMPro;
 
 public class GunController : MonoBehaviour
 {
+    [SerializeField] int magazineCapacity = 10;
+    [SerializeField] int reloadConstant = 200;
+    /// <summary>
+    /// フルオートかどうかの真偽値
+    /// </summary>
     [SerializeField] bool isFullAuto = false;
+    /// <summary>
+    /// ノーマルモードの発射音
+    /// </summary>
     [SerializeField] AudioSource shootSound = null;
+    /// <summary>
+    /// フルオートの時にならす音
+    /// </summary>
     [SerializeField] AudioSource fullAutoSound = null;
+    /// <summary>
+    /// リロード音
+    /// </summary>
+    [SerializeField] AudioSource reloadSound = null;
+    [SerializeField] TextMeshProUGUI remainText;
     /// <summary>
     /// 銃弾のプレハブ。
     /// 発砲した際に、このオブジェクトを弾として実体化する。
     /// </summary>
     [SerializeField]
     private GameObject m_bulletPrefab = null;
+    private int bulletRemaining;
 
     /// <summary>
     /// 銃口の位置。
@@ -23,21 +43,14 @@ public class GunController : MonoBehaviour
     private Transform m_muzzlePos = null;
     private bool isShooting = false;
     private bool isfullAutoPlaying = false;
+    public bool isAsync = false;
+    private int reloadTime ;
 
 
-    [SerializeField] AudioSource m_muzzleaudio = null;
-    /// <summary>
-    /// VRコントローラーのトリガーが握られた時に呼び出す。
-    /// </summary>
-    public void Activate()
+    public void Start()
     {
-        if (!isFullAuto) shootSound?.Play();
-        isShooting = true;
-        ShootAmmo();
-    }
-    public void Deactivate()
-    {
-        isShooting = false;
+        bulletRemaining = magazineCapacity;
+        reloadTime = (magazineCapacity - bulletRemaining) * reloadConstant;
     }
 
     void Update()
@@ -56,8 +69,45 @@ public class GunController : MonoBehaviour
             isfullAutoPlaying = false;
             fullAutoSound?.Stop();
         }
+        remainText.text = bulletRemaining.ToString();
     }
-    
+    /// <summary>
+    /// VRコントローラーのトリガーが握られた時に呼び出す。
+    /// </summary>
+    public async void Activate()
+    {
+        if (--bulletRemaining < 0)
+        {
+            reloadSound?.Play();
+            if (isAsync)
+            {
+                await ReloadAsync(reloadTime);
+            }
+            else
+            {
+                StartCoroutine(Reload(reloadTime));
+            }
+            
+            return;
+        }
+        if (!isFullAuto) shootSound?.Play();
+        isShooting = true;
+        ShootAmmo();
+    }
+    public void Deactivate()
+    {
+        isShooting = false;
+    }
+
+    private IEnumerator Reload(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        bulletRemaining = magazineCapacity;
+    }
+    private async Task ReloadAsync(float miliseconds)
+    {
+        await Task.Delay((int)miliseconds);
+    }
     /// <summary>
     /// 銃弾を生成する。
     /// </summary>
