@@ -97,5 +97,5 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
-/.vscode
-/Assets/XR/Settings
+Assets/XR/AndroidXR/AndroidXRSettingsInitializer
+Assets/XR/Settings/OpenXRPackageSettings.asset

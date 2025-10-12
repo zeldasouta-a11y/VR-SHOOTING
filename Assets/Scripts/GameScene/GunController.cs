@@ -25,6 +25,7 @@ public class GunController : MonoBehaviour
     private bool isfullAutoPlaying = false;
 
 
+    [SerializeField] AudioSource m_muzzleaudio = null;
     /// <summary>
     /// VRコントローラーのトリガーが握られた時に呼び出す。
     /// </summary>
@@ -78,6 +79,7 @@ public class GunController : MonoBehaviour
 
         //弾の向きを、銃口の向きと同一にする。
         bulletObj.transform.rotation = m_muzzlePos.rotation;
+        
 
     }
 }
