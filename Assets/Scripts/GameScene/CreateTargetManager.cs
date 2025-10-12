@@ -6,7 +6,7 @@ public class CreateTargetManager : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private GameObject baseprefab;
-    [SerializeField] private List<TargetDeta> targetModels;
+    [SerializeField] private List<TargetData> targetModels;
     //[SerializeField] private List<TargetDeta> targetPrefabs;
 
     // Start is called before the first frame update

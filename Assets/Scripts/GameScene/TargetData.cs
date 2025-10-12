@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class TargetDeta 
+public class TargetData 
 {
     [SerializeField] public GameObject targetModel;
     [SerializeField] public  int hitScore;

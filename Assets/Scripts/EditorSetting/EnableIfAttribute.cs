@@ -8,7 +8,7 @@ public class EnableIfAttribute : PropertyAttribute
     public bool hideWhenFalse;
 
     //‚±‚±‚É–¼‘O‚ð“ü‚ê‚é
-    public EnableIfAttribute(string conditionFieldName, bool hideWhenFalse)
+    public EnableIfAttribute(string conditionFieldName, bool hideWhenFalse = false)
     {
         this.conditionFieldName = conditionFieldName;
         this.hideWhenFalse = hideWhenFalse;
