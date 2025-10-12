@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Vector3 pos = new Vector3(Random.Range(minPosition.x, maxPosition.x), Random.Range(minPosition.y, maxPosition.y), Random.Range(minPosition.z, maxPosition.z));
-            _createTargetManager.CreateInstanceAndSetCameraAndScripts(0, pos);
+            _createTargetManager.CreateInstanceAndSetCameraAndScripts(Random.Range(0,2), pos);
             timer = 0.0f;
         }
     }
