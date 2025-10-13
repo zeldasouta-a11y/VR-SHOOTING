@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -340790334, guid: 67cc4cb7839cd3741b63733d5adf0442, type: 3}
+  m_Name: ExMenu_AttacheCase2
+  m_EditorClassIdentifier: 
+  Parameters: {fileID: 0}
+  controls:
+  - name: ONOFF
+    icon: {fileID: 2800000, guid: 72eda5c001c05a840b836058c22448b0, type: 3}
+    type: 102
+    parameter:
+      name: SCR_AttacheCase
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters: []
+    labels: []
+  - name: Open
+    icon: {fileID: 2800000, guid: 662324480e0816b43bec7a38ce7e5afc, type: 3}
+    type: 203
+    parameter:
+      name: 
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters:
+    - name: SCR_AttacheCase_Open
+    labels: []
+  - name: Handle
+    icon: {fileID: 2800000, guid: c801bfc6dfa8b7e4cafb20efaffb54de, type: 3}
+    type: 102
+    parameter:
+      name: SCR_AttacheCase_Handle
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters:
+    - name: SCR_AttacheCase_Open
+    labels: []
+  - name: "World\u56FA\u5B9A"
+    icon: {fileID: 2800000, guid: 82fb238882b5ef441b6b05dd0b9a8f19, type: 3}
+    type: 102
+    parameter:
+      name: SCR_AttacheCase_WorldFix
+    value: 1
+    style: 0
+    subMenu: {fileID: 0}
+    subParameters:
+    - name: SCR_AttacheCase_Open
+    labels: []
