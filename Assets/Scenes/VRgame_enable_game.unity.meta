@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Samples/XR Interaction Toolkit/3.2.1/AR Starter Assets/ARDemoScene.unity.meta
-guid: 5974b877ef59e1a42ab335daf0b49388
-========
-guid: 63b42b71fb68be841a41957ff987b66b
->>>>>>>> developo:Assets/Scenes/VRgame_enable_game.unity.meta
+guid: b3df7cbc8fe6598449329115a58bbdd0
 DefaultImporter:
   externalObjects: {}
   userData: 
