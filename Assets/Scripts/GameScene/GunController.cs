@@ -9,7 +9,7 @@ using TMPro;
 public class GunController : MonoBehaviour
 {
     [SerializeField] int magazineCapacity = 10;
-    [SerializeField] int reloadConstant = 200;
+    [SerializeField] int reloadConstant = 100;
     /// <summary>
     /// フルオートかどうかの真偽値
     /// </summary>
@@ -43,14 +43,15 @@ public class GunController : MonoBehaviour
     private Transform m_muzzlePos = null;
     private bool isShooting = false;
     private bool isfullAutoPlaying = false;
+    private bool isReloading = false;
     public bool isAsync = false;
-    private int reloadTime ;
+    private int reloadSeconds;
+    private int reloadMilisecons ;
 
 
     public void Start()
     {
         bulletRemaining = magazineCapacity;
-        reloadTime = (magazineCapacity - bulletRemaining) * reloadConstant;
     }
 
     void Update()
@@ -74,22 +75,31 @@ public class GunController : MonoBehaviour
     /// <summary>
     /// VRコントローラーのトリガーが握られた時に呼び出す。
     /// </summary>
-    public async void Activate()
+    public void Activate()
     {
-        if (--bulletRemaining < 0)
+        if (bulletRemaining <= 0)
         {
             reloadSound?.Play();
+            if (isReloading) return;
+            isReloading = true;
+            reloadSeconds = magazineCapacity - bulletRemaining;
+            reloadMilisecons = reloadSeconds * reloadConstant;
             if (isAsync)
             {
-                await ReloadAsync(reloadTime);
+                Debug.Log("Async Reload");
+                Task.Run(() => ReloadAsync(reloadMilisecons));
+                Debug.Log("Reloaded");
             }
             else
             {
-                StartCoroutine(Reload(reloadTime));
+                Debug.Log("Coroutine Reload");
+                StartCoroutine(Reload(reloadSeconds));
+                Debug.Log("Reloaded");
             }
-            
+
             return;
         }
+        bulletRemaining--;
         if (!isFullAuto) shootSound?.Play();
         isShooting = true;
         ShootAmmo();
@@ -103,10 +113,14 @@ public class GunController : MonoBehaviour
     {
         yield return new WaitForSeconds(seconds);
         bulletRemaining = magazineCapacity;
+        isReloading = false;
     }
     private async Task ReloadAsync(float miliseconds)
     {
         await Task.Delay((int)miliseconds);
+        bulletRemaining = magazineCapacity;
+        isReloading = false;
+        return;
     }
     /// <summary>
     /// 銃弾を生成する。
