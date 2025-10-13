@@ -504,11 +504,21 @@ MonoBehaviour:
   - targetModel: {fileID: 5587836066146359011, guid: df777f1a66a444443bfbfbb2f7fadd6d, type: 3}
     hitScore: 100
     isVanish: 1
-    vanishTime: 20
+    vanishTime: 10
+    isMovable: 1
+    isUFOMove: 1
+    isPendulumMove: 0
+    moveDurtation: 0
+    moveVector: {x: 10, y: 10, z: 10}
   - targetModel: {fileID: 5812863914351243455, guid: 7aab430df8bc99146bf17c999926c25e, type: 3}
     hitScore: 1000
     isVanish: 1
-    vanishTime: 20
+    vanishTime: 10
+    isMovable: 0
+    isUFOMove: 0
+    isPendulumMove: 0
+    moveDurtation: 0
+    moveVector: {x: 0, y: 0, z: 0}
 --- !u!4 &355095604
 Transform:
   m_ObjectHideFlags: 0
@@ -907,6 +917,7 @@ MonoBehaviour:
   maxPosition: {x: 15, y: 10, z: 100}
   totalScore: 0
   createDuration: 1
+  indexRange: 2
   _createTargetManager: {fileID: 355095603}
   scoreText: {fileID: 865984234}
 --- !u!4 &562927304
@@ -6199,6 +6210,14 @@ PrefabInstance:
     - target: {fileID: 8114110813343030833, guid: 428328b393e1a814aa6f2f8058b1cf2d, type: 3}
       propertyPath: vanishTime
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8114110813343030833, guid: 428328b393e1a814aa6f2f8058b1cf2d, type: 3}
+      propertyPath: targeData.isVanish
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8114110813343030833, guid: 428328b393e1a814aa6f2f8058b1cf2d, type: 3}
+      propertyPath: targetDatas.isVanish
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8286129184700176470, guid: 428328b393e1a814aa6f2f8058b1cf2d, type: 3}
       propertyPath: m_Name

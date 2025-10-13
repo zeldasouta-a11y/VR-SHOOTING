@@ -7,10 +7,8 @@ public class CreateTargetManager : MonoBehaviour
     [SerializeField] private Camera mainCamera;
     [SerializeField] private GameObject baseprefab;
     [SerializeField] private List<TargetData> targetModels;
+
     //[SerializeField] private List<TargetDeta> targetPrefabs;
-
-    // Start is called before the first frame update
-
     //public GameObject CreateInstanceAndSetCamera(int listIndex, Vector3 localPosition)
     //{
     //    Debug.Log("CreateInstance");
@@ -29,7 +27,7 @@ public class CreateTargetManager : MonoBehaviour
         if (cloneModel.GetComponent<Collider>() == null) cloneModel.AddComponent<BoxCollider>();
         //å≈óLílê›íË
         TargetCollisionManager _maneger = cloneBase.GetComponent<TargetCollisionManager>();
-        _maneger.Init(cloneModel, targetModels[listIndex].hitScore, targetModels[listIndex].isVanish, targetModels[listIndex].vanishTime);
+        _maneger.Init(targetModels[listIndex]);
         //ÉJÉÅÉâê›íË
         Canvas canvas = cloneBase.GetComponentInChildren<Canvas>();
         if (canvas == null) canvas = cloneBase.AddComponent<Canvas>();
