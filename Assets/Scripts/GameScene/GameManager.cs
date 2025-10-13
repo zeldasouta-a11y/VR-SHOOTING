@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Vector3 maxPosition = new Vector3(15, 10, 50);
     [SerializeField] private int totalScore = 0;
     [SerializeField] private float createDuration = 1.0f;
+    [SerializeField] private int indexRange = 1;
     [SerializeField] private CreateTargetManager _createTargetManager;
     [SerializeField] TextMeshProUGUI scoreText
     ;
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Vector3 pos = new Vector3(Random.Range(minPosition.x, maxPosition.x), Random.Range(minPosition.y, maxPosition.y), Random.Range(minPosition.z, maxPosition.z));
-            _createTargetManager.CreateInstanceAndSetCameraAndScripts(0, pos);
+            _createTargetManager.CreateInstanceAndSetCameraAndScripts(Random.Range(0,indexRange), pos);
             timer = 0.0f;
         }
     }
