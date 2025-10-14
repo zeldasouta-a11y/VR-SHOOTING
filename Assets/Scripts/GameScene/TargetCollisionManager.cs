@@ -26,33 +26,33 @@ public class TargetCollisionManager : MonoBehaviour
         {
             Debug.LogError("PointCanvas is not assigned in the inspector.");
         }
-        if (targetDatas.targetModel == null)
+        if (targetDatas.TargetModel == null)
         {
             Debug.LogError("TargetModel is not assigned in the inspector.");
         }
-        moveing = targetDatas.moveVector;
+        moveing = targetDatas.MoveVector;
         pointCanvas.SetActive(false);
-        if (targetDatas.isVanish) 
+        if (targetDatas.IsVanish) 
         {
-            Destroy(this.gameObject, targetDatas.vanishTime);
+            Destroy(this.gameObject, targetDatas.VanishTime);
         }
     }
     void Update()
     {
-        if (!targetDatas.isMovable) return;
-        if (time > targetDatas.moveDurtation)
+        if (!targetDatas.IsMovable) return;
+        if (time > targetDatas.MoveDurtation)
         {
             time = 0f;
-            if (targetDatas.isUFOMove)
+            if (targetDatas.IsUFOMove)
             {
                 int rotationX = Random.Range(0, 360);
                 int rotationY = Random.Range(0, 360);
                 int rotationZ = Random.Range(0, 360);
-                moveing = Quaternion.Euler(rotationX,rotationY,rotationZ) * targetDatas.moveVector;
+                moveing = Quaternion.Euler(rotationX,rotationY,rotationZ) * targetDatas.MoveVector;
             }
-            else if (targetDatas.isPendulumMove)
+            else if (targetDatas.IsPendulumMove)
             {
-                moveing = -targetDatas.moveVector;
+                moveing *= -1;
             }
         }
         this.gameObject.transform.localPosition += moveing * Time.deltaTime;
@@ -64,16 +64,16 @@ public class TargetCollisionManager : MonoBehaviour
         string objecttag = collision.gameObject.tag;
         if (objecttag == "bullet")
         {
-            targetDatas.targetModel.SetActive(false);
+            targetDatas.TargetModel.SetActive(false);
             TextMeshProUGUI hittext = pointCanvas.GetComponentInChildren<TextMeshProUGUI>();
             if (hittext == null)
             {
                 hittext = pointCanvas.AddComponent<TextMeshProUGUI>();
             }
-            hittext.text = targetDatas.hitScore.ToString();
+            hittext.text = targetDatas.HitScore.ToString();
             pointCanvas.SetActive(true);
 
-            GameManager.Instance.AddScore(targetDatas.hitScore);
+            GameManager.Instance.AddScore(targetDatas.HitScore);
             
             Destroy(this.gameObject,3.0f);
         }

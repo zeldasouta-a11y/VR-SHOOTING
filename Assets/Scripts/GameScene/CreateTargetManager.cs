@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System;
 
 public class CreateTargetManager : MonoBehaviour
 {
@@ -18,11 +19,12 @@ public class CreateTargetManager : MonoBehaviour
     //    canvas.worldCamera = mainCamera;
     //    return clone;
     //}
+    [OnInspectorButton("Spawn Targets with Scripts")]
     public GameObject CreateInstanceAndSetCameraAndScripts(int listIndex, Vector3 localPosition)
     {
-        Debug.Log("CreateInstance with Scripts");
+        Debug.Log($"CreateInstance with Scripts,index:{listIndex} Positon:{localPosition}");
         GameObject cloneBase = Instantiate(baseprefab, localPosition, Quaternion.identity);
-        GameObject cloneModel = Instantiate(targetModels[listIndex].targetModel, localPosition, Quaternion.Euler(0,180,0), cloneBase.transform);
+        GameObject cloneModel = Instantiate(targetModels[listIndex].TargetModel, localPosition, Quaternion.Euler(0,180,0), cloneBase.transform);
         //コライダー追加
         if (cloneModel.GetComponent<Collider>() == null) cloneModel.AddComponent<BoxCollider>();
         //固有値設定
@@ -49,32 +51,3 @@ public class CreateTargetManager : MonoBehaviour
     }
 }
 
-[CustomEditor(typeof(CreateTargetManager))]
-public class CreateTargetManagerEditor : Editor
-{
-    private int listIndex = 0;
-    private float x = 0;
-    private float y = 0;
-    private float z = 0;
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        serializedObject.Update();
-        listIndex = EditorGUILayout.IntField("Prefab Index", listIndex);
-        Vector3 createAt = EditorGUILayout.Vector3Field("Position", new Vector3(x, y, z));
-        x = createAt.x;
-        y = createAt.y;
-        z = createAt.z;
-        serializedObject.Update();
-        CreateTargetManager manager = (CreateTargetManager)target;
-        //if (GUILayout.Button("Spawn Targets"))
-        //{
-        //    manager.CreateInstanceAndSetCamera(listIndex, createAt);
-        //}
-        if (GUILayout.Button("Spawn Targets with Scripts"))
-        {
-            manager.CreateInstanceAndSetCameraAndScripts(listIndex, createAt);
-        }
-        serializedObject.ApplyModifiedProperties();
-    }
-}
