@@ -5,42 +5,14 @@ using UnityEditor;
 using JetBrains.Annotations;
 using System.Threading.Tasks;
 using TMPro;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class GunController : MonoBehaviour
 {
-    [SerializeField] int magazineCapacity = 10;
-    [SerializeField] int reloadConstant = 100;
-    /// <summary>
-    /// フルオートかどうかの真偽値
-    /// </summary>
-    [SerializeField] bool isFullAuto = false;
-    /// <summary>
-    /// ノーマルモードの発射音
-    /// </summary>
-    [SerializeField] AudioSource shootSound = null;
-    /// <summary>
-    /// フルオートの時にならす音
-    /// </summary>
-    [SerializeField] AudioSource fullAutoSound = null;
-    /// <summary>
-    /// リロード音
-    /// </summary>
-    [SerializeField] AudioSource reloadSound = null;
-    [SerializeField] TextMeshProUGUI remainText;
-    /// <summary>
-    /// 銃弾のプレハブ。
-    /// 発砲した際に、このオブジェクトを弾として実体化する。
-    /// </summary>
-    [SerializeField]
-    private GameObject m_bulletPrefab = null;
-    private int bulletRemaining;
+    [SerializeField] GunData gundata;
 
-    /// <summary>
-    /// 銃口の位置。
-    /// 銃弾を実体化する時の位置や向きの設定などに使用する。
-    /// </summary>
-    [SerializeField]
-    private Transform m_muzzlePos = null;
+    private int bulletRemaining;
     private bool isShooting = false;
     private bool isfullAutoPlaying = false;
     private bool isReloading = false;
@@ -51,39 +23,59 @@ public class GunController : MonoBehaviour
 
     public void Start()
     {
-        bulletRemaining = magazineCapacity;
+        bulletRemaining = gundata.MagazineCapacity;
+        //関数設定
+        XRGrabInteractable xrGrab = gundata.gunModelObject.GetComponent<XRGrabInteractable>();
+        if (xrGrab == null) xrGrab = gundata.gunModelObject.AddComponent<XRGrabInteractable>();
+
+        xrGrab.activated.AddListener(Activate);
+        xrGrab.deactivated.AddListener(Deactivate);
+        xrGrab.hoverExited.AddListener(HoverExited);
     }
 
     void Update()
     {
-        if (isFullAuto && isShooting)
+        Debug.Log($"isShooting={isShooting}");
+        if (gundata.IsFullAuto && isShooting)
         {
             ShootAmmo();
             if (!isfullAutoPlaying)
             {
-                fullAutoSound?.Play();
+                gundata.FullAutoSound?.Play();
+                Debug.Log("FullAutoSound!!!");
                 isfullAutoPlaying = true;
             }
         }
         else
         {
+            if (isfullAutoPlaying)
+            {
+                gundata.FullAutoSound?.Stop();
+            }
             isfullAutoPlaying = false;
-            fullAutoSound?.Stop();
+            
         }
-        remainText.text = bulletRemaining.ToString();
+
+        if (gundata.RemainText)
+            gundata.RemainText.text = bulletRemaining.ToString();
+    }
+    public void Init(GunData _data)
+    {
+        gundata = _data;
     }
     /// <summary>
     /// VRコントローラーのトリガーが握られた時に呼び出す。
     /// </summary>
-    public void Activate()
+    [OnInspectorButton("Shoot Active")]
+    public void Activate(ActivateEventArgs args)
     {
-        if (bulletRemaining <= 0)
+        if (bulletRemaining <= 0 && !gundata.IsFullAuto)
         {
-            reloadSound?.Play();
+            gundata.ReloadSound?.Play();
             if (isReloading) return;
             isReloading = true;
-            reloadSeconds = magazineCapacity - bulletRemaining;
-            reloadMilisecons = reloadSeconds * reloadConstant;
+            reloadSeconds = gundata.MagazineCapacity - bulletRemaining;
+            reloadMilisecons = reloadSeconds * gundata.ReloadConstant;
             if (isAsync)
             {
                 Debug.Log("Async Reload");
@@ -100,25 +92,33 @@ public class GunController : MonoBehaviour
             return;
         }
         bulletRemaining--;
-        if (!isFullAuto) shootSound?.Play();
+        if (!gundata.IsFullAuto) gundata.ShootSound?.Play();
         isShooting = true;
         ShootAmmo();
     }
-    public void Deactivate()
+    public void Deactivate(DeactivateEventArgs args)
     {
         isShooting = false;
+        Debug.Log("Deactivate!!!");
+    }
+    public void HoverExited(HoverExitEventArgs args)
+    {
+        isShooting = false;
+        Debug.Log("HoverExited!!!");
     }
 
+    //メインスレッドなのでUnity推奨
     private IEnumerator Reload(float seconds)
     {
         yield return new WaitForSeconds(seconds);
-        bulletRemaining = magazineCapacity;
+        bulletRemaining = gundata.MagazineCapacity;
         isReloading = false;
     }
+    //別スレッド、Unity非推奨
     private async Task ReloadAsync(float miliseconds)
     {
         await Task.Delay((int)miliseconds);
-        bulletRemaining = magazineCapacity;
+        bulletRemaining = gundata.MagazineCapacity;
         isReloading = false;
         return;
     }
@@ -128,41 +128,22 @@ public class GunController : MonoBehaviour
     public void ShootAmmo()
     {
         //弾のプレハブか銃口位置が設定されていなければ処理を行わず帰る。ついでに煽る。
-        if (m_bulletPrefab == null ||
-            m_muzzlePos == null)
+        if (gundata.BulletPrefab == null ||
+            gundata.MuzzlePos == null)
         {
             Debug.Log(" Inspector の設定が間違ってるでww m9(^Д^)ﾌﾟｷﾞｬｰ ");
             return;
         }
 
         //弾を生成する。
-        GameObject bulletObj = Instantiate(m_bulletPrefab);
+        GameObject bulletObj = Instantiate(gundata.BulletPrefab);
 
         //弾の位置を、銃口の位置と同一にする。
-        bulletObj.transform.position = m_muzzlePos.position;
+        bulletObj.transform.position = gundata.MuzzlePos.position;
 
         //弾の向きを、銃口の向きと同一にする。
-        bulletObj.transform.rotation = m_muzzlePos.rotation;
+        bulletObj.transform.rotation = gundata.MuzzlePos.rotation;
         
 
     }
 }
-#if UNITY_EDITOR
-
-// エディタ上で試射できるボタン（ビルドには含まれない）
-[CustomEditor(typeof(GunController))]
-public class GunControllerEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        var gun = (GunController)target;
-
-        EditorGUILayout.Space(8);
-        if (GUILayout.Button("Shot (Editor)"))
-        {
-            gun.Activate();
-        }
-    }
-}
-#endif
