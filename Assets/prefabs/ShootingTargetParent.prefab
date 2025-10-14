@@ -456,7 +456,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6565132af71ab2e469f0650cdcd159bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TargetCollisionManager
-  hitcount: 100
   targetModel: {fileID: 4573051394876810641}
-  pointCanvas: {fileID: 2468872410711315435}
+  pointCanvas: {fileID: 3230042810055613992}
+  hitScore: 0
+  isVanish: 0
   vanishTime: 1
