@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eddc971fe6fa3d147b177180205b2fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  m_bulletSpeed: 50
+  m_bulletSpeed: 100
   m_destoryTime: 10
 --- !u!54 &-495662775470314482
 Rigidbody:
@@ -233,6 +233,6 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.05
-  m_Height: 0.2
+  m_Height: 3.5634036
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: -1.6392422}

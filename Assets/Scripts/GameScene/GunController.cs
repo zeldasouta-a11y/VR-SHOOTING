@@ -17,8 +17,8 @@ public class GunController : MonoBehaviour
     private bool isfullAutoPlaying = false;
     private bool isReloading = false;
     public bool isAsync = false;
-    private int reloadSeconds;
-    private int reloadMilisecons ;
+    private float reloadSeconds;
+    private float reloadMilisecons ;
 
 
     public void Start()
@@ -74,7 +74,7 @@ public class GunController : MonoBehaviour
             gundata.ReloadSound?.Play();
             if (isReloading) return;
             isReloading = true;
-            reloadSeconds = gundata.MagazineCapacity - bulletRemaining;
+            reloadSeconds = (gundata.MagazineCapacity - bulletRemaining)* gundata.ReloadConstant/1000;
             reloadMilisecons = reloadSeconds * gundata.ReloadConstant;
             if (isAsync)
             {

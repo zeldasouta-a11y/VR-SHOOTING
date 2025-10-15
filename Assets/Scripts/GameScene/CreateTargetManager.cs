@@ -25,12 +25,12 @@ public class CreateTargetManager : MonoBehaviour
         Debug.Log($"CreateInstance with Scripts,index:{listIndex} Positon:{localPosition}");
         GameObject cloneBase = Instantiate(baseprefab, localPosition, Quaternion.identity);
         GameObject cloneModel = Instantiate(targetModels[listIndex].TargetModel, localPosition, Quaternion.Euler(0,180,0), cloneBase.transform);
-        //ƒRƒ‰ƒCƒ_[’Ç‰Á
+        //ï¿½Rï¿½ï¿½ï¿½Cï¿½_ï¿½[ï¿½Ç‰ï¿½
         if (cloneModel.GetComponent<Collider>() == null) cloneModel.AddComponent<BoxCollider>();
-        //ŒÅ—L’lİ’è
+        //ï¿½Å—Lï¿½lï¿½İ’ï¿½
         TargetCollisionManager _maneger = cloneBase.GetComponent<TargetCollisionManager>();
-        _maneger.Init(targetModels[listIndex]);
-        //ƒJƒƒ‰İ’è
+        _maneger.Init(targetModels[listIndex],cloneModel);
+        //ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½İ’ï¿½
         Canvas canvas = cloneBase.GetComponentInChildren<Canvas>();
         if (canvas == null) canvas = cloneBase.AddComponent<Canvas>();
         canvas.worldCamera = mainCamera;

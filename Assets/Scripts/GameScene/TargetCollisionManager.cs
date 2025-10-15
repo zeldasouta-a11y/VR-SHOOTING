@@ -5,19 +5,21 @@ using UnityEngine;
 public class TargetCollisionManager : MonoBehaviour
 {
     [SerializeField] GameObject pointCanvas;
+    [HideInInspector] GameObject targetModel;
     [SerializeField]
     TargetData targetDatas;
     Vector3 moveing;
     private float time = 0f;
 
     /// <summary>
-    /// •K‚¸AƒCƒ“ƒXƒ^ƒ“ƒXì¬’¼Œã‚ÉŒÄ‚Ô‚±‚Æ
+    /// ï¿½Kï¿½ï¿½ï¿½Aï¿½Cï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ì¬ï¿½ï¿½ï¿½ï¿½ÉŒÄ‚Ô‚ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="score"></param>
     /// <param name="time"></param>
-    public void Init(TargetData _data)
+    public void Init(TargetData _data,GameObject Model = null)
     {
         targetDatas = _data;
+        targetModel = Model;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -64,14 +66,14 @@ public class TargetCollisionManager : MonoBehaviour
         string objecttag = collision.gameObject.tag;
         if (objecttag == "bullet")
         {
-            targetDatas.TargetModel.SetActive(false);
+            targetModel.gameObject.SetActive(false);
             TextMeshProUGUI hittext = pointCanvas.GetComponentInChildren<TextMeshProUGUI>();
             if (hittext == null)
             {
                 hittext = pointCanvas.AddComponent<TextMeshProUGUI>();
             }
             hittext.text = targetDatas.HitScore.ToString();
-            pointCanvas.SetActive(true);
+            pointCanvas.gameObject.SetActive(true);
 
             GameManager.Instance.AddScore(targetDatas.HitScore);
             
