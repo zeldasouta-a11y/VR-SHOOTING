@@ -19,9 +19,9 @@ public class VRStartButton : MonoBehaviour
 
     public void OnStartButtonClicked()
     {
-        Debug.Log("Start Button Pressed! Loading VRgeme_ver1...");
+        Debug.Log("Start Button Pressed! Loading VRgame_enable_game...");
 
         // GameScene‚É‘JˆÚ
-        SceneManager.LoadScene("VRgeme_ver1");
+        SceneManager.LoadScene("VRgame_enable_game");
     }
 }
