@@ -1,149 +1,182 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-using JetBrains.Annotations;
-using System.Threading.Tasks;
-using TMPro;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class GunController : MonoBehaviour
 {
     [SerializeField] GunData gundata;
 
+    // 弾管理
     private int bulletRemaining;
+    private int reserveAmmo;
+
+    // 状態
     private bool isShooting = false;
-    private bool isfullAutoPlaying = false;
+    private bool isFullAutoPlaying = false;
     private bool isReloading = false;
-    public bool isAsync = false;
-    private float reloadSeconds;
-    private float reloadMilisecons ;
 
+    // フルオート設定（1秒あたりの発射数）
+    [SerializeField] private float fireRate = 8f;
+    private float nextShotTime = 0f;
 
-    public void Start()
+    // 低残弾の色設定
+    [SerializeField] private int lowAmmoThreshold = 3;
+    [SerializeField] private Color lowAmmoColor = Color.red;
+    private Color normalAmmoColor = Color.white;
+
+    void Start()
     {
         bulletRemaining = gundata.MagazineCapacity;
-        //関数設定
-        XRGrabInteractable xrGrab = gundata.gunModelObject.GetComponent<XRGrabInteractable>();
-        if (xrGrab == null) xrGrab = gundata.gunModelObject.AddComponent<XRGrabInteractable>();
+        reserveAmmo = gundata.InitialReserveAmmo;
 
+        // XRイベント
+        var xrGrab = gundata.gunModelObject.GetComponent<XRGrabInteractable>();
+        if (xrGrab == null) xrGrab = gundata.gunModelObject.AddComponent<XRGrabInteractable>();
         xrGrab.activated.AddListener(Activate);
         xrGrab.deactivated.AddListener(Deactivate);
         xrGrab.hoverExited.AddListener(HoverExited);
+
+        // UI初期化
+        if (gundata.RemainText) normalAmmoColor = gundata.RemainText.color;
+        if (gundata.ReloadText) gundata.ReloadText.gameObject.SetActive(false);
+        if (gundata.ReloadProgress)
+        {
+            gundata.ReloadProgress.fillAmount = 0f;
+            gundata.ReloadProgress.gameObject.SetActive(false);
+        }
+        UpdateUI();
     }
 
     void Update()
     {
-        Debug.Log($"isShooting={isShooting}");
-        if (gundata.IsFullAuto && isShooting)
+        // フルオート連射
+        if (gundata.IsFullAuto && isShooting && !isReloading)
         {
-            ShootAmmo();
-            if (!isfullAutoPlaying)
+            if (Time.time >= nextShotTime)
             {
-                gundata.FullAutoSound?.Play();
-                Debug.Log("FullAutoSound!!!");
-                isfullAutoPlaying = true;
+                if (bulletRemaining > 0)
+                {
+                    FireOne();
+                    nextShotTime = Time.time + 1f / fireRate;
+                    if (!isFullAutoPlaying) { gundata.FullAutoSound?.Play(); isFullAutoPlaying = true; }
+                }
+                else
+                {
+                    StartReload();
+                }
             }
         }
         else
         {
-            if (isfullAutoPlaying)
-            {
-                gundata.FullAutoSound?.Stop();
-            }
-            isfullAutoPlaying = false;
-            
+            if (isFullAutoPlaying) { gundata.FullAutoSound?.Stop(); isFullAutoPlaying = false; }
         }
+    }
 
-        if (gundata.RemainText)
-            gundata.RemainText.text = bulletRemaining.ToString();
-    }
-    public void Init(GunData _data)
-    {
-        gundata = _data;
-    }
-    /// <summary>
-    /// VRコントローラーのトリガーが握られた時に呼び出す。
-    /// </summary>
-    [OnInspectorButton("Shoot Active")]
+    public void Init(GunData _data) { gundata = _data; }
+
     public void Activate(ActivateEventArgs args)
     {
-        if (bulletRemaining <= 0 && !gundata.IsFullAuto)
-        {
-            gundata.ReloadSound?.Play();
-            if (isReloading) return;
-            isReloading = true;
-            reloadSeconds = (gundata.MagazineCapacity - bulletRemaining)* gundata.ReloadConstant/1000;
-            reloadMilisecons = reloadSeconds * gundata.ReloadConstant;
-            if (isAsync)
-            {
-                Debug.Log("Async Reload");
-                Task.Run(() => ReloadAsync(reloadMilisecons));
-                Debug.Log("Reloaded");
-            }
-            else
-            {
-                Debug.Log("Coroutine Reload");
-                StartCoroutine(Reload(reloadSeconds));
-                Debug.Log("Reloaded");
-            }
+        if (isReloading) return;
 
-            return;
+        if (!gundata.IsFullAuto)
+        {
+            if (bulletRemaining <= 0) { StartReload(); return; }
+            FireOne();
         }
+        else
+        {
+            isShooting = true;
+        }
+    }
+
+    public void Deactivate(DeactivateEventArgs args) { isShooting = false; }
+    public void HoverExited(HoverExitEventArgs args) { isShooting = false; }
+
+    private void FireOne()
+    {
+        if (bulletRemaining <= 0) return;
+
         bulletRemaining--;
-        if (!gundata.IsFullAuto) gundata.ShootSound?.Play();
-        isShooting = true;
+        gundata.ShootSound?.Play();
         ShootAmmo();
-    }
-    public void Deactivate(DeactivateEventArgs args)
-    {
-        isShooting = false;
-        Debug.Log("Deactivate!!!");
-    }
-    public void HoverExited(HoverExitEventArgs args)
-    {
-        isShooting = false;
-        Debug.Log("HoverExited!!!");
+        UpdateUI();
     }
 
-    //メインスレッドなのでUnity推奨
-    private IEnumerator Reload(float seconds)
+    private void StartReload()
     {
-        yield return new WaitForSeconds(seconds);
-        bulletRemaining = gundata.MagazineCapacity;
-        isReloading = false;
-    }
-    //別スレッド、Unity非推奨
-    private async Task ReloadAsync(float miliseconds)
-    {
-        await Task.Delay((int)miliseconds);
-        bulletRemaining = gundata.MagazineCapacity;
-        isReloading = false;
-        return;
-    }
-    /// <summary>
-    /// 銃弾を生成する。
-    /// </summary>
-    public void ShootAmmo()
-    {
-        //弾のプレハブか銃口位置が設定されていなければ処理を行わず帰る。ついでに煽る。
-        if (gundata.BulletPrefab == null ||
-            gundata.MuzzlePos == null)
+        if (isReloading) return;
+
+        int need = gundata.MagazineCapacity - bulletRemaining;
+        if (need <= 0) return;             // 既に満タン
+        if (reserveAmmo <= 0) return;      // 予備弾なし
+
+        int load = Mathf.Min(need, reserveAmmo); // 装填できる弾数
+        float seconds = load * gundata.ReloadConstant / 1000f;
+
+        isReloading = true;
+        gundata.ReloadSound?.Play();
+
+        // UI: 開始
+        if (gundata.ReloadText) gundata.ReloadText.gameObject.SetActive(true);
+        if (gundata.ReloadProgress)
         {
-            Debug.Log(" Inspector の設定が間違ってるでww m9(^Д^)ﾌﾟｷﾞｬｰ ");
+            gundata.ReloadProgress.fillAmount = 0f;
+            gundata.ReloadProgress.gameObject.SetActive(true);
+        }
+
+        StartCoroutine(ReloadRoutine(load, seconds));
+    }
+
+    private IEnumerator ReloadRoutine(int load, float seconds)
+    {
+        float t = 0f;
+        while (t < seconds)
+        {
+            t += Time.deltaTime;
+            if (gundata.ReloadProgress)
+                gundata.ReloadProgress.fillAmount = Mathf.Clamp01(t / seconds);
+            yield return null;
+        }
+
+        bulletRemaining += load;
+        reserveAmmo -= load;
+
+        isReloading = false;
+
+        // UI: 終了
+        if (gundata.ReloadText) gundata.ReloadText.gameObject.SetActive(false);
+        if (gundata.ReloadProgress)
+        {
+            gundata.ReloadProgress.fillAmount = 0f;
+            gundata.ReloadProgress.gameObject.SetActive(false);
+        }
+
+        UpdateUI();
+    }
+
+    // 弾生成
+    private void ShootAmmo()
+    {
+        if (gundata.BulletPrefab == null || gundata.MuzzlePos == null)
+        {
+            Debug.Log("Inspector の設定を確認してください（BulletPrefab / MuzzlePos）");
             return;
         }
 
-        //弾を生成する。
         GameObject bulletObj = Instantiate(gundata.BulletPrefab);
-
-        //弾の位置を、銃口の位置と同一にする。
         bulletObj.transform.position = gundata.MuzzlePos.position;
-
-        //弾の向きを、銃口の向きと同一にする。
         bulletObj.transform.rotation = gundata.MuzzlePos.rotation;
-        
+    }
 
+    // UIまとめて更新
+    private void UpdateUI()
+    {
+        if (gundata.RemainText)
+        {
+            gundata.RemainText.text = $"{bulletRemaining}/{gundata.MagazineCapacity} ({reserveAmmo})";
+            gundata.RemainText.color = (bulletRemaining <= lowAmmoThreshold) ? lowAmmoColor : normalAmmoColor;
+        }
     }
 }
