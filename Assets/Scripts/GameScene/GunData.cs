@@ -5,43 +5,43 @@ using UnityEngine;
 [System.Serializable]
 public class GunData 
 {
-    //‚±‚±‚ÅUnityŠÖ˜A‚ÌƒIƒuƒWƒFƒNƒg‚ğ‰Šú‰»‚·‚é‚ÆƒGƒ‰[‚ªo‚Ü‚·
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Unityï¿½Ö˜Aï¿½ÌƒIï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÆƒGï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½oï¿½Ü‚ï¿½
     [SerializeField] private GameObject gunModel;
     public GameObject gunModelObject {get { return gunModel; }}
     /// <summary>
-    /// e’e‚ÌƒvƒŒƒnƒuB
-    /// ”­–C‚µ‚½Û‚ÉA‚±‚ÌƒIƒuƒWƒFƒNƒg‚ğ’e‚Æ‚µ‚ÄÀ‘Ì‰»‚·‚éB
+    /// ï¿½eï¿½eï¿½Ìƒvï¿½ï¿½ï¿½nï¿½uï¿½B
+    /// ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Û‚ÉAï¿½ï¿½ï¿½ÌƒIï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½eï¿½Æ‚ï¿½ï¿½Äï¿½ï¿½Ì‰ï¿½ï¿½ï¿½ï¿½ï¿½B
     /// </summary>
     [SerializeField] private GameObject bulletPrefab ;
     public GameObject BulletPrefab => bulletPrefab;
     /// <summary>
-    /// eŒû‚ÌˆÊ’u
+    /// ï¿½eï¿½ï¿½ï¿½ÌˆÊ’u
     /// </summary>
     [SerializeField] private Transform muzzlePos;
     public Transform MuzzlePos => muzzlePos;
     [SerializeField] private int magazineCapacity  = 10;
     public int MagazineCapacity => magazineCapacity;
-    [SerializeField] private int reloadConstant = 100;
-    public int ReloadConstant => reloadConstant;
+    [SerializeField] private float reloadConstant = 100;
+    public float ReloadConstant => reloadConstant;
     /// <summary>
-    /// ƒm[ƒ}ƒ‹ƒ‚[ƒh‚Ì”­Ë‰¹
+    /// ï¿½mï¿½[ï¿½}ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½hï¿½Ì”ï¿½ï¿½Ë‰ï¿½
     /// </summary>
     [SerializeField] private AudioSource shootSound;
     public AudioSource ShootSound => shootSound;
     /// <summary>
-    /// ƒtƒ‹ƒI[ƒg‚Ì‚É‚È‚ç‚·‰¹
+    /// ï¿½tï¿½ï¿½ï¿½Iï¿½[ï¿½gï¿½Ìï¿½ï¿½É‚È‚ç‚·ï¿½ï¿½
     /// </summary>
     [SerializeField] private AudioSource fullAutoSound;
     public AudioSource FullAutoSound => fullAutoSound;
     /// <summary>
-    /// ƒŠƒ[ƒh‰¹
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½
     /// </summary>
     [SerializeField] private AudioSource reloadSound;
     public AudioSource ReloadSound => reloadSound;
     [SerializeField] private TextMeshProUGUI remainText;
     public TextMeshProUGUI RemainText => remainText;
     /// <summary>
-    /// ƒtƒ‹ƒI[ƒg‚©‚Ç‚¤‚©‚Ì^‹U’l
+    /// ï¿½tï¿½ï¿½ï¿½Iï¿½[ï¿½gï¿½ï¿½ï¿½Ç‚ï¿½ï¿½ï¿½ï¿½Ì^ï¿½Uï¿½l
     /// </summary>
     [SerializeField] bool isFullAuto = false;
     public bool IsFullAuto
