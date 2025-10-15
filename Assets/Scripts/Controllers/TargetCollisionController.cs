@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class TargetCollisionManager : MonoBehaviour
+public class TargetCollisionController : MonoBehaviour
 {
     [SerializeField] GameObject pointCanvas;
     [HideInInspector] GameObject targetModel;
@@ -75,13 +75,13 @@ public class TargetCollisionManager : MonoBehaviour
             hittext.text = targetDatas.HitScore.ToString();
             pointCanvas.gameObject.SetActive(true);
 
-            GameManager.Instance.AddScore(targetDatas.HitScore);
+            ManagerLocator.Instance.Game.AddScore(targetDatas.HitScore);
             
             Destroy(this.gameObject,3.0f);
         }
     }
-    void OnTriggerStay(Collider other)
-    {
-        Debug.Log("Trigger Stay Detected");
-    }
+    //void OnTriggerStay(Collider other)
+    //{
+    //    Debug.Log("Trigger Stay Detected");
+    //}
 }
