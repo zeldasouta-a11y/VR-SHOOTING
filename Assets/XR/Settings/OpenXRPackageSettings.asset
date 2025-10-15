@@ -630,7 +630,7 @@ MonoBehaviour:
   m_Name: WebGL
   m_EditorClassIdentifier: Unity.XR.OpenXR::UnityEngine.XR.OpenXR.OpenXRSettings
   features:
-  - {fileID: -4564950604123899907}
+  - {fileID: 8459265559007474644}
   m_renderMode: 1
   m_latencyOptimization: 0
   m_autoColorSubmissionMode: 1
