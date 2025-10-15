@@ -465,53 +465,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3266887667944164143, guid: 89e80c47615e4f043926d66492d3ca5f, type: 3}
   m_PrefabInstance: {fileID: 2092735354}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &353728975
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 353728977}
-  - component: {fileID: 353728976}
-  m_Layer: 0
-  m_Name: ManagerLoader
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &353728976
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 353728975}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ace55bc9272fd749ada5eb4933c66fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ManagerLocator
-  <Game>k__BackingField: {fileID: 562927303}
-  <Gun>k__BackingField: {fileID: 745427922}
-  <CreateTarget>k__BackingField: {fileID: 355095603}
---- !u!4 &353728977
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 353728975}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.00002, y: 2.1483, z: 2.28937}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &355095602
 GameObject:
   m_ObjectHideFlags: 0
@@ -1103,7 +1056,7 @@ GameObject:
   - component: {fileID: 562927304}
   - component: {fileID: 562927303}
   m_Layer: 0
-  m_Name: GameManagerObj
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1121,37 +1074,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea87e9f22c0f4674484975677aefa3a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  createDuration: 0.5
-  indexMin: 1
-  indexMax: 0
-  modeSettings:
-  - GameMode: 0
-    createduretion: 2
-    indexMin: 0
-    indexMax: 0
-  - GameMode: 1
-    createduretion: 1
-    indexMin: 0
-    indexMax: 1
-  - GameMode: 2
-    createduretion: 1
-    indexMin: 0
-    indexMax: 3
-  - GameMode: 4
-    createduretion: 0.5
-    indexMin: 0
-    indexMax: 4
-  - GameMode: 8
-    createduretion: 0.1
-    indexMin: 0
-    indexMax: 5
+  minPosition: {x: -15, y: 0, z: 10}
+  maxPosition: {x: 15, y: 10, z: 50}
   totalScore: 0
-  fullAutoDuration: 20
+  createDuration: 0.5
+  indexRange: 5
+  _createTargetManager: {fileID: 355095603}
   scoreText: {fileID: 865984234}
-  gameMode: 8
-  OnGameModeChanged:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!4 &562927304
 Transform:
   m_ObjectHideFlags: 0
@@ -1161,7 +1090,7 @@ Transform:
   m_GameObject: {fileID: 562927302}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.0419922, y: 0, z: -121638030}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1340,8 +1269,8 @@ MonoBehaviour:
   - gunModel: {fileID: 4210100720087053141}
     bulletPrefab: {fileID: 2617077460344055302, guid: 854813d7674d6b443acf5687a445c7e3, type: 3}
     bulletData:
-      bulletSpeed: 30
-      bulletVanishTime: 10
+      bulletSpeed: 3
+      bulletVanishTime: 0.1
     muzzlePos: {fileID: 4207727600238648025}
     magazineCapacity: 20
     reloadConstant: 0
@@ -1353,8 +1282,8 @@ MonoBehaviour:
   - gunModel: {fileID: 1598661556600780288}
     bulletPrefab: {fileID: 2617077460344055302, guid: 854813d7674d6b443acf5687a445c7e3, type: 3}
     bulletData:
-      bulletSpeed: 150
-      bulletVanishTime: 3
+      bulletSpeed: 100
+      bulletVanishTime: 5
     muzzlePos: {fileID: 1069899900}
     magazineCapacity: 20
     reloadConstant: 0
@@ -1363,6 +1292,7 @@ MonoBehaviour:
     reloadSound: {fileID: 745427924}
     remainText: {fileID: 736447837}
     isFullAuto: 0
+  isFullAuto: 0
 --- !u!4 &745427923
 Transform:
   m_ObjectHideFlags: 0
@@ -2312,215 +2242,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &1004223585
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1004223587}
-  - component: {fileID: 1004223586}
-  m_Layer: 0
-  m_Name: TestXRInput
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1004223586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1004223585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca3b9205e8290ba40b2f0ba525fc8fac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::VRInputManager
-  targetCamera: {fileID: 752074434}
-  minFOV: 40
-  maxFOV: 100
-  zoomSpeed: 1.5
-  leftTrigger:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Left Trigger
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 57ec18fb-c982-4dc7-9400-f80cc139c12f
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  leftPrimary:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Left Primary
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 99a8f6b6-540f-4082-8e4c-1103f99acd43
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  leftSecondary:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Left Secondary
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 9e0b79be-4401-4491-ba7c-e661b6ec080b
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  leftStick:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Left Stick
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: c85377bb-059b-4f73-9bbc-a65ead509bb8
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  rightTrigger:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Right Trigger
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 1eea2949-d9b1-4c10-8fd8-5f496310eec7
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings:
-      - m_Name: 
-        m_Id: e4601dbd-bf7b-489d-9aa5-a5141fff0ed9
-        m_Path: 
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Right Trigger
-        m_Flags: 0
-      - m_Name: Vector 3 Fallback
-        m_Id: a199970f-43b3-4b0e-8e31-99041d9e344d
-        m_Path: Vector3Fallback
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Right Trigger
-        m_Flags: 4
-      - m_Name: first
-        m_Id: f5d986c8-4f02-4cfc-9110-24b2fd73f162
-        m_Path: 
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Right Trigger
-        m_Flags: 8
-      - m_Name: second
-        m_Id: 83fa5323-4c06-48a8-8636-6dcb9a509ca3
-        m_Path: 
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Right Trigger
-        m_Flags: 8
-      - m_Name: third
-        m_Id: 79c0fbfa-9c99-44c3-b930-a28f08934dcc
-        m_Path: 
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Right Trigger
-        m_Flags: 8
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  rightPrimary:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Right Primary
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 620ec1bf-a891-4a91-8d5a-dbb9fa056fe4
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings:
-      - m_Name: 1D Axis
-        m_Id: e978d2f3-234f-4eef-9310-3175e8d8f336
-        m_Path: 1DAxis
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Right Primary
-        m_Flags: 4
-      - m_Name: negative
-        m_Id: 47344360-c941-4889-bebb-cbd1f0e397b8
-        m_Path: 
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Right Primary
-        m_Flags: 8
-      - m_Name: positive
-        m_Id: a5c13231-6246-41a6-86a0-bb029b28ca23
-        m_Path: 
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Right Primary
-        m_Flags: 8
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  rightSecondary:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Right Secondary
-      m_Type: 1
-      m_ExpectedControlType: Button
-      m_Id: 946c76dc-d5a9-4fd3-8b57-1d64b947591b
-      m_Processors: AxisDeadzone
-      m_Interactions: Hold,Hold
-      m_SingletonActionBindings: []
-      m_Flags: 1
-    m_Reference: {fileID: 0}
-  rightStick:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Right Stick
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: a7c39e7d-c832-4971-a627-1e4e42362141
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  xrUIInputModule: {fileID: 1218511618}
---- !u!4 &1004223587
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1004223585}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.00002, y: 2.1483, z: 2.28937}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1069899899
 GameObject:
   m_ObjectHideFlags: 0
@@ -2784,36 +2505,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1218511614}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab68ce6587aab0146b8dabefbd806791, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.UI.XRUIInputModule
-  m_SendPointerHoverToParent: 1
-  m_ClickSpeed: 0.3
-  m_MoveDeadzone: 0.6
-  m_RepeatDelay: 0.5
-  m_RepeatRate: 0.1
-  m_TrackedDeviceDragThresholdMultiplier: 2
-  m_TrackedScrollDeltaMultiplier: 5
-  m_BypassUIToolkitEvents: 1
-  m_ActiveInputMode: 0
-  m_EnableXRInput: 1
-  m_EnableMouseInput: 1
-  m_EnableTouchInput: 1
-  m_EnableGamepadInput: 1
-  m_EnableJoystickInput: 1
-  m_PointAction: {fileID: 2869410428622933342, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  m_LeftClickAction: {fileID: 0}
-  m_MiddleClickAction: {fileID: 0}
-  m_RightClickAction: {fileID: 0}
-  m_ScrollWheelAction: {fileID: 0}
-  m_NavigateAction: {fileID: 0}
-  m_SubmitAction: {fileID: 0}
-  m_CancelAction: {fileID: 0}
-  m_EnableBuiltinActionsAsFallback: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
+  m_Script: {fileID: 0}
+  m_Name: BGMPlayer
+  m_EditorClassIdentifier: 
 --- !u!1 &1222338285
 GameObject:
   m_ObjectHideFlags: 0
@@ -21662,6 +21356,4 @@ SceneRoots:
   - {fileID: 562927304}
   - {fileID: 355095604}
   - {fileID: 745427923}
-  - {fileID: 353728977}
   - {fileID: 4164218422658047448}
-  - {fileID: 1004223587}

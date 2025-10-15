@@ -16,7 +16,7 @@ public class GunController : MonoBehaviour
     private bool isShooting = false;
     private bool isfullAutoPlaying = false;
     private bool isReloading = false;
-    public bool isAsync = false;
+    //public bool isAsync = false;
     private float reloadSeconds;
     private float reloadMilisecons ;
 
@@ -35,14 +35,12 @@ public class GunController : MonoBehaviour
 
     void Update()
     {
-        Debug.Log($"isShooting={isShooting}");
-        if (gundata.IsFullAuto && isShooting)
+        if ((gundata.IsFullAuto || ManagerLocator.Instance.Game.IsFullAutoMode) && isShooting)
         {
             ShootAmmo();
             if (!isfullAutoPlaying)
             {
                 gundata.FullAutoSound?.Play();
-                Debug.Log("FullAutoSound!!!");
                 isfullAutoPlaying = true;
             }
         }
@@ -76,18 +74,18 @@ public class GunController : MonoBehaviour
             isReloading = true;
             reloadSeconds = (gundata.MagazineCapacity - bulletRemaining)* gundata.ReloadConstant/1000;
             reloadMilisecons = reloadSeconds * gundata.ReloadConstant;
-            if (isAsync)
-            {
-                Debug.Log("Async Reload");
-                Task.Run(() => ReloadAsync(reloadMilisecons));
-                Debug.Log("Reloaded");
-            }
-            else
-            {
+            //if (isAsync)
+            //{
+            //    Debug.Log("Async Reload");
+            //    Task.Run(() => ReloadAsync(reloadMilisecons));
+            //    Debug.Log("Reloaded");
+            //}
+            //else
+            //{
                 Debug.Log("Coroutine Reload");
                 StartCoroutine(Reload(reloadSeconds));
                 Debug.Log("Reloaded");
-            }
+            //}
 
             return;
         }
@@ -137,6 +135,10 @@ public class GunController : MonoBehaviour
 
         //弾を生成する。
         GameObject bulletObj = Instantiate(gundata.BulletPrefab);
+        BulletController bullet = bulletObj.GetComponent<BulletController>();
+        if(bullet == null) bullet = bulletObj.AddComponent<BulletController>();
+
+        bullet.Init(gundata.BulletData);
 
         //弾の位置を、銃口の位置と同一にする。
         bulletObj.transform.position = gundata.MuzzlePos.position;

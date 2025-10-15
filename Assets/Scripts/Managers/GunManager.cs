@@ -7,17 +7,22 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class GunManager : MonoBehaviour
 {
     [SerializeField] private List<GunData> gundatas;
-    [SerializeField] private bool isFullAuto;
 
-    public List<GunData> GetGunDataList() => gundatas;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Initialize();
+    }
+    private void Initialize()
+    {
         foreach (GunData data in gundatas)
         {
-            GunController controller = data.gunModelObject.GetComponent<GunController>();
-            if (controller == null) controller = data.gunModelObject.AddComponent<GunController>();
-            controller.Init(data);
+            //ëΩï™éQè∆ìnÇµ
+            //GunController SetUp
+            GunController gun = data.gunModelObject.GetComponent<GunController>();
+            if (gun == null) gun = data.gunModelObject.AddComponent<GunController>();
+            gun.Init(data);
+
         }
     }
 
@@ -25,8 +30,15 @@ public class GunManager : MonoBehaviour
     public void GunActive(int index)
     {
         GunController controller = gundatas[index].gunModelObject.GetComponent<GunController>();
-        if (controller == null) Debug.Log("Gun is not assinged");
+        if (controller == null) Debug.LogError("Gun is not assinged");
         ActivateEventArgs args = new ActivateEventArgs();
         controller.Activate(args);
     }
+//#if UNITY_EDITOR
+//    [OnInspectorButton("ReStart",true)]
+//    private void EditorRestart()
+//    {
+//        Initialize();
+//    }
+//#endif
 }

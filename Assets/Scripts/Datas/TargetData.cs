@@ -6,6 +6,12 @@ public class TargetData
 {
     [SerializeField] private GameObject targetModel;
     public GameObject TargetModel => targetModel;
+    [Header("Create Position Setting")]
+    [SerializeField] Vector3 minPosition;
+    public Vector3 MinPosition => minPosition;
+
+    [SerializeField] Vector3 maxPosition;
+    public Vector3 MaxPosition => maxPosition;
 
     [SerializeField] private int hitScore;
     public int HitScore => hitScore;
@@ -34,4 +40,13 @@ public class TargetData
     [EnableIf("isMovable", hideWhenFalse: true)]
     [SerializeField] private Vector3 moveVector;
     public Vector3 MoveVector => moveVector;
+
+    public Vector3 GetRandomPosition()
+    {
+        return new Vector3(
+            UnityEngine.Random.Range(MinPosition.x, MaxPosition.x),
+            UnityEngine.Random.Range(MinPosition.y, MaxPosition.y),
+            UnityEngine.Random.Range(MinPosition.z, MaxPosition.z)
+        );
+    }
 }

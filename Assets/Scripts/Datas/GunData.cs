@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class GunData 
 {
-    //������Unity�֘A�̃I�u�W�F�N�g������������ƃG���[���o�܂�
+    [Header("Gun Base Settings")]
     [SerializeField] private GameObject gunModel;
     public GameObject gunModelObject {get { return gunModel; }}
     /// <summary>
@@ -17,12 +17,15 @@ public class GunData
     /// <summary>
     /// �e���̈ʒu
     /// </summary>
+    [SerializeField] BulletData bulletData;
+    public BulletData BulletData => bulletData;
     [SerializeField] private Transform muzzlePos;
     public Transform MuzzlePos => muzzlePos;
     [SerializeField] private int magazineCapacity  = 10;
     public int MagazineCapacity => magazineCapacity;
     [SerializeField] private float reloadConstant = 100;
     public float ReloadConstant => reloadConstant;
+    [Header("Sound Settings")]
     /// <summary>
     /// �m�[�}�����[�h�̔��ˉ�
     /// </summary>
@@ -38,6 +41,7 @@ public class GunData
     /// </summary>
     [SerializeField] private AudioSource reloadSound;
     public AudioSource ReloadSound => reloadSound;
+    [Header("UI Settings")]
     [SerializeField] private TextMeshProUGUI remainText;
     public TextMeshProUGUI RemainText => remainText;
     /// <summary>
@@ -50,4 +54,4 @@ public class GunData
         set { isFullAuto = value; }
     }
 
-    }
+}
