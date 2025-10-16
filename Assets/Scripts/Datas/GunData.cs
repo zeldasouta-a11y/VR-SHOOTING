@@ -48,12 +48,6 @@ public class GunData
     /// <summary>
     /// �t���I�[�g���ǂ����̐^�U�l
     /// </summary>
-    [SerializeField] bool isFullAuto = false;
-    public bool IsFullAuto
-    {
-        get { return isFullAuto; }
-        set { isFullAuto = value; }
-    }
 
     [Header("予備弾数（所持弾）の初期値")]
     [SerializeField] private int initialReserveAmmo = 60;

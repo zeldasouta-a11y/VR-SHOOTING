@@ -60,7 +60,7 @@ public class GunController : MonoBehaviour
     void Update()
     {
         // フルオート連射
-        if (!(gundata.IsFullAuto || ManagerLocator.Instance.Game.IsFullAutoMode) && isActivate) return;
+        if (!(ManagerLocator.Instance.Game.IsFullAutoMode && isActivate)) return;
         if (isReloading) return;
         
         if (bulletRemaining <= 0)
@@ -71,6 +71,7 @@ public class GunController : MonoBehaviour
         }
         if (Time.time >= nextShotTime)
         {
+            Debug.Log("TTT");
             GunShotFire();
             nextShotTime = Time.time + 1f / fireRate;
         }
@@ -97,7 +98,7 @@ public class GunController : MonoBehaviour
         isActivate = true;
         if (isReloading) return;
 
-        if (!(gundata.IsFullAuto || ManagerLocator.Instance.Game.IsFullAutoMode))
+        if (!ManagerLocator.Instance.Game.IsFullAutoMode)
         {
             if (bulletRemaining <= 0) { StartReload(); return; }
             GunShotFire();
