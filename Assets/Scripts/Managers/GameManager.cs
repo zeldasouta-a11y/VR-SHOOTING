@@ -37,12 +37,25 @@ public class GameManager : MonoBehaviour
     [Header("other")]
     [SerializeField] private int totalScore = 0;
     [SerializeField] float fullAutoDuration = 20.0f;
-    
-    [SerializeField] public bool IsFullAutoMode { get; set; }
+
+    [SerializeField] private bool isFullAutoMode = false;
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] GameMode gameMode;
     private float timer = 0.0f;
-    
+
+    public bool IsFullAutoMode
+    {
+        get => isFullAutoMode;
+        set
+        {
+            if (isFullAutoMode != value)
+            {
+
+            }
+        }
+    }
+
+
     public GameMode Mode
     {
         get => gameMode;
@@ -60,7 +73,7 @@ public class GameManager : MonoBehaviour
     //UnityEvent
     public GameModeChangedEvent OnGameModeChanged;
     //System Event
-    //public event Action<GameProgress> OnGameProgressChanged;
+    public event Action<bool> OnFullAutoChanged;
     private void Start()
     {
         OnGameModeChanged.AddListener(OnEnumChanedHandle);
@@ -124,9 +137,9 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator FullAutoMode()
     {
-        IsFullAutoMode = true;
+        isFullAutoMode = true;
         yield return new WaitForSeconds(fullAutoDuration);
-        IsFullAutoMode = false;
+        isFullAutoMode = false;
     }
     [OnInspectorButton]
     public void ChangeMode(GameMode nextmode)
