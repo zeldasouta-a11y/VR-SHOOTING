@@ -1405,8 +1405,11 @@ MonoBehaviour:
     shootSound: {fileID: 745427927}
     fullAutoSound: {fileID: 745427925}
     reloadSound: {fileID: 745427924}
-    remainText: {fileID: 736447837}
+    remainText: {fileID: 0}
     isFullAuto: 0
+    reloadText: {fileID: 0}
+    reloadProgress: {fileID: 0}
+    initialReserveAmmo: 60
   - gunModel: {fileID: 1598661556600780288}
     bulletPrefab: {fileID: 2617077460344055302, guid: 854813d7674d6b443acf5687a445c7e3, type: 3}
     bulletData:
@@ -1418,8 +1421,12 @@ MonoBehaviour:
     shootSound: {fileID: 745427926}
     fullAutoSound: {fileID: 745427925}
     reloadSound: {fileID: 745427924}
-    remainText: {fileID: 736447837}
+    remainText: {fileID: 0}
     isFullAuto: 0
+    reloadText: {fileID: 0}
+    reloadProgress: {fileID: 0}
+    initialReserveAmmo: 60
+  isFullAuto: 0
 --- !u!4 &745427923
 Transform:
   m_ObjectHideFlags: 0
