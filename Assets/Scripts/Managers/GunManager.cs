@@ -1,11 +1,18 @@
 using NUnit.Framework;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class GunManager : MonoBehaviour
 {
+    //[SerializeField] private TextMeshProUGUI reloadText;
+    //public TextMeshProUGUI ReloadText => reloadText;
+
+    //[SerializeField] private Image reloadProgress;
+    //public Image ReloadProgress => reloadProgress;
     [SerializeField] private List<GunData> gundatas;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

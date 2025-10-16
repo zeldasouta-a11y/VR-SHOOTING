@@ -54,15 +54,16 @@ public class GunData
         get { return isFullAuto; }
         set { isFullAuto = value; }
     }
-    [SerializeField] private TextMeshProUGUI reloadText; 
-    public TextMeshProUGUI ReloadText => reloadText;
-
-    [SerializeField] private Image reloadProgress;
-    public Image ReloadProgress => reloadProgress;
 
     [Header("予備弾数（所持弾）の初期値")]
     [SerializeField] private int initialReserveAmmo = 60;
     public int InitialReserveAmmo => initialReserveAmmo;
+
+    [SerializeField] private TextMeshProUGUI reloadText;
+    public TextMeshProUGUI ReloadText => reloadText;
+
+    [SerializeField] private Image reloadProgress;
+    public Image ReloadProgress => reloadProgress;
 
 
 }
