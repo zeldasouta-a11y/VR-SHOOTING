@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
-//UnityEvent Inspectror‚Åİ’è‰Â”\
+//UnityEvent Inspectrorï¿½Åİ’ï¿½Â”\
 [System.Serializable]
 public class GameModeChangedEvent : UnityEvent<GameManager.GameMode> { }
 
@@ -28,11 +28,11 @@ public class GameManager : MonoBehaviour
         public int indexMin;
         public int indexMax;
     }
-    [Header("“ïˆÕ“x‚É‚æ‚Á‚Ä•Ï‚í‚é")]
+    [Header("ï¿½ï¿½Õ“xï¿½É‚ï¿½ï¿½ï¿½Ä•Ï‚ï¿½ï¿½")]
     [SerializeField] private float createDuration = 1.0f;
     [SerializeField] private int indexMin = 0;
     [SerializeField] private int indexMax = 1;
-    [Header("ƒ‚[ƒh‚²‚Æ‚Ìİ’è’l")]
+    [Header("ï¿½ï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½Æ‚Ìİ’ï¿½l")]
     public List<GameModeSetting> modeSettings = new List<GameModeSetting>();
     [Header("other")]
     [SerializeField] private int totalScore = 0;
@@ -50,7 +50,8 @@ public class GameManager : MonoBehaviour
         {
             if (isFullAutoMode != value)
             {
-
+                OnFullAutoChanged?.Invoke(value);
+                isFullAutoMode = value;
             }
         }
     }
@@ -78,7 +79,7 @@ public class GameManager : MonoBehaviour
     {
         OnGameModeChanged.AddListener(OnEnumChanedHandle);
         //OnGameModeChanged += OnEnumChangedHandle;
-        //ƒrƒ‹ƒh‚É‚Í‚¢‚é
+        //ï¿½rï¿½ï¿½ï¿½hï¿½ï¿½ï¿½É‚Í‚ï¿½ï¿½ï¿½
         //gameMode = GameMode.Normal;
         OnEnumChanedHandle(gameMode);
         timer = 0f;
@@ -110,7 +111,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"GameMode {mode} ‚Ìİ’è‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ");
+            Debug.LogWarning($"GameMode {mode} ï¿½Ìİ’è‚ªï¿½ï¿½ï¿½Â‚ï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½");
         }
         switch (gameMode)
         {
@@ -137,9 +138,9 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator FullAutoMode()
     {
-        isFullAutoMode = true;
+        IsFullAutoMode = true;
         yield return new WaitForSeconds(fullAutoDuration);
-        isFullAutoMode = false;
+        IsFullAutoMode = false;
     }
     [OnInspectorButton]
     public void ChangeMode(GameMode nextmode)
