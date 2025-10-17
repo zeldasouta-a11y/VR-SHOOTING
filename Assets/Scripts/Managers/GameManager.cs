@@ -41,6 +41,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int indexMax = 1;
     [Header("���[�h���Ƃ̐ݒ�l")]
     [SerializeField] private float GameTimeLimit = 100.0f;
+    [SerializeField] private float phase1Time = 30.0f;
+    [SerializeField] private float phase2Time = 30.0f;
+    [SerializeField] private float phase3Time = 40.0f;
     public List<GameModeSetting> modeSettings = new List<GameModeSetting>();
     [Header("other")]
     [SerializeField] private int totalScore = 0;
@@ -140,25 +143,33 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator GameTimer()
     {
-        float halftime = GameTimeLimit / 2;
         isGameStart = true;
-        for (limitTimer = GameTimeLimit; limitTimer >= GameTimeLimit; limitTimer -= 0.1f)
+        for (limitTimer = phase1Time; limitTimer >= 0; limitTimer -= 0.1f)
         {
             timeLimitText.text = limitTimer.ToString("n1");
             yield return new WaitForSeconds(.1f); ;
         }
-        //
-        timeLimitText.text = 20.ToString();
+        timeLimitText.text = 0.ToString();
+        //ここで、難易度変更
+        yield return new WaitForSeconds(3f);
+        
         int nextMode = ((int)Mode + 1);
         Debug.Log($"NextMode:{(GameMode)nextMode}");
 
         Mode = (nextMode <= 5) ? (GameMode)nextMode : GameMode.VeryHard;
-        for (; limitTimer >= 0f; limitTimer -= 0.1f)
+        for (limitTimer = phase2Time; limitTimer >= 0f; limitTimer -= 0.1f)
         {
             timeLimitText.text = limitTimer.ToString("n1");
             yield return new WaitForSeconds(.1f);
         }
         timeLimitText.text = 0.ToString();
+        //ここで、難易度変更
+        yield return new WaitForSeconds(3f);
+        for (limitTimer = phase3Time; limitTimer >= 0f; limitTimer -= 0.1f)
+        {
+            timeLimitText.text = limitTimer.ToString("n1");
+            yield return new WaitForSeconds(.1f);
+        }
         isGameStart= false;
     }
     [OnInspectorButton]
