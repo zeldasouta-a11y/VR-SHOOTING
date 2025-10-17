@@ -21,11 +21,11 @@ namespace Unity.VRTemplate
         float m_DwellTime = 1f;
 
         [SerializeField]
-        [Tooltip("Whether the associated tooltip will be unparented on VeryEasy.")]
+        [Tooltip("Whether the associated tooltip will be unparented on Phase1.")]
         bool m_Unparent = true;
 
         [SerializeField]
-        [Tooltip("Whether the associated tooltip and curve will be disabled on VeryEasy.")]
+        [Tooltip("Whether the associated tooltip and curve will be disabled on Phase1.")]
         bool m_TurnOffAtStart = true;
 
         bool m_Gazing = false;

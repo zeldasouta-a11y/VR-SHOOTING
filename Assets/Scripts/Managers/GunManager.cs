@@ -15,6 +15,7 @@ public class GunManager : MonoBehaviour
     //public Image ReloadProgress => reloadProgress;
     [SerializeField] private List<GunData> gundatas;
 
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,15 +25,25 @@ public class GunManager : MonoBehaviour
     {
         foreach (GunData data in gundatas)
         {
-            //‘½•ªQÆ“n‚µ
             //GunController SetUp
+            if (data == null || data.gunModelObject == null)
+            {
+                Debug.LogWarning("[GunManager] Invalid GunData or missing gunModelObject.");
+                continue;
+            }
+
+            // GunController‚Ì‰Šú‰»
             GunController gun = data.gunModelObject.GetComponent<GunController>();
-            if (gun == null) gun = data.gunModelObject.AddComponent<GunController>();
+            if (gun == null)
+            {
+                gun = data.gunModelObject.AddComponent<GunController>();
+                Debug.Log($"[GunManager] Added GunController to {data.gunModelObject.name}");
+            }
+            //‘½•ªQÆ“n‚µ
             gun.Init(data);
 
         }
     }
-
     [OnInspectorButton]
     public void GunActive(int index)
     {

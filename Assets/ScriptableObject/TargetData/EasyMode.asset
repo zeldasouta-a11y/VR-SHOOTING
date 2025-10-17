@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 237cf9b20ab93e743992ed3152be0ee4, type: 3}
+  m_Name: EasyMode
+  m_EditorClassIdentifier: Assembly-CSharp::TargetDataSO
+  targetSettingData:
+  - targetModel: {fileID: 5587836066146359011, guid: df777f1a66a444443bfbfbb2f7fadd6d, type: 3}
+    targetModelName: staticTarget
+    minPosition: {x: -10, y: 1, z: 20}
+    maxPosition: {x: 10, y: 5, z: 40}
+    hitScore: 100
+    isVanish: 0
+    vanishTime: 0
+    isMovable: 0
+    isUFOMove: 0
+    isPendulumMove: 0
+    moveDurtation: 0
+    moveVector: {x: 0, y: 0, z: 0}
+  - targetModel: {fileID: 5587836066146359011, guid: df777f1a66a444443bfbfbb2f7fadd6d, type: 3}
+    targetModelName: movetarget
+    minPosition: {x: -5, y: 1, z: 20}
+    maxPosition: {x: -5, y: 5, z: 40}
+    hitScore: 500
+    isVanish: 0
+    vanishTime: 0
+    isMovable: 1
+    isUFOMove: 0
+    isPendulumMove: 1
+    moveDurtation: 2
+    moveVector: {x: 5, y: 0, z: 0}

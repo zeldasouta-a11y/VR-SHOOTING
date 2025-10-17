@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 237cf9b20ab93e743992ed3152be0ee4, type: 3}
+  m_Name: NormalMode
+  m_EditorClassIdentifier: Assembly-CSharp::TargetDataSO
+  targetSettingData:
+  - targetModel: {fileID: 7575923230338825960, guid: 2f41ac8b8ecb2e14d9285ee2f278693a, type: 3}
+    targetModelName: RedBalloon
+    minPosition: {x: -10, y: -10, z: 100}
+    maxPosition: {x: 10, y: 0, z: 200}
+    hitScore: 1000
+    isVanish: 1
+    vanishTime: 10
+    isMovable: 1
+    isUFOMove: 0
+    isPendulumMove: 0
+    moveDurtation: 0
+    moveVector: {x: 0, y: 10, z: 0}
+  - targetModel: {fileID: 2263297054331644975, guid: a1c623815922a0b4d89bae91dba94562, type: 3}
+    targetModelName: GoldBallon
+    minPosition: {x: -10, y: 10, z: 50}
+    maxPosition: {x: 10, y: 20, z: 100}
+    hitScore: 2000
+    isVanish: 0
+    vanishTime: 0
+    isMovable: 0
+    isUFOMove: 0
+    isPendulumMove: 0
+    moveDurtation: 0
+    moveVector: {x: 0, y: 0, z: 0}

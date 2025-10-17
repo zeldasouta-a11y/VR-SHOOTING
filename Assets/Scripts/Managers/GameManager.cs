@@ -2,59 +2,52 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 
+public enum GameMode { Phase1, Phase2, Phase3, Phase4, Phase5 }
+public enum GameState { Idle, Playing, Paused, Ended }
+
 //UnityEvent Inspectror�Őݒ�\
 [System.Serializable]
-public class GameModeChangedEvent : UnityEvent<GameManager.GameMode> { }
 
 public class GameManager : MonoBehaviour
 {
-    public enum GameMode
-    {
-        VeryEasy = 1,
-        Easy = 2,
-        Normal = 3,
-        Hard = 4,
-        VeryHard = 5,
-        
-    }
+    
     [Serializable]
-    public class GameModeSetting
+    public class GamePhaseSetting
     {
-        public GameMode GameMode;
-        public int indexMin;
-        public int indexMax;
+        public GameMode gameMode;
+        public float phaseTime;
         [Header("Target Setting")]
         public float createduretion;
-        public Vector3 minPos;
-        public Vector3 maxPos;
-        public Vector3 moveVec;
-        [Header("Gun Setting")]
-        public int fireRate;
-        public int ReloadConstant;
+        //[Header("Gun Setting")]
+        //public int fireRate;
+        //public int ReloadConstant;
     }
     [Header("��Փx�ɂ���ĕς��")]
     [SerializeField] private float createDuration = 1.0f;
-    [SerializeField] private int indexMin = 0;
-    [SerializeField] private int indexMax = 1;
     [Header("���[�h���Ƃ̐ݒ�l")]
-    [SerializeField] private float GameTimeLimit = 100.0f;
-    [SerializeField] private float phase1Time = 30.0f;
-    [SerializeField] private float phase2Time = 30.0f;
-    [SerializeField] private float phase3Time = 40.0f;
-    public List<GameModeSetting> modeSettings = new List<GameModeSetting>();
+    [SerializeField] int gameSeed = 12345; 
+    public int GameSeed => gameSeed;
+    //[SerializeField] private float GameTimeLimit = 100.0f;
+    [SerializeField] private float phaseChangeTime = 3.0f;
+    [SerializeField] List<GamePhaseSetting> phaseSettings;
     [Header("other")]
     [SerializeField] private int totalScore = 0;
     [SerializeField] float fullAutoDuration = 20.0f;
-    [SerializeField] private bool isFullAutoMode = false;
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI timeLimitText;
     [SerializeField] GameMode gameMode;
-    bool isGameStart = false;
+    Dictionary<string, int> targetHitCount = new Dictionary<string, int>();
+    GameState gamestate = GameState.Idle;
     private float limitTimer = 0.0f;
-    private float creareTimer = 0.0f;
+    private float createTimer = 0.0f;
+    private bool isFullAutoMode = false;
+    //Resolve GC(Overhead)
+    private static readonly WaitForSeconds wait01 = new WaitForSeconds(0.1f);
+    private WaitForSeconds waitPhaseChange;
 
     public bool IsFullAutoMode
     {
@@ -80,48 +73,50 @@ public class GameManager : MonoBehaviour
                 gameMode = value;
                 //Event trigger
                 OnGameModeChanged.Invoke(gameMode);
-                //OnGameProgressChanged.Invoke(gameMode);
             }
         }
     }
-    //UnityEvent
-    public GameModeChangedEvent OnGameModeChanged;
     //System Event
+    public event Action<GameMode> OnGameModeChanged;
     public event Action<bool> OnFullAutoChanged;
+    public event Action OnCreateTime;
     private void Start()
     {
-        OnGameModeChanged.AddListener(OnEnumChanedHandle);
-        //OnGameModeChanged += OnEnumChangedHandle;
-        //�r���h���ɂ͂���
+        OnGameModeChanged += OnEnumChanedHandle;
+        waitPhaseChange = new WaitForSeconds(phaseChangeTime);
         //gameMode = GameMode.Normal;
         OnEnumChanedHandle(gameMode);
-        creareTimer = 0f;
+        createTimer = 0f;
     }
     // Update is called once per frame
     void Update()
     {
-        if (!isGameStart) return;
+        if (gamestate != GameState.Playing) return;
 
-        creareTimer += Time.deltaTime;
-        if (creareTimer > createDuration)
+        createTimer += Time.deltaTime;
+        if (createTimer > createDuration)
         {
-            ManagerLocator.Instance.CreateTarget.CreateInstanceAndSetCameraAndScripts(UnityEngine.Random.Range(indexMin, indexMax));
-            creareTimer = 0.0f;
+            OnCreateTime?.Invoke();
+            createTimer = 0.0f;
         }
+    }
+    private void OnDisable()
+    {
+        OnGameModeChanged -= OnEnumChanedHandle;
     }
 
     public void OnEnumChanedHandle(GameMode mode)
     {
-        var setting = modeSettings.Find(s => s.GameMode == mode);
+        var setting = phaseSettings.Find(s => s.gameMode == mode);
         if (setting != null)
         {
             createDuration = setting.createduretion;
-            indexMin = setting.indexMin;
-            indexMax = setting.indexMax;
+            //indexMin = setting.indexMin;
+            //indexMax = setting.indexMax;
         }
         else
         {
-            Debug.LogWarning($"GameMode {mode} �̐ݒ肪������܂���");
+            Debug.LogWarning($"gameMode {mode} �̐ݒ肪������܂���");
         }
     }
     [OnInspectorButton("",true)]
@@ -139,45 +134,41 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         StartCoroutine(GameTimer());
-        ManagerLocator.Instance.CreateTarget.CreateInstanceAndSetCameraAndScripts(UnityEngine.Random.Range(indexMin, indexMax));
+        OnCreateTime?.Invoke();
     }
     private IEnumerator GameTimer()
     {
-        isGameStart = true;
-        for (limitTimer = phase1Time; limitTimer >= 0; limitTimer -= 0.1f)
+        gamestate = GameState.Playing;
+        foreach (var phase in phaseSettings)
         {
-            timeLimitText.text = limitTimer.ToString("n1");
-            yield return new WaitForSeconds(.1f); ;
+            yield return RunPhase(phase);
+            yield return waitPhaseChange;
         }
-        timeLimitText.text = 0.ToString();
-        //ここで、難易度変更
-        yield return new WaitForSeconds(3f);
-        
-        int nextMode = ((int)Mode + 1);
-        Debug.Log($"NextMode:{(GameMode)nextMode}");
+        timeLimitText.text = "End!";
 
-        Mode = (nextMode <= 5) ? (GameMode)nextMode : GameMode.VeryHard;
-        for (limitTimer = phase2Time; limitTimer >= 0f; limitTimer -= 0.1f)
+        gamestate = GameState.Ended;
+    }
+    private IEnumerator RunPhase(GamePhaseSetting phase)
+    {
+        Mode = phase.gameMode;
+        for(limitTimer = phase.phaseTime;limitTimer >=0;limitTimer -= 0.1f)
         {
-            timeLimitText.text = limitTimer.ToString("n1");
-            yield return new WaitForSeconds(.1f);
+            UpdateUI();
+            yield return wait01;
         }
-        timeLimitText.text = 0.ToString();
-        //ここで、難易度変更
-        yield return new WaitForSeconds(3f);
-        for (limitTimer = phase3Time; limitTimer >= 0f; limitTimer -= 0.1f)
-        {
-            timeLimitText.text = limitTimer.ToString("n1");
-            yield return new WaitForSeconds(.1f);
-        }
-        isGameStart= false;
+        UpdateUI();
+
+    }
+    private void UpdateUI()
+    {
+        timeLimitText.text = limitTimer.ToString("n1");
     }
     [OnInspectorButton]
     public void ChangeMode(GameMode nextmode)
     {
         Mode = nextmode;
     }
-    public void AddScore(int point)
+    public void AddScore(int point,string name)
     {
         totalScore += point;
         if (scoreText != null)
@@ -185,6 +176,16 @@ public class GameManager : MonoBehaviour
             scoreText.text = "Score: " + totalScore.ToString();
         }
         Debug.Log("Score: " + totalScore);
+        if (targetHitCount.TryGetValue(name,out int count))
+        {
+            targetHitCount[name] = count+1;
+        }
+        else
+        {
+            targetHitCount[name] = 1;
+        }
+        
     }
+
 
 }

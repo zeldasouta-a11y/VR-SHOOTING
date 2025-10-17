@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 237cf9b20ab93e743992ed3152be0ee4, type: 3}
+  m_Name: HardMode
+  m_EditorClassIdentifier: Assembly-CSharp::TargetDataSO
+  targetSettingData:
+  - targetModel: {fileID: 4824409105279076034, guid: b809e2ce5e833ac45bff0328c396b32d, type: 3}
+    targetModelName: moveUFO
+    minPosition: {x: -10, y: 0, z: 50}
+    maxPosition: {x: 10, y: 10, z: 100}
+    hitScore: 0
+    isVanish: 1
+    vanishTime: 20
+    isMovable: 1
+    isUFOMove: 1
+    isPendulumMove: 0
+    moveDurtation: 0
+    moveVector: {x: 15, y: 15, z: 15}
+  - targetModel: {fileID: 4824409105279076034, guid: b809e2ce5e833ac45bff0328c396b32d, type: 3}
+    targetModelName: staticUFO
+    minPosition: {x: -10, y: 0, z: 100}
+    maxPosition: {x: 10, y: 100, z: 200}
+    hitScore: 0
+    isVanish: 0
+    vanishTime: 20
+    isMovable: 0
+    isUFOMove: 0
+    isPendulumMove: 0
+    moveDurtation: 0
+    moveVector: {x: 15, y: 15, z: 15}

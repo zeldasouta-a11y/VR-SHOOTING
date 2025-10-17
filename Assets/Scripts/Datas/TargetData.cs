@@ -6,6 +6,9 @@ public class TargetData
 {
     [SerializeField] private GameObject targetModel;
     public GameObject TargetModel => targetModel;
+
+    [SerializeField] private string targetModelName;
+    public string ModelName => targetModelName;
     [Header("Create Position Setting")]
     [SerializeField] Vector3 minPosition;
     public Vector3 MinPosition => minPosition;
@@ -18,7 +21,7 @@ public class TargetData
 
     [SerializeField] private bool isVanish = false;
     public bool IsVanish => isVanish;
-    [EnableIf("isVanish", hideWhenFalse: true)]
+    [EnableIf("isVanish", hideWhenFalse: false)]
     [SerializeField] private float vanishTime;
     public float VanishTime => vanishTime;
 
@@ -48,11 +51,5 @@ public class TargetData
             UnityEngine.Random.Range(MinPosition.y, MaxPosition.y),
             UnityEngine.Random.Range(MinPosition.z, MaxPosition.z)
         );
-    }
-    public void ModeChange(Vector3 newMinPos,Vector3 newMaxPos,Vector3 newMoveVec)
-    {
-        minPosition = newMinPos;
-        maxPosition = newMaxPos;
-        moveVector = newMoveVec;
     }
 }
