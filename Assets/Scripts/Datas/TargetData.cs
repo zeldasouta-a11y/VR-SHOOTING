@@ -49,4 +49,10 @@ public class TargetData
             UnityEngine.Random.Range(MinPosition.z, MaxPosition.z)
         );
     }
+    public void ModeChange(Vector3 newMinPos,Vector3 newMaxPos,Vector3 newMoveVec)
+    {
+        minPosition = newMinPos;
+        maxPosition = newMaxPos;
+        moveVector = newMoveVec;
+    }
 }
