@@ -24,8 +24,14 @@ public class GunData
     public Transform MuzzlePos => muzzlePos;
     [SerializeField] private int magazineCapacity = 10;
     public int MagazineCapacity => magazineCapacity;
+
     [SerializeField] private float reloadConstant = 100;
     public float ReloadConstant => reloadConstant;
+
+  
+    // フルオート設定（1秒あたりの発射数）
+    [SerializeField] private float fireRate = 0.8f;
+    public float FireRate => fireRate;
     [Header("Sound Settings")]
     /// <summary>
     /// �m�[�}�����[�h�̔��ˉ�
@@ -59,5 +65,9 @@ public class GunData
     [SerializeField] private Image reloadProgress;
     public Image ReloadProgress => reloadProgress;
 
-
+    public void ModeChange(float newFireRate,int newReloadConst)
+    {
+        fireRate = newFireRate;
+        reloadConstant = newReloadConst;
+    }
 }

@@ -16,10 +16,9 @@ public class GunController : MonoBehaviour
 
     // 状態
     private bool isActivate = false;
+    private bool isShooable = true;
     private bool isReloading = false;
-    // フルオート設定（1秒あたりの発射数）
-    [SerializeField] private float fireRate = 8f;
-    private float nextShotTime = 0f;
+    
 
     // 低残弾の色設定
     [SerializeField] private int lowAmmoThreshold = 3;
@@ -51,7 +50,7 @@ public class GunController : MonoBehaviour
         }
         UpdateUI();
     }
-    private void OnDestroy()
+    void OnDisable()
     {
         //イベント解除
         ManagerLocator.Instance.Game.OnFullAutoChanged -= OnFullAutoHandle;
@@ -60,22 +59,21 @@ public class GunController : MonoBehaviour
     void Update()
     {
         // フルオート連射
-        if (!(ManagerLocator.Instance.Game.IsFullAutoMode && isActivate)) return;
-        if (isReloading) return;
+        if (!(ManagerLocator.Instance.Game.IsFullAutoMode && isActivate))return;
         
         if (bulletRemaining <= 0)
         {
             StartReload();
-            Debug.Log("Fuck you");
+            UpdateUI();
             return;
         }
-        if (Time.time >= nextShotTime)
+        if (isShooable)
         {
-            Debug.Log("TTT");
             GunShotFire();
-            nextShotTime = Time.time + 1f / fireRate;
+            StartCoroutine(FireRountine());
+            UpdateUI();
+            return;
         }
-        return;  
     }
 
     public void Init(GunData _data) { gundata = _data; }
@@ -96,14 +94,19 @@ public class GunController : MonoBehaviour
     public void Activate(ActivateEventArgs args)
     {
         isActivate = true;
-        if (isReloading) return;
-
-        if (!ManagerLocator.Instance.Game.IsFullAutoMode)
+        if (bulletRemaining <= 0) 
         {
-            if (bulletRemaining <= 0) { StartReload(); return; }
-            GunShotFire();
+            StartReload(); 
+            return; 
         }
-        
+        if (ManagerLocator.Instance.Game.IsFullAutoMode) { return; }
+
+        if (isShooable)
+        {
+            GunShotFire();
+            StartCoroutine(FireRountine());
+            UpdateUI();
+        }
     }
 
     public void Deactivate(DeactivateEventArgs args) { isActivate = false; }
@@ -115,11 +118,18 @@ public class GunController : MonoBehaviour
         bulletRemaining--;
         gundata.ShootSound?.Play();
         ShootAmmo();
-        UpdateUI();
+        
+    }
+    private IEnumerator FireRountine()
+    {
+        isShooable = false;
+        yield return new WaitForSeconds(gundata.FireRate);
+        isShooable = true;
     }
 
     private void StartReload()
     {
+        gundata.ReloadSound?.Play();
         if (isReloading) return;
 
         int need = gundata.MagazineCapacity - bulletRemaining;
@@ -129,9 +139,12 @@ public class GunController : MonoBehaviour
         int load = Mathf.Min(need, reserveAmmo); // 装填できる弾数
         float seconds = load * gundata.ReloadConstant / 1000f;
 
-        
-        gundata.ReloadSound?.Play();
+        StartCoroutine(ReloadRoutine(load, seconds));
+    }
 
+    private IEnumerator ReloadRoutine(int load, float seconds)
+    {
+        isReloading = true;
         // UI: 開始
         if (gundata.ReloadText) gundata.ReloadText.gameObject.SetActive(true);
         if (gundata.ReloadProgress)
@@ -140,12 +153,6 @@ public class GunController : MonoBehaviour
             gundata.ReloadProgress.gameObject.SetActive(true);
         }
 
-        StartCoroutine(ReloadRoutine(load, seconds));
-    }
-
-    private IEnumerator ReloadRoutine(int load, float seconds)
-    {
-        isReloading = true;
         float t = 0f;
         while (t < seconds)
         {
@@ -167,8 +174,6 @@ public class GunController : MonoBehaviour
             gundata.ReloadProgress.fillAmount = 0f;
             gundata.ReloadProgress.gameObject.SetActive(false);
         }
-
-        UpdateUI();
     }
 
     // 弾生成

@@ -13,35 +13,45 @@ public class GameManager : MonoBehaviour
 {
     public enum GameMode
     {
-        VeryEasy = 0,
-        Easy = 1<<0,
-        Normal = 1<<1,
-        Hard = 1<<2,
-        VeryHard = 1<<3,
+        VeryEasy = 1,
+        Easy = 2,
+        Normal = 3,
+        Hard = 4,
+        VeryHard = 5,
         
     }
     [Serializable]
     public class GameModeSetting
     {
         public GameMode GameMode;
-        public float createduretion;
         public int indexMin;
         public int indexMax;
+        [Header("Target Setting")]
+        public float createduretion;
+        public Vector3 minPos;
+        public Vector3 maxPos;
+        public Vector3 moveVec;
+        [Header("Gun Setting")]
+        public int fireRate;
+        public int ReloadConstant;
     }
     [Header("��Փx�ɂ���ĕς��")]
     [SerializeField] private float createDuration = 1.0f;
     [SerializeField] private int indexMin = 0;
     [SerializeField] private int indexMax = 1;
     [Header("���[�h���Ƃ̐ݒ�l")]
+    [SerializeField] private float GameTimeLimit = 100.0f;
     public List<GameModeSetting> modeSettings = new List<GameModeSetting>();
     [Header("other")]
     [SerializeField] private int totalScore = 0;
     [SerializeField] float fullAutoDuration = 20.0f;
-
     [SerializeField] private bool isFullAutoMode = false;
     [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] TextMeshProUGUI timeLimitText;
     [SerializeField] GameMode gameMode;
-    private float timer = 0.0f;
+    bool isGameStart = false;
+    private float limitTimer = 0.0f;
+    private float creareTimer = 0.0f;
 
     public bool IsFullAutoMode
     {
@@ -82,22 +92,19 @@ public class GameManager : MonoBehaviour
         //�r���h���ɂ͂���
         //gameMode = GameMode.Normal;
         OnEnumChanedHandle(gameMode);
-        timer = 0f;
+        creareTimer = 0f;
     }
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer > createDuration)
+        if (!isGameStart) return;
+
+        creareTimer += Time.deltaTime;
+        if (creareTimer > createDuration)
         {
             ManagerLocator.Instance.CreateTarget.CreateInstanceAndSetCameraAndScripts(UnityEngine.Random.Range(indexMin, indexMax));
-            timer = 0.0f;
+            creareTimer = 0.0f;
         }
-        FullAutoMode();
-    }
-    private void Foo()
-    {
-        Debug.Log("Mode Changed!");
     }
 
     public void OnEnumChanedHandle(GameMode mode)
@@ -113,23 +120,6 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning($"GameMode {mode} �̐ݒ肪������܂���");
         }
-        switch (gameMode)
-        {
-            case GameMode.VeryEasy:
-                break;
-            case GameMode.Easy:
-                Foo();
-                break;
-            case GameMode.Normal:
-                Foo();
-                break;
-            case GameMode.Hard:
-                Foo();
-                break;
-            case GameMode.VeryHard:
-                Foo();
-                break;
-        }
     }
     [OnInspectorButton("",true)]
     public void StartFullAuto()
@@ -141,6 +131,35 @@ public class GameManager : MonoBehaviour
         IsFullAutoMode = true;
         yield return new WaitForSeconds(fullAutoDuration);
         IsFullAutoMode = false;
+    }
+    [OnInspectorButton("",true)]
+    public void StartGame()
+    {
+        StartCoroutine(GameTimer());
+        ManagerLocator.Instance.CreateTarget.CreateInstanceAndSetCameraAndScripts(UnityEngine.Random.Range(indexMin, indexMax));
+    }
+    private IEnumerator GameTimer()
+    {
+        float halftime = GameTimeLimit / 2;
+        isGameStart = true;
+        for (limitTimer = GameTimeLimit; limitTimer >= GameTimeLimit; limitTimer -= 0.1f)
+        {
+            timeLimitText.text = limitTimer.ToString("n1");
+            yield return new WaitForSeconds(.1f); ;
+        }
+        //
+        timeLimitText.text = 20.ToString();
+        int nextMode = ((int)Mode + 1);
+        Debug.Log($"NextMode:{(GameMode)nextMode}");
+
+        Mode = (nextMode <= 5) ? (GameMode)nextMode : GameMode.VeryHard;
+        for (; limitTimer >= 0f; limitTimer -= 0.1f)
+        {
+            timeLimitText.text = limitTimer.ToString("n1");
+            yield return new WaitForSeconds(.1f);
+        }
+        timeLimitText.text = 0.ToString();
+        isGameStart= false;
     }
     [OnInspectorButton]
     public void ChangeMode(GameMode nextmode)
