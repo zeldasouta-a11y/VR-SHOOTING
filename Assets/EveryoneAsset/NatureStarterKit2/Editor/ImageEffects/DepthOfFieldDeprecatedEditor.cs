@@ -115,7 +115,7 @@ namespace UnityStandardAssets.ImageEffects
                 focalZDistance.floatValue = EditorGUILayout.Slider ("Distance", focalZDistance.floatValue, go.GetComponent<Camera>().nearClipPlane, go.GetComponent<Camera>().farClipPlane);
                 EditorGUILayout.PropertyField (objectFocus, new GUIContent("Transform"));
                 focalSize.floatValue = EditorGUILayout.Slider ("Size", focalSize.floatValue, 0.0f, (go.GetComponent<Camera>().farClipPlane - go.GetComponent<Camera>().nearClipPlane));
-                focalStartCurve.floatValue = EditorGUILayout.Slider ("VeryEasy curve", focalStartCurve.floatValue, 0.05f, 20.0f);
+                focalStartCurve.floatValue = EditorGUILayout.Slider ("Phase1 curve", focalStartCurve.floatValue, 0.05f, 20.0f);
                 focalEndCurve.floatValue = EditorGUILayout.Slider ("End curve", focalEndCurve.floatValue, 0.05f, 20.0f);
             }
 

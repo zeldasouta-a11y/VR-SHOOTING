@@ -344,8 +344,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TargetCollisionManager
   pointCanvas: {fileID: 3987848732349203106}
+  canvas: {fileID: 1933931872680082426}
+  hittext: {fileID: 4440146674623171813}
   targetDatas:
     targetModel: {fileID: 0}
+    minPosition: {x: 0, y: 0, z: 0}
+    maxPosition: {x: 0, y: 0, z: 0}
     hitScore: 200
     isVanish: 1
     vanishTime: 20
+    isMovable: 0
+    isUFOMove: 0
+    isPendulumMove: 0
+    moveDurtation: 0
+    moveVector: {x: 0, y: 0, z: 0}

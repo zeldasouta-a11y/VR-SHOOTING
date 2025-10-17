@@ -1,105 +1,194 @@
-using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
-using UnityEngine.UIElements;
+using UnityEngine;
+using System.Reflection;
+using System.Linq;
 using System;
+using static UnityEditor.Rendering.FilterWindow;
+using static UnityEngine.Rendering.VolumeComponent;
 
-//EnableAttributeが設定されたプロパティを表示するときに呼ばれる
 [CustomPropertyDrawer(typeof(EnableIfAttribute))]
 public class EnableIfDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        EnableIfAttribute enAttr = (EnableIfAttribute)attribute;
-        
-        bool enable = EvaluateConditions(property, enAttr);
-
-        //隠す設定
-        if (!enable && enAttr.hideWhenFalse)
+        // メインスレッドで安全に描画できるか確認
+        if (!IsMainThreadSafe())
         {
-            //何もしない
-            //非表示にする
+            // メインスレッドに戻したときに再描画するよう登録しておく
+            EditorApplication.delayCall += () => SafeRepaint(property);
             return;
         }
-        //有効 or グレーアウトして表示させる
-        bool prev = GUI.enabled;
-        GUI.enabled = enable; //trueなら編集可能,falseなら編集できない
-        //EditorGUIは、GUIの設定を元に、インスペクターを更新する。
-        EditorGUI.PropertyField (position, property, label,true);
-        //他のGUIが影響を受けないように戻す(このオーバーライドは、EnableIfAttirbuteが呼ばれた時に起こる)
-        GUI.enabled = prev;
+
+        EnableIfAttribute enableIf = (EnableIfAttribute)attribute;
+        bool enabled = EvaluateConditionsRecursive(property, enableIf);
+
+        bool prevGUIEnabled = GUI.enabled;
+        GUI.enabled = enabled;
+
+        if (!enableIf.hideWhenFalse || enabled)
+        {
+            try
+            {
+                EditorGUI.PropertyField(position, property, label, true);
+            }
+            catch (UnityException e)
+            {
+                // フォント等がメインスレッド依存で失敗するケースを安全に握りつぶす
+                Debug.LogWarning($"[EnableIfDrawer] PropertyField skipped due to UnityException: {e.Message}");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[EnableIfDrawer] Unexpected error drawing property: {ex}");
+            }
+        }
+
+        GUI.enabled = prevGUIEnabled;
     }
 
-    //無効にする場合、テキストフィールドの高さを0,つまり非表示にする。
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        EnableIfAttribute enAttr = (EnableIfAttribute)attribute;
-        bool enable = EvaluateConditions(property, enAttr);
-
-        //非表示なら、高さ0にする
-        if (!enable && enAttr.hideWhenFalse)
-        {
+        if (!IsMainThreadSafe())
             return 0f;
-        }
-            
-        return EditorGUI.GetPropertyHeight(property, label,true);
+
+        EnableIfAttribute enableIf = (EnableIfAttribute)attribute;
+        bool enabled = EvaluateConditionsRecursive(property, enableIf);
+        if (enableIf.hideWhenFalse && !enabled)
+            return 0f;
+
+        return EditorGUI.GetPropertyHeight(property, label, true);
     }
-    private bool EvaluateConditions(SerializedProperty property, EnableIfAttribute enAttr)
+
+    // --- 以下は既存のネスト対応ロジック（そのまま） ---
+    private bool EvaluateConditionsRecursive(SerializedProperty property, EnableIfAttribute attribute)
     {
-        if (enAttr.conditionFieldNames == null || enAttr.conditionFieldNames.Length == 0)
+        object targetObject = GetParentTarget(property) ?? property.serializedObject.targetObject;
+        if (targetObject == null)
             return true;
 
-        bool[] results = new bool[enAttr.conditionFieldNames.Length];
-
-        for (int i = 0; i < enAttr.conditionFieldNames.Length; i++)
+        bool[] results = attribute.conditionFieldNames.Select(name =>
         {
-            string rawName = enAttr.conditionFieldNames[i];
-            bool negate = false;
+            bool negate = name.StartsWith("!");
+            string fieldName = negate ? name.Substring(1) : name;
 
-            // 否定プレフィックス '!' に対応
-            if (rawName.StartsWith("!"))
+            FieldInfo field = GetFieldRecursiveFromRoot(targetObject, fieldName);
+            if (field == null)
+                return false;
+
+            object value = field.GetValue(GetObjectContainingField(property, targetObject));
+            bool result = value switch
             {
-                negate = true;
-                rawName = rawName.Substring(1); // 先頭の!を削除
-            }
-            //同じ階層(同一ファイル)にある名前検索
-            string conditionPath = property.propertyPath.Replace(property.name, rawName);
-            //名前の前にある属性(int,float, bool...)を取得
-            SerializedProperty conditionProp = property.serializedObject.FindProperty(conditionPath);
+                bool b => b,
+                Enum e => Convert.ToInt32(e) != 0,
+                _ => value != null
+            };
 
-            bool value = false;
-            if (conditionProp != null && conditionProp.propertyType == SerializedPropertyType.Boolean)
-                value = conditionProp.boolValue;
+            return negate ? !result : result;
+        }).ToArray();
 
-            // 否定演算を適用
-            results[i] = negate ? !value : value;
-        }
-
-        // ---- 論理演算まとめ ----
-        switch (enAttr.logic)
+        return attribute.logic switch
         {
-            case ConditionLogic.AND:
-                return Array.TrueForAll(results, r => r);
+            ConditionLogic.AND => results.All(r => r),
+            ConditionLogic.OR => results.Any(r => r),
+            ConditionLogic.NOT => !results.FirstOrDefault(),
+            ConditionLogic.NAND => !results.All(r => r),
+            ConditionLogic.NOR => !results.Any(r => r),
+            ConditionLogic.XOR => results.Count(r => r) == 1,
+            _ => true,
+        };
+    }
 
-            case ConditionLogic.OR:
-                return Array.Exists(results, r => r);
+    // 再帰的に型情報から FieldInfo を探す（継承チェーン対応）
+    private FieldInfo GetFieldRecursiveFromRoot(object obj, string fieldName)
+    {
+        if (obj == null) return null;
+        Type type = obj.GetType();
+        while (type != null)
+        {
+            var f = type.GetField(fieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            if (f != null) return f;
+            type = type.BaseType;
+        }
+        return null;
+    }
 
-            case ConditionLogic.NOT:
-                return !results[0];
+    // property.propertyPath をたどって「そのフィールドを含むオブジェクト」を返す
+    private object GetParentTarget(SerializedProperty property)
+    {
+        string path = property.propertyPath.Replace(".Array.data[", "[");
+        object obj = property.serializedObject.targetObject;
+        var elements = path.Split('.');
+        for (int i = 0; i < elements.Length - 1; i++)
+        {
+            string element = elements[i];
+            if (element.Contains("["))
+            {
+                string elementName = element.Substring(0, element.IndexOf("["));
+                int index = int.Parse(element.Substring(element.IndexOf("[")).Replace("[", "").Replace("]", ""));
+                obj = GetValueFromObject(obj, elementName, index);
+            }
+            else
+            {
+                obj = GetValueFromObject(obj, element);
+            }
+            if (obj == null) return null;
+        }
+        
+        return obj;
+    }
 
-            case ConditionLogic.NAND:
-                return !Array.TrueForAll(results, r => r);
 
-            case ConditionLogic.NOR:
-                return !Array.Exists(results, r => r);
+    private object GetValueFromObject(object source, string name, int index = -1)
+    {
+    if (source == null) return null;
+    FieldInfo f = GetFieldRecursiveFromRoot(source, name);
+    if (f == null) return null;
+    object v = f.GetValue(source);
+    if (index >= 0 && v is System.Collections.IEnumerable enumerable)
+    {
+        var en = enumerable.GetEnumerator();
+            for (int i = 0; i <= index; i++)
+            {
+                if (!en.MoveNext()) return null;
+            }
 
-            case ConditionLogic.XOR:
-                int count = 0;
-                foreach (bool r in results)
-                    if (r) count++;
-                return (count % 2 == 1);
+            return en.Current;
+        }
+        return v;
+    }
 
-            default:
-                return true;
+    // このプロパティが属する「そのオブジェクト実体」（フィールドをもつインスタンス）を返す補助
+    private object GetObjectContainingField(SerializedProperty property, object root)
+    {
+        // GetParentTarget で得たものが root のはずなのでそのまま返す（冗長だが将来の拡張用）
+        return GetParentTarget(property) ?? root;
+    }
+
+// --- メインスレッド判定と安全な再描画 ---
+    private bool IsMainThreadSafe()
+    {
+        try
+        {
+            // main-thread-only APIs throw if called from loading thread; Screen.width is safe to probe
+            var _ = UnityEngine.Screen.width;
+            return true;
+        }
+        catch
+        {
+            return false;
         }
     }
+
+    private void SafeRepaint(SerializedProperty property)
+    {
+        try
+        {
+            if (property == null || property.serializedObject == null) return;
+            // Repaint inspector of the target object
+            var editors = UnityEditor.Editor.CreateEditor(property.serializedObject.targetObject);
+            if (editors != null) editors.Repaint();
+        }
+        catch { /* swallow */ }
+    }
 }
+#endif

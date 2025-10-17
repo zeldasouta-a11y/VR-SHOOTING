@@ -16,8 +16,9 @@ public class GunController : MonoBehaviour
 
     // 状態
     private bool isActivate = false;
-    private bool isShooable = true;
+    private bool isShootable = true;
     private bool isReloading = false;
+    private bool isFullAuto = false;
     
 
     // 低残弾の色設定
@@ -59,7 +60,7 @@ public class GunController : MonoBehaviour
     void Update()
     {
         // フルオート連射
-        if (!(ManagerLocator.Instance.Game.IsFullAutoMode && isActivate))return;
+        if (!(isFullAuto && isActivate))return;
         
         if (bulletRemaining <= 0)
         {
@@ -67,7 +68,7 @@ public class GunController : MonoBehaviour
             UpdateUI();
             return;
         }
-        if (isShooable)
+        if (isShootable)
         {
             GunShotFire();
             StartCoroutine(FireRountine());
@@ -83,10 +84,12 @@ public class GunController : MonoBehaviour
     {
         if (mode)
         {
+            isFullAuto = true;
             gundata.FullAutoSound?.Play();
         }
         else
         {
+            isFullAuto = false;
             gundata.FullAutoSound?.Stop();
         }
     }
@@ -101,7 +104,7 @@ public class GunController : MonoBehaviour
         }
         if (ManagerLocator.Instance.Game.IsFullAutoMode) { return; }
 
-        if (isShooable)
+        if (isShootable)
         {
             GunShotFire();
             StartCoroutine(FireRountine());
@@ -122,9 +125,9 @@ public class GunController : MonoBehaviour
     }
     private IEnumerator FireRountine()
     {
-        isShooable = false;
+        isShootable = false;
         yield return new WaitForSeconds(gundata.FireRate);
-        isShooable = true;
+        isShootable = true;
     }
 
     private void StartReload()
@@ -174,6 +177,7 @@ public class GunController : MonoBehaviour
             gundata.ReloadProgress.fillAmount = 0f;
             gundata.ReloadProgress.gameObject.SetActive(false);
         }
+        UpdateUI();
     }
 
     // 弾生成
