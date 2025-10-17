@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2617077460344055302
+--- !u!1 &7317486162630176800
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,41 +8,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7337207214285920527}
-  - component: {fileID: 8888557921549145133}
-  - component: {fileID: 8481317794884613185}
-  - component: {fileID: -495662775470314482}
-  - component: {fileID: 1782469765326962504}
+  - component: {fileID: 411347913404471953}
+  - component: {fileID: 8316857135831842493}
+  - component: {fileID: 3658016917155111194}
+  - component: {fileID: 8748565391019746393}
+  - component: {fileID: 2842921401511894710}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: SniperBullet 1
   m_TagString: bullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7337207214285920527
+--- !u!4 &411347913404471953
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2617077460344055302}
+  m_GameObject: {fileID: 7317486162630176800}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalPosition: {x: 2.3119, y: 0, z: 4.88108}
   m_LocalScale: {x: 0.6666667, y: 0.6666667, z: 0.6666667}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!96 &8888557921549145133
+--- !u!96 &8316857135831842493
 TrailRenderer:
   serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2617077460344055302}
+  m_GameObject: {fileID: 7317486162630176800}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -132,7 +132,7 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.36477977, g: 0.037854463, b: 0.037854463, a: 1}
+      key0: {r: 0.05345905, g: 0.15794517, b: 1, a: 1}
       key1: {r: 1, g: 1, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
@@ -140,7 +140,7 @@ TrailRenderer:
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
+      ctime0: 26985
       ctime1: 65535
       ctime2: 0
       ctime3: 0
@@ -172,13 +172,13 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
---- !u!114 &8481317794884613185
+--- !u!114 &3658016917155111194
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2617077460344055302}
+  m_GameObject: {fileID: 7317486162630176800}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eddc971fe6fa3d147b177180205b2fee, type: 3}
@@ -187,13 +187,13 @@ MonoBehaviour:
   bulletdata:
     bulletSpeed: 30
     bulletVanishTime: 10
---- !u!54 &-495662775470314482
+--- !u!54 &8748565391019746393
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2617077460344055302}
+  m_GameObject: {fileID: 7317486162630176800}
   serializedVersion: 5
   m_Mass: 1
   m_LinearDamping: 0
@@ -214,13 +214,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &1782469765326962504
+--- !u!136 &2842921401511894710
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2617077460344055302}
+  m_GameObject: {fileID: 7317486162630176800}
   m_Material: {fileID: 13400000, guid: 93fd3ce14e8045645a179db0bfce7ea9, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -233,7 +233,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.1
-  m_Height: 10
+  m_Radius: 0.25
+  m_Height: 16
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: -5}
+  m_Center: {x: 0, y: 0, z: -8}
