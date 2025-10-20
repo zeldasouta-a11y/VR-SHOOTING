@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TutorialMode
   m_EditorClassIdentifier: Assembly-CSharp::TargetDataSO
   targetSettingData:
-  - targetModel: {fileID: 5587836066146359011, guid: df777f1a66a444443bfbfbb2f7fadd6d, type: 3}
+  - targetModel: {fileID: 5812863914351243455, guid: 7aab430df8bc99146bf17c999926c25e, type: 3}
     targetModelName: TutorialTerget
     minPosition: {x: -10, y: 1, z: 20}
     maxPosition: {x: 10, y: 7, z: 30}

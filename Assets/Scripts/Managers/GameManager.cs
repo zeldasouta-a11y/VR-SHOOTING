@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     {
         public GameMode gameMode;
         public float phaseTime;
+        //public bool hasExitTime;
         [Header("Target Setting")]
         public float createduretion;
         public TargetDataSO targetSettingSO;
@@ -42,11 +43,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI timeLimitText;
     [SerializeField] GameMode gameMode;
+    [SerializeField] bool IsTurorial = true;
     Dictionary<string, int> targetHitCount = new Dictionary<string, int>();
     GameState gamestate = GameState.Idle;
     private float limitTimer = 0.0f;
     private float createTimer = 0.0f;
     private bool isFullAutoMode = false;
+    private bool hasExitTime = false;
     private Dictionary<GameMode,GamePhaseSetting> GameSettingDic = new Dictionary<GameMode, GamePhaseSetting>();
     //Resolve GC(Overhead)
     private static readonly WaitForSeconds wait01 = new WaitForSeconds(0.1f);
@@ -71,12 +74,11 @@ public class GameManager : MonoBehaviour
         get => gameMode;
         set
         {
-            if (gameMode != value)
-            {
-                gameMode = value;
-                //Event trigger
-                OnGameModeChanged.Invoke(GameSettingDic[gameMode]);
-            }
+            gameMode = value;
+            //Event trigger
+            OnGameModeChanged.Invoke(GameSettingDic[gameMode]);
+            Debug.Log($"NextMode:{value.ToString()}");
+            
         }
     }
     //System Event
@@ -91,6 +93,7 @@ public class GameManager : MonoBehaviour
         //gameMode = GameMode.Normal;
         OnEnumChanedHandle(GameSettingDic[gameMode]);
         createTimer = 0f;
+        StartGame();
     }
     // Update is called once per frame
     void Update()
@@ -142,15 +145,33 @@ public class GameManager : MonoBehaviour
     [OnInspectorButton("",true)]
     public void StartGame()
     {
+        if(gamestate == GameState.Playing)
+        {
+            return;
+        }
         StartCoroutine(GameTimer());
         OnCreateTime?.Invoke();
+    }
+    public void EndTutorial()
+    {
+        IsTurorial = false;
     }
     private IEnumerator GameTimer()
     {
         gamestate = GameState.Playing;
         foreach (var phase in phaseSettings)
         {
-            yield return RunPhase(phase);
+            Mode = phase.gameMode;
+            //if(!phase.hasExitTime)
+            if(Mode == GameMode.Tutorial)
+            {
+                yield return RunPhaseForWait();
+            }
+            else
+            {
+                yield return RunPhase(phase);
+            }
+            
             yield return waitPhaseChange;
         }
         timeLimitText.text = "End!";
@@ -159,14 +180,19 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator RunPhase(GamePhaseSetting phase)
     {
-        Mode = phase.gameMode;
-        for(limitTimer = phase.phaseTime;limitTimer >=0;limitTimer -= 0.1f)
+        
+        for (limitTimer = phase.phaseTime;limitTimer >=0;limitTimer -= 0.1f)
         {
             UpdateUI();
             yield return wait01;
         }
         UpdateUI();
-
+    }
+    private IEnumerator RunPhaseForWait()
+    {
+        //WaitUntil() Falseの間待機
+        //WaitWhile() Trueの間待機
+        yield return new WaitUntil(() => IsTurorial);
     }
     private void UpdateUI()
     {
