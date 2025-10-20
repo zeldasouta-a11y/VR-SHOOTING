@@ -419,11 +419,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CreateTargetManager
   mainCamera: {fileID: 752074434}
   baseprefab: {fileID: 4897060822646410914, guid: ba3755a610e593f44a461f8c0441b5d9, type: 3}
-  targetsList:
-  - {fileID: 11400000, guid: 9590cba5e0235934d9e8698b848fb1b3, type: 2}
-  - {fileID: 11400000, guid: 3cd0ee6768607a642b052c54eb839395, type: 2}
-  - {fileID: 11400000, guid: 6ceb1bc873b37e6488d483058f104c33, type: 2}
-  - {fileID: 11400000, guid: 451dae4a8f39ce64b9b0927f3e00db41, type: 2}
 --- !u!4 &355095604
 Transform:
   m_ObjectHideFlags: 0
@@ -803,26 +798,31 @@ MonoBehaviour:
   phaseChangeTime: 3
   phaseSettings:
   - gameMode: 0
-    phaseTime: 30
+    phaseTime: 0
+    hasExitTime: 0
     createduretion: 60
     targetSettingSO: {fileID: 11400000, guid: 9590cba5e0235934d9e8698b848fb1b3, type: 2}
   - gameMode: 1
     phaseTime: 30
+    hasExitTime: 1
     createduretion: 4
     targetSettingSO: {fileID: 11400000, guid: 3cd0ee6768607a642b052c54eb839395, type: 2}
   - gameMode: 2
     phaseTime: 30
+    hasExitTime: 1
     createduretion: 2.5
     targetSettingSO: {fileID: 11400000, guid: 6ceb1bc873b37e6488d483058f104c33, type: 2}
   - gameMode: 3
     phaseTime: 30
-    createduretion: 2.5
+    hasExitTime: 1
+    createduretion: 0.01
     targetSettingSO: {fileID: 11400000, guid: 451dae4a8f39ce64b9b0927f3e00db41, type: 2}
   totalScore: 0
   fullAutoDuration: 20
   scoreText: {fileID: 865984234}
   timeLimitText: {fileID: 2107811701}
   gameMode: 0
+  IsTurorial: 1
 --- !u!4 &562927304
 Transform:
   m_ObjectHideFlags: 0
@@ -875,7 +875,7 @@ MonoBehaviour:
   - gunModel: {fileID: 8264000493949677481}
     bulletPrefab: {fileID: 2617077460344055302, guid: 854813d7674d6b443acf5687a445c7e3, type: 3}
     bulletData:
-      bulletSpeed: 70
+      bulletSpeed: 100
       bulletVanishTime: 10
     muzzlePos: {fileID: 613980398793295191}
     magazineCapacity: 20
@@ -892,7 +892,7 @@ MonoBehaviour:
     bulletPrefab: {fileID: 7317486162630176800, guid: 4c7c17df510437043b52f52f1bf9d083, type: 3}
     bulletData:
       bulletSpeed: 500
-      bulletVanishTime: 3
+      bulletVanishTime: 2
     muzzlePos: {fileID: 5872473639949133860}
     magazineCapacity: 20
     reloadConstant: 90

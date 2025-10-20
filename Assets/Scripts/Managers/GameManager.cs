@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     {
         public GameMode gameMode;
         public float phaseTime;
-        //public bool hasExitTime;
+        public bool hasExitTime;
         [Header("Target Setting")]
         public float createduretion;
         public TargetDataSO targetSettingSO;
@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (gamestate != GameState.Playing) return;
-
+        if (Mode == GameMode.Tutorial) return;
         createTimer += Time.deltaTime;
         if (createTimer > createDuration)
         {
@@ -162,8 +162,7 @@ public class GameManager : MonoBehaviour
         foreach (var phase in phaseSettings)
         {
             Mode = phase.gameMode;
-            //if(!phase.hasExitTime)
-            if(Mode == GameMode.Tutorial)
+            if(!phase.hasExitTime)
             {
                 yield return RunPhaseForWait();
             }
@@ -192,7 +191,7 @@ public class GameManager : MonoBehaviour
     {
         //WaitUntil() Falseの間待機
         //WaitWhile() Trueの間待機
-        yield return new WaitUntil(() => IsTurorial);
+        yield return new WaitWhile(() => IsTurorial);
     }
     private void UpdateUI()
     {

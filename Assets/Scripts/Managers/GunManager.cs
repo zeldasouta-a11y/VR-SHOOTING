@@ -14,7 +14,7 @@ public class GunManager : MonoBehaviour
     //[SerializeField] private Image reloadProgress;
     //public Image ReloadProgress => reloadProgress;
     [SerializeField] private List<GunData> gundatas;
-
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,14 +32,14 @@ public class GunManager : MonoBehaviour
                 continue;
             }
 
-            // GunController‚Ì‰Šú‰»
+            // GunControllerï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½
             GunController gun = data.gunModelObject.GetComponent<GunController>();
             if (gun == null)
             {
                 gun = data.gunModelObject.AddComponent<GunController>();
                 Debug.Log($"[GunManager] Added GunController to {data.gunModelObject.name}");
             }
-            //‘½•ªQÆ“n‚µ
+            //ï¿½ï¿½ï¿½ï¿½ï¿½Qï¿½Æ“nï¿½ï¿½
             gun.Init(data);
 
         }
