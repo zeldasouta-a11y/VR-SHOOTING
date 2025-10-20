@@ -7,13 +7,11 @@ public class CreateTargetManager : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private GameObject baseprefab;
-    [Header("Mode Data ScriptableObject")]
-    [SerializeField] private List<TargetDataSO> targetsList;
+
 
     public event Action<GameObject, TargetData> OnTargetSpawned;
 
     private List<TargetData> targetModels ;
-    private int listIndex = 0;
     RandomTable indexTable;
     RandomTable posTable;
     private void Awake()

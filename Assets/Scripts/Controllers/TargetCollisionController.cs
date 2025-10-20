@@ -15,6 +15,7 @@ public class TargetCollisionController : MonoBehaviour
     private readonly WaitForSeconds fixedUpdate = new WaitForSeconds(1f);
     private bool isFixedUpdate = false;
     private float time = 0f;
+    private bool isDestroy = false;
 
     /// <summary>
     /// �K���A�C���X�^���X�쐬����ɌĂԂ���
@@ -48,6 +49,7 @@ public class TargetCollisionController : MonoBehaviour
     void Update()
     {
         if (!targetDatas.IsMovable) return;
+        if (isDestroy) return;
         if (time > targetDatas.MoveDurtation)
         {
             time = 0f;
@@ -92,7 +94,7 @@ public class TargetCollisionController : MonoBehaviour
         {
             hittext = pointCanvas.AddComponent<TextMeshProUGUI>();
         }
-        targetDatas.OnHit();
+        isDestroy = true;
         hittext.text = targetDatas.HitScore.ToString();
         pointCanvas.gameObject.SetActive(true);
     }
