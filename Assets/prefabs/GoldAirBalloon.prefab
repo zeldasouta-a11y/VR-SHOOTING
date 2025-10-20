@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 4769900044650710068}
   - component: {fileID: 5010501573892544249}
   m_Layer: 0
-  m_Name: V1_HotAirBalloon_5
+  m_Name: GoldAirBalloon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

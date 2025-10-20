@@ -15,9 +15,9 @@ MonoBehaviour:
   targetSettingData:
   - targetModel: {fileID: 7575923230338825960, guid: 2f41ac8b8ecb2e14d9285ee2f278693a, type: 3}
     targetModelName: RedBalloon
-    minPosition: {x: -10, y: -10, z: 100}
-    maxPosition: {x: 10, y: 0, z: 200}
-    hitScore: 1000
+    minPosition: {x: -80, y: -10, z: 150}
+    maxPosition: {x: 80, y: 0, z: 200}
+    hitScore: 750
     isVanish: 1
     vanishTime: 10
     isMovable: 1
@@ -27,8 +27,8 @@ MonoBehaviour:
     moveVector: {x: 0, y: 10, z: 0}
   - targetModel: {fileID: 2263297054331644975, guid: a1c623815922a0b4d89bae91dba94562, type: 3}
     targetModelName: GoldBallon
-    minPosition: {x: -10, y: 10, z: 50}
-    maxPosition: {x: 10, y: 20, z: 100}
+    minPosition: {x: -100, y: 30, z: 200}
+    maxPosition: {x: 100, y: 80, z: 300}
     hitScore: 2000
     isVanish: 0
     vanishTime: 0

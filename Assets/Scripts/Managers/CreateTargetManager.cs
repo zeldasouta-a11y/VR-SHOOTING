@@ -9,9 +9,6 @@ public class CreateTargetManager : MonoBehaviour
     [SerializeField] private GameObject baseprefab;
     [Header("Mode Data ScriptableObject")]
     [SerializeField] private List<TargetDataSO> targetsList;
-    [SerializeField] private TargetDataSO EasyModeTargetData;
-    [SerializeField] private TargetDataSO NormalModeTargetData;
-    [SerializeField] private TargetDataSO HardModeTargetData;
 
     public event Action<GameObject, TargetData> OnTargetSpawned;
 
@@ -102,11 +99,11 @@ public class CreateTargetManager : MonoBehaviour
             posTable.Range(minPos.z, maxPos.z)
             );
     }
-    private void OnGamePhaseChangeHandle(GameMode mode)
+    private void OnGamePhaseChangeHandle(GameManager.GamePhaseSetting phaseSetting)
     {
-        if(listIndex < targetsList.Count)
+        if(phaseSetting.targetSettingSO.targetSettingData != null)
         {
-            targetModels = targetsList[++listIndex].targetSettingData;
+            targetModels = phaseSetting.targetSettingSO.targetSettingData;
         }
     }
     private void OnCreateTimeHandle()
