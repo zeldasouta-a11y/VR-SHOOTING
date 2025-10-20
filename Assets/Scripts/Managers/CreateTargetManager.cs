@@ -22,7 +22,6 @@ public class CreateTargetManager : MonoBehaviour
     }
     private void Start()
     {
-        targetModels = targetsList[listIndex].targetSettingData;
         posTable = new RandomTable(ManagerLocator.Instance.Game.GameSeed);
         indexTable = new RandomTable(ManagerLocator.Instance.Game.GameSeed);
         ManagerLocator.Instance.Game.OnGameModeChanged += OnGamePhaseChangeHandle;
@@ -101,10 +100,12 @@ public class CreateTargetManager : MonoBehaviour
     }
     private void OnGamePhaseChangeHandle(GameManager.GamePhaseSetting phaseSetting)
     {
-        if(phaseSetting.targetSettingSO.targetSettingData != null)
+        if(phaseSetting.targetSettingSO.targetSettingData == null)
         {
-            targetModels = phaseSetting.targetSettingSO.targetSettingData;
+            Debug.LogError("PhaseSettingData is Null!");
         }
+        targetModels = phaseSetting.targetSettingSO.targetSettingData;
+
     }
     private void OnCreateTimeHandle()
     {

@@ -14,20 +14,20 @@ public class RandomTable
         rng = new System.Random(seed);
         values = new List<float>(size);
         for (int i = 0; i < size; i++)
-            values.Add((float)rng.NextDouble()); // 0.0f ` 1.0f
+            values.Add((float)rng.NextDouble()); // 0.0f ï¿½` 1.0f
         index = 0;
     }
 
-    // 0.0`1.0‚Ì—”‚ðŽæ“¾
+    // 0.0ï¿½`1.0ï¿½Ì—ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
     public float NextFloat()
     {
         if (values.Count == 0) return 0f;
         float v = values[index];
-        index = (index + 1) % values.Count; // Žü‰ñ‰Â”\
+        index = (index + 1) % values.Count; // ï¿½ï¿½ï¿½ï¿½Â”\
         return v;
     }
 
-    // Žw’è”ÍˆÍ‚Ì—”‚ðŽæ“¾
+    // ï¿½wï¿½ï¿½ÍˆÍ‚Ì—ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
     public float Range(float min, float max)
     {
         return min + (max - min) * NextFloat();
@@ -38,7 +38,7 @@ public class RandomTable
         return min + Mathf.FloorToInt(NextFloat() * (max - min));
     }
 
-    // ƒe[ƒuƒ‹‚ðÄ¶¬iƒV[ƒh•ÏXŽžj
+    // ï¿½eï¿½[ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½ï¿½ï¿½ï¿½iï¿½Vï¿½[ï¿½hï¿½ÏXï¿½ï¿½ï¿½j
     public void Rebuild(int seed, int size = -1)
     {
         if (size < 0) size = values.Count;
@@ -47,5 +47,13 @@ public class RandomTable
         for (int i = 0; i < size; i++)
             values.Add((float)rng.NextDouble());
         index = 0;
+    }
+    public void ShuffleList<T>(List<T> list)
+    {
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = rng.Next(0, i + 1);
+            (list[i], list[j]) = (list[j], list[i]);
+        }
     }
 }
