@@ -6,7 +6,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
 
-public enum GameMode { Phase1, Phase2, Phase3, Phase4, Phase5 }
+public enum GameMode { Tutorial,Phase1, Phase2, Phase3, Phase4, Phase5 }
 public enum GameState { Idle, Playing, Paused, Ended }
 
 //UnityEvent Inspectror�Őݒ�\
@@ -22,9 +22,11 @@ public class GameManager : MonoBehaviour
         public float phaseTime;
         [Header("Target Setting")]
         public float createduretion;
+        public TargetDataSO targetSettingSO;
         //[Header("Gun Setting")]
         //public int fireRate;
         //public int ReloadConstant;
+
     }
     [Header("��Փx�ɂ���ĕς��")]
     [SerializeField] private float createDuration = 1.0f;
@@ -45,6 +47,7 @@ public class GameManager : MonoBehaviour
     private float limitTimer = 0.0f;
     private float createTimer = 0.0f;
     private bool isFullAutoMode = false;
+    private Dictionary<GameMode,GamePhaseSetting> GameSettingDic = new Dictionary<GameMode, GamePhaseSetting>();
     //Resolve GC(Overhead)
     private static readonly WaitForSeconds wait01 = new WaitForSeconds(0.1f);
     private WaitForSeconds waitPhaseChange;
@@ -72,20 +75,21 @@ public class GameManager : MonoBehaviour
             {
                 gameMode = value;
                 //Event trigger
-                OnGameModeChanged.Invoke(gameMode);
+                OnGameModeChanged.Invoke(GameSettingDic[gameMode]);
             }
         }
     }
     //System Event
-    public event Action<GameMode> OnGameModeChanged;
+    public event Action<GamePhaseSetting> OnGameModeChanged;
     public event Action<bool> OnFullAutoChanged;
     public event Action OnCreateTime;
     private void Start()
     {
         OnGameModeChanged += OnEnumChanedHandle;
+        SetupDic();
         waitPhaseChange = new WaitForSeconds(phaseChangeTime);
         //gameMode = GameMode.Normal;
-        OnEnumChanedHandle(gameMode);
+        OnEnumChanedHandle(GameSettingDic[gameMode]);
         createTimer = 0f;
     }
     // Update is called once per frame
@@ -104,19 +108,24 @@ public class GameManager : MonoBehaviour
     {
         OnGameModeChanged -= OnEnumChanedHandle;
     }
-
-    public void OnEnumChanedHandle(GameMode mode)
+    private void SetupDic()
     {
-        var setting = phaseSettings.Find(s => s.gameMode == mode);
-        if (setting != null)
+        foreach (GamePhaseSetting key in phaseSettings)
         {
-            createDuration = setting.createduretion;
+            GameSettingDic[key.gameMode] = key;
+        }
+    }
+    public void OnEnumChanedHandle(GamePhaseSetting modeSetting)
+    {
+        if (modeSetting != null)
+        {
+            createDuration = modeSetting.createduretion;
             //indexMin = setting.indexMin;
             //indexMax = setting.indexMax;
         }
         else
         {
-            Debug.LogWarning($"gameMode {mode} �̐ݒ肪������܂���");
+            Debug.LogWarning($"gameMode {modeSetting.gameMode} �̐ݒ肪������܂���");
         }
     }
     [OnInspectorButton("",true)]

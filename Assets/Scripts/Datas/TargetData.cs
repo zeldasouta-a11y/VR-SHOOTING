@@ -52,4 +52,8 @@ public class TargetData
             UnityEngine.Random.Range(MinPosition.z, MaxPosition.z)
         );
     }
+    public void OnHit()
+    {
+        isMovable = false;
+    }
 }

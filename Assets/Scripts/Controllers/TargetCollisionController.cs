@@ -87,10 +87,12 @@ public class TargetCollisionController : MonoBehaviour
     private void OnHitUI() 
     {
         if (targetModel != null) targetModel.gameObject.SetActive(false);
+
         if (hittext == null)
         {
             hittext = pointCanvas.AddComponent<TextMeshProUGUI>();
         }
+        targetDatas.OnHit();
         hittext.text = targetDatas.HitScore.ToString();
         pointCanvas.gameObject.SetActive(true);
     }
