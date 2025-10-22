@@ -13,10 +13,24 @@ MonoBehaviour:
   m_Name: TutorialMode
   m_EditorClassIdentifier: Assembly-CSharp::TargetDataSO
   targetSettingData:
+  - targetModel: {fileID: 5587836066146359011, guid: df777f1a66a444443bfbfbb2f7fadd6d, type: 3}
+    targetModelName: TutorialTerget
+    minPosition: {x: -15, y: 3, z: 20}
+    maxPosition: {x: 15, y: 10, z: 30}
+    maxSpawn: 10
+    hitScore: 0
+    isVanish: 0
+    vanishTime: 30
+    isMovable: 0
+    isUFOMove: 0
+    isPendulumMove: 0
+    moveDurtation: 0
+    moveVector: {x: 0, y: 0, z: 0}
   - targetModel: {fileID: 8216536128128576136, guid: fc0a220bc3f5a1442820393e381c2947, type: 3}
     targetModelName: TutorialTerget
     minPosition: {x: 0, y: 3, z: 20}
     maxPosition: {x: 0, y: 3, z: 20}
+    maxSpawn: 1
     hitScore: 0
     isVanish: 0
     vanishTime: 30

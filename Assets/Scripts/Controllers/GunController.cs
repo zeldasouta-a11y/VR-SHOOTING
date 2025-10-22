@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -32,7 +32,7 @@ public class GunController : MonoBehaviour
     void Start()
     {
         bulletRemaining = gundata.MagazineCapacity;
-        reserveAmmo = gundata.InitialReserveAmmo;
+        reserveAmmo = gundata.ReserveAmmo;
 
         // XRイベント
         var xrGrab = gundata.gunModelObject.GetComponent<XRGrabInteractable>();
@@ -40,10 +40,6 @@ public class GunController : MonoBehaviour
         xrGrab.activated.AddListener(Activate);
         xrGrab.deactivated.AddListener(Deactivate);
         xrGrab.hoverExited.AddListener(HoverExited);
-
-        //ローカルイベント
-        ManagerLocator.Instance.Game.OnFullAutoChanged += OnFullAutoHandle;
-
         // UI初期化
         if (gundata.RemainText) normalAmmoColor = gundata.RemainText.color;
         if (gundata.ReloadText) gundata.ReloadText.gameObject.SetActive(false);
@@ -55,11 +51,21 @@ public class GunController : MonoBehaviour
         fireRate = gundata.FireRate;
         reloadConstant = gundata.ReloadConstant;
         UpdateUI();
+        
+    }
+    private void OnEnable()
+    {
+        //イベント購読
+        ManagerLocator.Instance.Game.OnFullAutoChanged += OnFullAutoHandle;
     }
     void OnDisable()
     {
-        //イベント解除
-        ManagerLocator.Instance.Game.OnFullAutoChanged -= OnFullAutoHandle;
+        if(ManagerLocator.Instance.Game != null)
+        {
+            //イベント解除
+            ManagerLocator.Instance.Game.OnFullAutoChanged -= OnFullAutoHandle;
+        }
+        
     }
 
     void Update()
@@ -83,7 +89,6 @@ public class GunController : MonoBehaviour
     }
 
     public void Init(GunData _data) { gundata = _data; }
-
 
     private void OnFullAutoHandle(bool mode)
     {
@@ -192,21 +197,7 @@ public class GunController : MonoBehaviour
     // 弾生成
     private void ShootAmmo()
     {
-        if (gundata.BulletPrefab == null || gundata.MuzzlePos == null)
-        {
-            Debug.Log("Inspector の設定を確認してください　焼き肉食べ放題（BulletPrefab / MuzzlePos）");
-            return;
-        }
-
-        GameObject bulletObj = Instantiate(gundata.BulletPrefab);
-        BulletController bullet = bulletObj.GetComponent<BulletController>();
-        if(bullet == null) bullet = bulletObj.AddComponent<BulletController>();
-
-        bullet.Init(gundata.BulletData);
-
-        //弾の位置を、銃口の位置と同一にする。
-        bulletObj.transform.position = gundata.MuzzlePos.position;
-        bulletObj.transform.rotation = gundata.MuzzlePos.rotation;
+        ManagerLocator.Instance.Bullet.ActiveBullet(gundata.BulletType,gundata.MuzzlePos.position,gundata.MuzzlePos.rotation);
     }
 
     // UIまとめて更新
@@ -217,5 +208,10 @@ public class GunController : MonoBehaviour
             gundata.RemainText.text = $"{bulletRemaining}/{gundata.MagazineCapacity} ({reserveAmmo})";
             gundata.RemainText.color = (bulletRemaining <= lowAmmoThreshold) ? lowAmmoColor : normalAmmoColor;
         }
+    }
+    [OnInspectorButton]
+    public void ReplenishAmmo(int replenish)
+    {
+        reserveAmmo += replenish;
     }
 }

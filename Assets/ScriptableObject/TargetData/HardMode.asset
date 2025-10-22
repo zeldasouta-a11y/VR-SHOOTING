@@ -17,35 +17,35 @@ MonoBehaviour:
     targetModelName: UFO
     minPosition: {x: -70, y: 0, z: 100}
     maxPosition: {x: 70, y: 10, z: 200}
+    maxSpawn: 100
     hitScore: 10000
-    isVanish: 1
+    hasVanishTime: 0
     vanishTime: 20
     isMovable: 1
-    isUFOMove: 1
-    isPendulumMove: 0
+    moveType: 2
     moveDurtation: 2
     moveVector: {x: 15, y: 15, z: 15}
   - targetModel: {fileID: 2263297054331644975, guid: a1c623815922a0b4d89bae91dba94562, type: 3}
     targetModelName: GoldBallon
     minPosition: {x: -100, y: 30, z: 250}
     maxPosition: {x: 100, y: 80, z: 350}
+    maxSpawn: 100
     hitScore: 2000
-    isVanish: 1
+    hasVanishTime: 0
     vanishTime: 20
     isMovable: 0
-    isUFOMove: 0
-    isPendulumMove: 0
+    moveType: 0
     moveDurtation: 2
     moveVector: {x: 15, y: 15, z: 15}
   - targetModel: {fileID: 5587836066146359011, guid: df777f1a66a444443bfbfbb2f7fadd6d, type: 3}
     targetModelName: movetarget
     minPosition: {x: -5, y: 1, z: 20}
     maxPosition: {x: 0, y: 5, z: 40}
+    maxSpawn: 10
     hitScore: 500
-    isVanish: 1
+    hasVanishTime: 0
     vanishTime: 20
     isMovable: 1
-    isUFOMove: 0
-    isPendulumMove: 1
+    moveType: 1
     moveDurtation: 2
     moveVector: {x: 7, y: 0, z: 0}

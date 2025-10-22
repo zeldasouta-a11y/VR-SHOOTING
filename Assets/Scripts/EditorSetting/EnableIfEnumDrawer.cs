@@ -1,3 +1,4 @@
+ï»¿#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 
@@ -8,14 +9,14 @@ public class EnableIfEnumDrawer : PropertyDrawer
     {
         EnableIfEnumAttribute condition = (EnableIfEnumAttribute)attribute;
 
-        //Œ»İ‚ÌƒvƒƒpƒeƒB–¼
+        //ç¾åœ¨ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£å
         string conditionPath = property.propertyPath.Replace(property.name, condition.enumFiledName);
         SerializedProperty enumProp = property.serializedObject.FindProperty(conditionPath);
 
-        //‚È‚¢ê‡ƒfƒtƒHƒ‹ƒg•\¦
+        //ãªã„å ´åˆãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè¡¨ç¤º
         if (enumProp == null)
         {
-            //•\¦ŠÖ”,bool‚ÍAq‹Ÿ‚à•\¦‚·‚é‚©‚Ç‚¤‚©
+            //è¡¨ç¤ºé–¢æ•°,boolã¯ã€å­ä¾›ã‚‚è¡¨ç¤ºã™ã‚‹ã‹ã©ã†ã‹
             EditorGUI.PropertyField(position, property, label, true);
             return;
         }
@@ -23,45 +24,45 @@ public class EnableIfEnumDrawer : PropertyDrawer
         bool enabled = false;
         if (enumProp.propertyType == SerializedPropertyType.Enum)
         {
-            int currentValue = enumProp.enumValueIndex;//enum‚ÌŒ»İ’n‚ğæ“¾
+            int currentValue = enumProp.enumValueIndex;//enumã®ç¾åœ¨åœ°ã‚’å–å¾—
             foreach(int valid in condition.enumValues){
                 if (currentValue == valid)
                 {
-                    enabled = true;//Œ»İ’n‚Æw’è’n‚ª“¯‚¶‚Ì‚İA^‚ÉXV
+                    enabled = true;//ç¾åœ¨åœ°ã¨æŒ‡å®šåœ°ãŒåŒã˜æ™‚ã®ã¿ã€çœŸã«æ›´æ–°
                     break;
                 }
             }
         }
-        //‰B‚·İ’è
+        //éš ã™è¨­å®š
         if (!enabled && condition.hideWhenFalse)
         {
-            //‰½‚à•\¦‚µ‚È‚¢
+            //ä½•ã‚‚è¡¨ç¤ºã—ãªã„
             return;
         }
 
-        //ğŒ‚É‡‚í‚È‚¢ê‡‚ÍƒOƒŒ[
+        //æ¡ä»¶ã«åˆã‚ãªã„å ´åˆã¯ã‚°ãƒ¬ãƒ¼
         bool prev = GUI.enabled;
         GUI.enabled = enabled;
         EditorGUI.PropertyField (position, property, label, true);
         GUI.enabled = prev;
     }
-    //–³Œø‚É‚·‚éê‡AƒeƒLƒXƒgƒtƒB[ƒ‹ƒh‚Ì‚‚³‚ğ0,‚Â‚Ü‚è”ñ•\¦‚É‚·‚éB
+    //ç„¡åŠ¹ã«ã™ã‚‹å ´åˆã€ãƒ†ã‚­ã‚¹ãƒˆãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®é«˜ã•ã‚’0,ã¤ã¾ã‚Šéè¡¨ç¤ºã«ã™ã‚‹ã€‚
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
         EnableIfEnumAttribute condition = (EnableIfEnumAttribute)attribute;
         string conditionPath = property.propertyPath.Replace(property.name, condition.enumFiledName);
         SerializedProperty enumProp = property.serializedObject.FindProperty(conditionPath);
 
-        //”ñ•\¦‚È‚çA‚‚³0‚É‚·‚é
+        //éè¡¨ç¤ºãªã‚‰ã€é«˜ã•0ã«ã™ã‚‹
         if (enumProp != null && enumProp.propertyType == SerializedPropertyType.Enum)
         {
             bool enabled = false;
-            int currentValue = enumProp.enumValueIndex;//enum‚ÌŒ»İ’n‚ğæ“¾
+            int currentValue = enumProp.enumValueIndex;//enumã®ç¾åœ¨åœ°ã‚’å–å¾—
             foreach (int valid in condition.enumValues)
             {
                 if (currentValue == valid)
                 {
-                    enabled = true;//Œ»İ’n‚Æw’è’n‚ª“¯‚¶‚Ì‚İA^‚ÉXV
+                    enabled = true;//ç¾åœ¨åœ°ã¨æŒ‡å®šåœ°ãŒåŒã˜æ™‚ã®ã¿ã€çœŸã«æ›´æ–°
                     break;
                 }
             }
@@ -74,3 +75,4 @@ public class EnableIfEnumDrawer : PropertyDrawer
         return EditorGUI.GetPropertyHeight(property, label, true);
     }
 }
+#endif

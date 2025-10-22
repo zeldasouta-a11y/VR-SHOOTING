@@ -17,23 +17,23 @@ MonoBehaviour:
     targetModelName: staticTarget
     minPosition: {x: -15, y: 1, z: 20}
     maxPosition: {x: 15, y: 10, z: 40}
+    maxSpawn: 100
     hitScore: 100
-    isVanish: 0
+    hasVanishTime: 0
     vanishTime: 0
     isMovable: 0
-    isUFOMove: 0
-    isPendulumMove: 0
+    moveType: 0
     moveDurtation: 0
     moveVector: {x: 0, y: 0, z: 0}
   - targetModel: {fileID: 5587836066146359011, guid: df777f1a66a444443bfbfbb2f7fadd6d, type: 3}
     targetModelName: movetarget
     minPosition: {x: -5, y: 1, z: 20}
     maxPosition: {x: -5, y: 7, z: 40}
+    maxSpawn: 100
     hitScore: 500
-    isVanish: 0
+    hasVanishTime: 0
     vanishTime: 0
     isMovable: 1
-    isUFOMove: 0
-    isPendulumMove: 1
+    moveType: 1
     moveDurtation: 2
     moveVector: {x: 5, y: 0, z: 0}

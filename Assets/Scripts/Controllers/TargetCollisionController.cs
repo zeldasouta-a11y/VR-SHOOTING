@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -9,11 +9,10 @@ public class TargetCollisionController : MonoBehaviour
     [SerializeField] Canvas canvas;
     [SerializeField] TextMeshProUGUI hittext;
     [HideInInspector] GameObject targetModel;
-    [SerializeField]
-    TargetData targetDatas;
-    Vector3 moving;
+    [SerializeField] TargetData targetDatas;
+    private Vector3 spawnPoint;
+    private Vector3 moving;
     private readonly WaitForSeconds fixedUpdate = new WaitForSeconds(1f);
-    private bool isFixedUpdate = false;
     private float time = 0f;
     private bool isDestroy = false;
 
@@ -22,10 +21,11 @@ public class TargetCollisionController : MonoBehaviour
     /// </summary>
     /// <param name="score"></param>
     /// <param name="time"></param>
-    public void Init(TargetData _data,GameObject Model ,Camera targetCamera)
+    public void Init(TargetData _data, GameObject Model, Vector3 spawnAt, Camera targetCamera)
     {
         targetDatas = _data;
         targetModel = Model;
+        spawnPoint = spawnAt;
         canvas.worldCamera = targetCamera;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -41,10 +41,14 @@ public class TargetCollisionController : MonoBehaviour
         }
         moving = targetDatas.MoveVector;
         pointCanvas.SetActive(false);
-        if (targetDatas.IsVanish) 
+        if (targetDatas.HasVanishTime)
         {
             Destroy(this.gameObject, targetDatas.VanishTime);
         }
+    }
+    private void OnEnable()
+    {
+        //StartCoroutine(ReturnToPoolAfterDelay());
     }
     void Update()
     {
@@ -53,40 +57,39 @@ public class TargetCollisionController : MonoBehaviour
         if (time > targetDatas.MoveDurtation)
         {
             time = 0f;
-            if (targetDatas.IsUFOMove)
+            switch (targetDatas.MoveType)
             {
-                int rotationX = Random.Range(0, 360);
-                int rotationY = Random.Range(0, 360);
-                int rotationZ = Random.Range(0, 360);
-                moving = Quaternion.Euler(rotationX,rotationY,rotationZ) * targetDatas.MoveVector;
+                case MoveType.LinerMove:
+                    break;
+                case MoveType.UFOMove:
+                    int rotationX = Random.Range(0, 360);
+                    int rotationY = Random.Range(0, 360);
+                    int rotationZ = Random.Range(0, 360);
+                    moving = Quaternion.Euler(rotationX, rotationY, rotationZ) * targetDatas.MoveVector;
+                    break;
+                case MoveType.PendulumMove:
+                    moving *= -1;
+                    break;
             }
-            else if (targetDatas.IsPendulumMove)
-            {
-                moving *= -1;
-            }
+
+        }
+        //UFO用,深くなったらひっくり返す
+        if (this.gameObject.transform.localPosition.y < 0f && moving.y < 0f)
+        {
+            moving *= -1;
         }
         this.gameObject.transform.localPosition += moving * Time.deltaTime;
         time += Time.deltaTime;
     }
-    private IEnumerator Moveing()
+    public IEnumerator ReturnToPoolAfterDelay()
     {
-        isFixedUpdate = true;
-        yield return fixedUpdate;
-        isFixedUpdate = false;
-    }
-    void OnTriggerEnter(Collider collision)
-    {
-        string objecttag = collision.gameObject.tag;
-        if (objecttag == "bullet")
-        {
+        yield return null;
+        if (!targetDatas.HasVanishTime) yield break;
 
-            OnHitUI();
-            ManagerLocator.Instance.Game.AddScore(targetDatas.HitScore,targetDatas.ModelName);
-            
-            Destroy(this.gameObject,3.0f);
-        }
+        yield return new WaitForSeconds(targetDatas.VanishTime);
+        this.gameObject.SetActive(false);
     }
-    private void OnHitUI() 
+    private void OnHitUI()
     {
         if (targetModel != null) targetModel.gameObject.SetActive(false);
 
@@ -98,4 +101,17 @@ public class TargetCollisionController : MonoBehaviour
         hittext.text = targetDatas.HitScore.ToString();
         pointCanvas.gameObject.SetActive(true);
     }
+    void OnTriggerEnter(Collider collision)
+    {
+        string objecttag = collision.gameObject.tag;
+        if (objecttag == "bullet")
+        {
+
+            OnHitUI();
+            ManagerLocator.Instance.Game.AddScore(targetDatas.HitScore, targetDatas.ModelName);
+
+            Destroy(this.gameObject, 3.0f);
+        }
+    }
+
 }

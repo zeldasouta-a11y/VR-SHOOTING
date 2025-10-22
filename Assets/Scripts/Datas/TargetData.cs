@@ -1,6 +1,8 @@
-using System;
+﻿using System;
 using UnityEngine;
 
+
+public enum MoveType { LinerMove , PendulumMove, UFOMove};
 [Serializable]
 public class TargetData
 {
@@ -16,27 +18,26 @@ public class TargetData
     [SerializeField] Vector3 maxPosition;
     public Vector3 MaxPosition => maxPosition;
 
+    [SerializeField] int maxSpawn = 10;
+    public int MaxSpawn => maxSpawn;
+
     [SerializeField] private int hitScore;
     public int HitScore => hitScore;
 
-    [SerializeField] private bool isVanish = false;
-    public bool IsVanish => isVanish;
-    [EnableIf("isVanish", hideWhenFalse: false)]
+    [SerializeField] private bool hasVanishTime = false;
+    public bool HasVanishTime => hasVanishTime;
+    [EnableIf("hasVanishTime", hideWhenFalse: false)]
     [SerializeField] private float vanishTime;
     public float VanishTime => vanishTime;
 
+    
     [SerializeField] private bool isMovable = false;
     public bool IsMovable => isMovable;
+    [EnableIf("isMovable", hideWhenFalse: true)]
+    [SerializeField] MoveType moveType;
+    public MoveType MoveType => moveType;
 
-    [EnableIf(new string[] { "isMovable", "!isPendulumMove" }, ConditionLogic.AND, hideWhenFalse: true)]
-    [SerializeField] private bool isUFOMove = false;
-    public bool IsUFOMove => isUFOMove;
-
-    [EnableIf(new string[] { "isMovable", "!isUFOMove" }, ConditionLogic.AND, hideWhenFalse: true)]
-    [SerializeField] private bool isPendulumMove = false;
-    public bool IsPendulumMove => isPendulumMove;
-
-    [EnableIf(new string[] { "isPendulumMove", "isUFOMove" }, ConditionLogic.OR, hideWhenFalse: true)]
+    [EnableIf("isMovable", hideWhenFalse: true)]
     [SerializeField] private float moveDurtation;
     public float MoveDurtation => moveDurtation;
 

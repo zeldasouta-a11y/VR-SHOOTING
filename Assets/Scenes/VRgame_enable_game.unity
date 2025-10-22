@@ -341,6 +341,62 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3266887667944164143, guid: 89e80c47615e4f043926d66492d3ca5f, type: 3}
   m_PrefabInstance: {fileID: 2092735354}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &352825918
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 352825919}
+  - component: {fileID: 352825920}
+  m_Layer: 0
+  m_Name: BulletManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &352825919
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352825918}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 353728977}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &352825920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352825918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c69be6d5322fd0c49a8ca80e07dfabef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BulletManager
+  initializeCount: 20
+  bulletInfoList:
+  - prefab: {fileID: 2617077460344055302, guid: 854813d7674d6b443acf5687a445c7e3, type: 3}
+    data:
+      type: 0
+      bulletSpeed: 100
+      bulletVanishTime: 5
+  - prefab: {fileID: 7317486162630176800, guid: 4c7c17df510437043b52f52f1bf9d083, type: 3}
+    data:
+      type: 1
+      bulletSpeed: 500
+      bulletVanishTime: 2
 --- !u!1 &353728975
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,7 +428,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ManagerLocator
   <Game>k__BackingField: {fileID: 562927303}
   <Gun>k__BackingField: {fileID: 745427922}
+  <Bullet>k__BackingField: {fileID: 352825920}
   <CreateTarget>k__BackingField: {fileID: 355095603}
+  <Phase>k__BackingField: {fileID: 747199200}
 --- !u!4 &353728977
 Transform:
   m_ObjectHideFlags: 0
@@ -385,7 +443,12 @@ Transform:
   m_LocalPosition: {x: 2.00002, y: 2.1483, z: 2.28937}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 355095604}
+  - {fileID: 745427923}
+  - {fileID: 562927304}
+  - {fileID: 747199201}
+  - {fileID: 352825919}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &355095602
@@ -427,12 +490,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 355095602}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.19786, y: -1, z: 33.13917}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.19784, y: -3.1483, z: 30.849802}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 353728977}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &518978126
 GameObject:
@@ -793,36 +856,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea87e9f22c0f4674484975677aefa3a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  createDuration: 0.5
-  gameSeed: 12345
-  phaseChangeTime: 3
-  phaseSettings:
-  - gameMode: 0
-    phaseTime: 0
-    hasExitTime: 0
-    createduretion: 60
-    targetSettingSO: {fileID: 11400000, guid: 9590cba5e0235934d9e8698b848fb1b3, type: 2}
-  - gameMode: 1
-    phaseTime: 30
-    hasExitTime: 1
-    createduretion: 4
-    targetSettingSO: {fileID: 11400000, guid: 3cd0ee6768607a642b052c54eb839395, type: 2}
-  - gameMode: 2
-    phaseTime: 30
-    hasExitTime: 1
-    createduretion: 2.5
-    targetSettingSO: {fileID: 11400000, guid: 6ceb1bc873b37e6488d483058f104c33, type: 2}
-  - gameMode: 3
-    phaseTime: 30
-    hasExitTime: 1
-    createduretion: 0.01
-    targetSettingSO: {fileID: 11400000, guid: 451dae4a8f39ce64b9b0927f3e00db41, type: 2}
+  gameSeed: 123456
   totalScore: 0
   fullAutoDuration: 20
   scoreText: {fileID: 865984234}
   timeLimitText: {fileID: 2107811701}
-  gameMode: 0
-  IsTurorial: 1
+  tutorial: 0
+  gamestate: 0
 --- !u!4 &562927304
 Transform:
   m_ObjectHideFlags: 0
@@ -831,12 +871,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 562927302}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.00002, y: -2.1483, z: -2.28937}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 353728977}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &745427921
 GameObject:
@@ -873,10 +913,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GunManager
   gundatas:
   - gunModel: {fileID: 8264000493949677481}
-    bulletPrefab: {fileID: 2617077460344055302, guid: 854813d7674d6b443acf5687a445c7e3, type: 3}
-    bulletData:
-      bulletSpeed: 100
-      bulletVanishTime: 10
+    bulletType: 0
     muzzlePos: {fileID: 613980398793295191}
     magazineCapacity: 20
     reloadConstant: 50
@@ -885,14 +922,11 @@ MonoBehaviour:
     fullAutoSound: {fileID: 745427925}
     reloadSound: {fileID: 745427924}
     remainText: {fileID: 339588621029733569}
-    initialReserveAmmo: 700
+    reserveAmmo: 700
     reloadText: {fileID: 5083803226260582432}
     reloadProgress: {fileID: 2769012176324111402}
   - gunModel: {fileID: 994462377055736258}
-    bulletPrefab: {fileID: 7317486162630176800, guid: 4c7c17df510437043b52f52f1bf9d083, type: 3}
-    bulletData:
-      bulletSpeed: 500
-      bulletVanishTime: 2
+    bulletType: 1
     muzzlePos: {fileID: 5872473639949133860}
     magazineCapacity: 20
     reloadConstant: 90
@@ -901,7 +935,7 @@ MonoBehaviour:
     fullAutoSound: {fileID: 745427925}
     reloadSound: {fileID: 745427924}
     remainText: {fileID: 195057081612535153}
-    initialReserveAmmo: 700
+    reserveAmmo: 700
     reloadText: {fileID: 2768625403066917953}
     reloadProgress: {fileID: 1953006638073472308}
 --- !u!4 &745427923
@@ -912,12 +946,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 745427921}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.25, y: 1.34268, z: 1.43084}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.75002, y: -0.80561996, z: -0.85853004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 353728977}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &745427924
 AudioSource:
@@ -1307,6 +1341,83 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &747199199
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 747199201}
+  - component: {fileID: 747199200}
+  m_Layer: 0
+  m_Name: PhaseManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &747199200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747199199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5faff9a81eba6d47bd3db0b79f92e06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PhaseManager
+  phaseChangeTime: 3
+  fixedUpdate: 0.1
+  nowGamePhase: 0
+  isTurorialPhase: 1
+  phaseSettings:
+  - gamePhase: 0
+    phaseTime: 0
+    hasExitTime: 0
+    spawnType: 1
+    createDuration: 0
+    onSpawnCreateCount: 11
+    targetSettingSO: {fileID: 11400000, guid: 9590cba5e0235934d9e8698b848fb1b3, type: 2}
+  - gamePhase: 1
+    phaseTime: 30
+    hasExitTime: 1
+    spawnType: 0
+    createDuration: 5
+    onSpawnCreateCount: 1
+    targetSettingSO: {fileID: 11400000, guid: 3cd0ee6768607a642b052c54eb839395, type: 2}
+  - gamePhase: 2
+    phaseTime: 30
+    hasExitTime: 1
+    spawnType: 0
+    createDuration: 4
+    onSpawnCreateCount: 1
+    targetSettingSO: {fileID: 11400000, guid: 6ceb1bc873b37e6488d483058f104c33, type: 2}
+  - gamePhase: 3
+    phaseTime: 30
+    hasExitTime: 1
+    spawnType: 0
+    createDuration: 3
+    onSpawnCreateCount: 2
+    targetSettingSO: {fileID: 11400000, guid: 451dae4a8f39ce64b9b0927f3e00db41, type: 2}
+--- !u!4 &747199201
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747199199}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 353728977}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &752074430
 GameObject:
   m_ObjectHideFlags: 0
@@ -23528,10 +23639,7 @@ SceneRoots:
   - {fileID: 1218511617}
   - {fileID: 1633991797}
   - {fileID: 6680617987032081009}
-  - {fileID: 562927304}
-  - {fileID: 355095604}
-  - {fileID: 745427923}
-  - {fileID: 353728977}
   - {fileID: 1004223587}
   - {fileID: 5171942136138790654}
   - {fileID: 549341663}
+  - {fileID: 353728977}

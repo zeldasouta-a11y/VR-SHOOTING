@@ -83,7 +83,7 @@ namespace UnityStandardAssets.ImageEffects
 
             saturation.floatValue = EditorGUILayout.Slider( "Saturation", saturation.floatValue, 0.0f, 5.0f);
 
-            EditorGUILayout.PropertyField (mode, new GUIContent ("Mode"));
+            EditorGUILayout.PropertyField (mode, new GUIContent ("Phase"));
             EditorGUILayout.Separator ();
 
             BeginCurves ();

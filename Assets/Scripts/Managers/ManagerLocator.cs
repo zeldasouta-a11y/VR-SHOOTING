@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ManagerLocator : MonoBehaviour
 {
@@ -6,7 +6,9 @@ public class ManagerLocator : MonoBehaviour
     public static ManagerLocator Instance { get; private set; }
     [field:SerializeField] public GameManager Game { get; private set; }
     [field:SerializeField] public GunManager Gun { get; private set; }
+    [field:SerializeField] public BulletManager Bullet { get; private set; }
     [field:SerializeField] public CreateTargetManager CreateTarget { get; private set; }
+    [field:SerializeField] public PhaseManager Phase { get; private set; }
     void Awake()
     {
         if (Instance == null)
@@ -19,6 +21,16 @@ public class ManagerLocator : MonoBehaviour
             return;
         }
         DontDestroyOnLoad(gameObject);
+    }
+    private void Start()
+    {
+        InjectDependencies();
+    }
+    //Event購読関数
+    private void InjectDependencies() 
+    {
+        Phase.SetEvent(Game);
+        CreateTarget.SetEvent(Phase,Game);
     }
     //Game Create Memo
     //Structure:

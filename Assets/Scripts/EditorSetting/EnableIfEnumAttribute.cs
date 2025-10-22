@@ -1,11 +1,11 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 [AttributeUsage(AttributeTargets.Field,AllowMultiple = false)]
 public class EnableIfEnumAttribute : PropertyAttribute
 {
-    public string enumFiledName; //ğŒ‚ğ”»’è‚·‚éƒtƒB[ƒ‹ƒh–¼
-    public int[] enumValues;   //—LŒø‚©‘ÎÛ‚Ìenum‚Ì’l
+    public string enumFiledName; //æ¡ä»¶ã‚’åˆ¤å®šã™ã‚‹ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰å
+    public int[] enumValues;   //æœ‰åŠ¹ã‹å¯¾è±¡ã®enumã®å€¤
     public bool hideWhenFalse;
 
     public EnableIfEnumAttribute(string enumFiledName, bool hideWhenFalse = false , params object[] enumValues)

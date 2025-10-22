@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -8,14 +8,14 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 public class VRInputAndUIManager : MonoBehaviour
 {
     [Header("Input Actions")]
-    public InputActionProperty triggerAction;        // —á: "RightHand/Trigger"
-    public InputActionProperty primaryButtonAction;  // —á: "RightHand/PrimaryButton" iA/B ‚È‚Çj
-    public InputActionProperty secondaryButtonAction; // —á: "RightHand/SecondaryButton"
-    public InputActionProperty joystickAction;       // —á: "RightHand/Joystick" ‚Ì Vector2
+    public InputActionProperty triggerAction;        // ä¾‹: "RightHand/Trigger"
+    public InputActionProperty primaryButtonAction;  // ä¾‹: "RightHand/PrimaryButton" ï¼ˆA/B ãªã©ï¼‰
+    public InputActionProperty secondaryButtonAction; // ä¾‹: "RightHand/SecondaryButton"
+    public InputActionProperty joystickAction;       // ä¾‹: "RightHand/Joystick" ã® Vector2
 
     [Header("UI")]
-    public XRUIInputModule xruiInputModule;          // ƒV[ƒ“ã‚Ì XR UI Input Module
-    public XRRayInteractor uiRayInteractor;           // UI ‚Ég‚Á‚Ä‚¢‚é Ray Interactor
+    public XRUIInputModule xruiInputModule;          // ã‚·ãƒ¼ãƒ³ä¸Šã® XR UI Input Module
+    public XRRayInteractor uiRayInteractor;           // UI ã«ä½¿ã£ã¦ã„ã‚‹ Ray Interactor
 
     private void OnEnable()
     {
@@ -35,23 +35,23 @@ public class VRInputAndUIManager : MonoBehaviour
 
     private void Update()
     {
-        // --- ƒQ[ƒ€“ü—Í‚Æ‚µ‚Ä“Ç‚İæ‚é—á ---
+        // --- ã‚²ãƒ¼ãƒ å…¥åŠ›ã¨ã—ã¦èª­ã¿å–ã‚‹ä¾‹ ---
         float triggerValue = triggerAction.action.ReadValue<float>();
         Vector2 stickValue = joystickAction.action.ReadValue<Vector2>();
         bool primaryPressed = primaryButtonAction.action.WasPressedThisFrame();
         bool secondaryPressed = secondaryButtonAction.action.WasPressedThisFrame();
 
-        // —á: ƒƒO•\¦
+        // ä¾‹: ãƒ­ã‚°è¡¨ç¤º
         Debug.Log($"Trigger: {triggerValue:F2}, Stick: {stickValue}, A: {primaryPressed}, B: {secondaryPressed}");
 
-        // —á: UI “ü—Í‚ğƒ`ƒFƒbƒNiUI ‚ÉƒtƒH[ƒJƒX‚ª“–‚½‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©AŒ»İ‚ÌƒŒƒCƒLƒƒƒXƒgæƒIƒuƒWƒFƒNƒg‚È‚Çj
-        // ‚±‚±‚Å‚ÍAXRUIInputModule ‚ÌŒ»İ‚ÌƒŒƒCƒLƒƒƒXƒgæ‚ğæ“¾‚·‚é•û–@‚Ìˆê—áF
+        // ä¾‹: UI å…¥åŠ›ã‚’ãƒã‚§ãƒƒã‚¯ï¼ˆUI ã«ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ãŒå½“ãŸã£ã¦ã„ã‚‹ã‹ã©ã†ã‹ã€ç¾åœ¨ã®ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆå…ˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãªã©ï¼‰
+        // ã“ã“ã§ã¯ã€XRUIInputModule ã®ç¾åœ¨ã®ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆå…ˆã‚’å–å¾—ã™ã‚‹æ–¹æ³•ã®ä¸€ä¾‹ï¼š
         uiRayInteractor.TryGetCurrentUIRaycastResult(out RaycastResult raycast);
         if (raycast.isValid && raycast.gameObject != null)
         {
             GameObject hit = raycast.gameObject;
-            // UI —v‘fi‚½‚Æ‚¦‚Î Buttonj‚Ì‘€ì‚È‚Ç
-            // —á‚¦‚ÎAƒgƒŠƒK[‚ª‰Ÿ‚³‚ê‚½‚ç UI —v‘f‚ğƒNƒŠƒbƒN‚³‚¹‚éˆ—‚ğ“ü‚ê‚éA‚È‚Ç
+            // UI è¦ç´ ï¼ˆãŸã¨ãˆã° Buttonï¼‰ã®æ“ä½œãªã©
+            // ä¾‹ãˆã°ã€ãƒˆãƒªã‚¬ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸã‚‰ UI è¦ç´ ã‚’ã‚¯ãƒªãƒƒã‚¯ã•ã›ã‚‹å‡¦ç†ã‚’å…¥ã‚Œã‚‹ã€ãªã©
         }
     }
 }
