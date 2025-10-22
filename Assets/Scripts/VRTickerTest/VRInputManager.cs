@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.UI;
@@ -57,7 +57,7 @@ public class VRInputManager : MonoBehaviour
         HandleInput(leftTrigger, "LeftTrigger");
         HandleInput(rightTrigger, "RightTrigger");
 
-        // ƒXƒeƒBƒbƒN“ü—Í‚ÅFOV‚ğƒY[ƒ€i‰Eè‚Ì‚İj
+        // ã‚¹ãƒ†ã‚£ãƒƒã‚¯å…¥åŠ›ã§FOVã‚’ã‚ºãƒ¼ãƒ ï¼ˆå³æ‰‹ã®ã¿ï¼‰
         Vector2 rightJoy = rightStick.action?.ReadValue<Vector2>() ?? Vector2.zero;
         if (Mathf.Abs(rightJoy.y) > 0.1f)
         {

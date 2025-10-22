@@ -25,7 +25,7 @@ namespace UnityStandardAssets.ImageEffects
         void OnEnable () {
             serObj = new SerializedObject (target);
 
-            type = serObj.FindProperty ("type");
+            type = serObj.FindProperty ("spawnType");
             remapCurve = serObj.FindProperty ("remapCurve");
             exposureAdjustment = serObj.FindProperty ("exposureAdjustment");
             middleGrey = serObj.FindProperty ("middleGrey");

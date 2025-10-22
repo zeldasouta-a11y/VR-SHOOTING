@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 [AttributeUsage(AttributeTargets.Method, Inherited = true, AllowMultiple = false)]
@@ -7,8 +7,8 @@ public class OnInspectorButtonAttribute : PropertyAttribute
     public string label;
     public bool showOnlyInPlayMode;
 
-    /// <param name="label">ƒ{ƒ^ƒ“‚Ìƒ‰ƒxƒ‹inull‚È‚çƒƒ\ƒbƒh–¼j</param>
-    /// <param name="showOnlyInPlayMode">Às’†‚Ì‚İ•\¦‚·‚é‚©</param>
+    /// <param name="label">ãƒœã‚¿ãƒ³ã®ãƒ©ãƒ™ãƒ«ï¼ˆnullãªã‚‰ãƒ¡ã‚½ãƒƒãƒ‰åï¼‰</param>
+    /// <param name="showOnlyInPlayMode">å®Ÿè¡Œä¸­ã®ã¿è¡¨ç¤ºã™ã‚‹ã‹</param>
     public OnInspectorButtonAttribute(string label = null, bool showOnlyInPlayMode = false)
     {
         this.label = label;

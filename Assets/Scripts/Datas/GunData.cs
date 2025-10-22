@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,17 +9,13 @@ public class GunData
     [Header("Gun Base Settings")]
     [SerializeField] private GameObject gunModel;
     public GameObject gunModelObject { get { return gunModel; } }
-    /// <summary>
-    /// �e�e�̃v���n�u�B
-    /// ���C�����ۂɁA���̃I�u�W�F�N�g��e�Ƃ��Ď��̉�����B
-    /// </summary>
-    [SerializeField] private GameObject bulletPrefab;
-    public GameObject BulletPrefab => bulletPrefab;
-    /// <summary>
-    /// �e���̈ʒu
-    /// </summary>
-    [SerializeField] BulletData bulletData;
-    public BulletData BulletData => bulletData;
+    [SerializeField] BulletType bulletType;
+    public BulletType BulletType => bulletType;
+
+    //[SerializeField] private GameObject bulletPrefab;
+    //public GameObject BulletPrefab => bulletPrefab;
+    //[SerializeField] BulletData bulletData;
+    //public BulletData BulletData => bulletData;
     [SerializeField] private Transform muzzlePos;
     public Transform MuzzlePos => muzzlePos;
     [SerializeField] private int magazineCapacity = 10;
@@ -55,9 +51,13 @@ public class GunData
     /// �t���I�[�g���ǂ����̐^�U�l
     /// </summary>
 
-    [Header("予備弾数（所持弾）の初期値")]
-    [SerializeField] private int initialReserveAmmo = 60;
-    public int InitialReserveAmmo => initialReserveAmmo;
+    [Header("予備弾数(所持弾)")]
+    [SerializeField] private int reserveAmmo = 700;
+    public int ReserveAmmo 
+    {
+        get => reserveAmmo;
+        set => reserveAmmo = value;
+    }
 
     [SerializeField] private TextMeshProUGUI reloadText;
     public TextMeshProUGUI ReloadText => reloadText;

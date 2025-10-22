@@ -1,3 +1,4 @@
+ï»¿#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -12,7 +13,7 @@ public class OnInspectorButtonEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        //ƒƒ\ƒbƒh‚ğ’²¸
+        //ãƒ¡ã‚½ãƒƒãƒ‰ã‚’èª¿æŸ»
         var targetType = target.GetType();
         var methods = targetType.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 
@@ -22,7 +23,7 @@ public class OnInspectorButtonEditor : Editor
             if (attr == null)
                 continue;
 
-            // Às’†ŒÀ’è‚È‚çƒ`ƒFƒbƒN
+            // å®Ÿè¡Œä¸­é™å®šãªã‚‰ãƒã‚§ãƒƒã‚¯
             if (attr.showOnlyInPlayMode && !Application.isPlaying)
                 continue;
 
@@ -32,9 +33,9 @@ public class OnInspectorButtonEditor : Editor
 
     private void DrawButtonForMethod(MethodInfo method, OnInspectorButtonAttribute attr)
     {
-        //ƒ‰ƒxƒ‹‚È‚µ‚È‚çŠÖ”–¼‚ğ•\¦.
+        //ãƒ©ãƒ™ãƒ«ãªã—ãªã‚‰é–¢æ•°åã‚’è¡¨ç¤º.
         string buttonLabel = string.IsNullOrEmpty(attr.label) ? method.Name : attr.label;
-        //ŠÖ”‚Ìˆø”‚ğ’Šo.
+        //é–¢æ•°ã®å¼•æ•°ã‚’æŠ½å‡º.
         var parameters = method.GetParameters();
 
         EditorGUILayout.Space(4);
@@ -66,7 +67,7 @@ public class OnInspectorButtonEditor : Editor
             EditorGUILayout.EndVertical();
         }
     }
-    //ÀsŠÖ”(ŠÖ”‚É’Ê’m‚·‚éAŠO•”Às)
+    //å®Ÿè¡Œé–¢æ•°(é–¢æ•°ã«é€šçŸ¥ã™ã‚‹ã€å¤–éƒ¨å®Ÿè¡Œ)
     private void InvokeMethod(MethodInfo method, object[] values)
     {
         try
@@ -107,7 +108,7 @@ public class OnInspectorButtonEditor : Editor
             return EditorGUILayout.EnumPopup(name, (Enum)currentValue);
         }
 
-        // UnityEngine.ObjectŒn
+        // UnityEngine.Objectç³»
         if (typeof(UnityEngine.Object).IsAssignableFrom(t))
             return EditorGUILayout.ObjectField(name, currentValue as UnityEngine.Object, t, true);
 
@@ -115,3 +116,4 @@ public class OnInspectorButtonEditor : Editor
         return currentValue;
     }
 }
+#endif

@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+ï»¿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 using System.Reflection;
@@ -12,10 +12,10 @@ public class EnableIfDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
-        // ƒƒCƒ“ƒXƒŒƒbƒh‚ÅˆÀ‘S‚É•`‰æ‚Å‚«‚é‚©Šm”F
+        // ãƒ¡ã‚¤ãƒ³ã‚¹ãƒ¬ãƒƒãƒ‰ã§å®‰å…¨ã«æç”»ã§ãã‚‹ã‹ç¢ºèª
         if (!IsMainThreadSafe())
         {
-            // ƒƒCƒ“ƒXƒŒƒbƒh‚É–ß‚µ‚½‚Æ‚«‚ÉÄ•`‰æ‚·‚é‚æ‚¤“o˜^‚µ‚Ä‚¨‚­
+            // ãƒ¡ã‚¤ãƒ³ã‚¹ãƒ¬ãƒƒãƒ‰ã«æˆ»ã—ãŸã¨ãã«å†æç”»ã™ã‚‹ã‚ˆã†ç™»éŒ²ã—ã¦ãŠã
             EditorApplication.delayCall += () => SafeRepaint(property);
             return;
         }
@@ -34,7 +34,7 @@ public class EnableIfDrawer : PropertyDrawer
             }
             catch (UnityException e)
             {
-                // ƒtƒHƒ“ƒg“™‚ªƒƒCƒ“ƒXƒŒƒbƒhˆË‘¶‚Å¸”s‚·‚éƒP[ƒX‚ğˆÀ‘S‚Éˆ¬‚è‚Â‚Ô‚·
+                // ãƒ•ã‚©ãƒ³ãƒˆç­‰ãŒãƒ¡ã‚¤ãƒ³ã‚¹ãƒ¬ãƒƒãƒ‰ä¾å­˜ã§å¤±æ•—ã™ã‚‹ã‚±ãƒ¼ã‚¹ã‚’å®‰å…¨ã«æ¡ã‚Šã¤ã¶ã™
                 Debug.LogWarning($"[EnableIfDrawer] PropertyField skipped due to UnityException: {e.Message}");
             }
             catch (Exception ex)
@@ -59,7 +59,7 @@ public class EnableIfDrawer : PropertyDrawer
         return EditorGUI.GetPropertyHeight(property, label, true);
     }
 
-    // --- ˆÈ‰º‚ÍŠù‘¶‚ÌƒlƒXƒg‘Î‰ƒƒWƒbƒNi‚»‚Ì‚Ü‚Üj ---
+    // --- ä»¥ä¸‹ã¯æ—¢å­˜ã®ãƒã‚¹ãƒˆå¯¾å¿œãƒ­ã‚¸ãƒƒã‚¯ï¼ˆãã®ã¾ã¾ï¼‰ ---
     private bool EvaluateConditionsRecursive(SerializedProperty property, EnableIfAttribute attribute)
     {
         object targetObject = GetParentTarget(property) ?? property.serializedObject.targetObject;
@@ -98,7 +98,7 @@ public class EnableIfDrawer : PropertyDrawer
         };
     }
 
-    // Ä‹A“I‚ÉŒ^î•ñ‚©‚ç FieldInfo ‚ğ’T‚·iŒp³ƒ`ƒF[ƒ“‘Î‰j
+    // å†å¸°çš„ã«å‹æƒ…å ±ã‹ã‚‰ FieldInfo ã‚’æ¢ã™ï¼ˆç¶™æ‰¿ãƒã‚§ãƒ¼ãƒ³å¯¾å¿œï¼‰
     private FieldInfo GetFieldRecursiveFromRoot(object obj, string fieldName)
     {
         if (obj == null) return null;
@@ -112,7 +112,7 @@ public class EnableIfDrawer : PropertyDrawer
         return null;
     }
 
-    // property.propertyPath ‚ğ‚½‚Ç‚Á‚Äu‚»‚ÌƒtƒB[ƒ‹ƒh‚ğŠÜ‚ŞƒIƒuƒWƒFƒNƒgv‚ğ•Ô‚·
+    // property.propertyPath ã‚’ãŸã©ã£ã¦ã€Œãã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’å«ã‚€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€ã‚’è¿”ã™
     private object GetParentTarget(SerializedProperty property)
     {
         string path = property.propertyPath.Replace(".Array.data[", "[");
@@ -157,14 +157,14 @@ public class EnableIfDrawer : PropertyDrawer
         return v;
     }
 
-    // ‚±‚ÌƒvƒƒpƒeƒB‚ª‘®‚·‚éu‚»‚ÌƒIƒuƒWƒFƒNƒgÀ‘ÌviƒtƒB[ƒ‹ƒh‚ğ‚à‚ÂƒCƒ“ƒXƒ^ƒ“ƒXj‚ğ•Ô‚·•â•
+    // ã“ã®ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ãŒå±ã™ã‚‹ã€Œãã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå®Ÿä½“ã€ï¼ˆãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’ã‚‚ã¤ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ï¼‰ã‚’è¿”ã™è£œåŠ©
     private object GetObjectContainingField(SerializedProperty property, object root)
     {
-        // GetParentTarget ‚Å“¾‚½‚à‚Ì‚ª root ‚Ì‚Í‚¸‚È‚Ì‚Å‚»‚Ì‚Ü‚Ü•Ô‚·iç’·‚¾‚ª«—ˆ‚ÌŠg’£—pj
+        // GetParentTarget ?????????? root ????????????????i????????????g???p?j
         return GetParentTarget(property) ?? root;
     }
 
-// --- ƒƒCƒ“ƒXƒŒƒbƒh”»’è‚ÆˆÀ‘S‚ÈÄ•`‰æ ---
+    // --- ãƒ¡ã‚¤ãƒ³ã‚¹ãƒ¬ãƒƒãƒ‰åˆ¤å®šã¨å®‰å…¨ãªå†æç”» ---
     private bool IsMainThreadSafe()
     {
         try

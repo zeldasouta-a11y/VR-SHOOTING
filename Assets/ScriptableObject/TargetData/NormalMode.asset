@@ -17,6 +17,7 @@ MonoBehaviour:
     targetModelName: RedBalloon
     minPosition: {x: -80, y: -10, z: 150}
     maxPosition: {x: 80, y: 0, z: 200}
+    maxSpawn: 100
     hitScore: 1000
     isVanish: 1
     vanishTime: 10
@@ -29,6 +30,7 @@ MonoBehaviour:
     targetModelName: GoldBallon
     minPosition: {x: -100, y: 30, z: 200}
     maxPosition: {x: 100, y: 80, z: 300}
+    maxSpawn: 100
     hitScore: 2000
     isVanish: 0
     vanishTime: 0

@@ -76,7 +76,7 @@ namespace UnityStandardAssets.ImageEffects
 
             EditorGUILayout.Separator ();
 
-            EditorGUILayout.PropertyField (tweakMode, new GUIContent("Mode"));
+            EditorGUILayout.PropertyField (tweakMode, new GUIContent("Phase"));
             EditorGUILayout.PropertyField (screenBlendMode, new GUIContent("Blend"));
             EditorGUILayout.PropertyField (hdr, new GUIContent("HDR"));
 

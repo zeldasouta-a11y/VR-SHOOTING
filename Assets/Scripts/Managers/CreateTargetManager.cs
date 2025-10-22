@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -10,32 +10,58 @@ public class CreateTargetManager : MonoBehaviour
 
 
     public event Action<GameObject, TargetData> OnTargetSpawned;
-
-    private List<TargetData> targetModels ;
+    
+    private List<TargetData> targetModels = new List<TargetData>();
     RandomTable indexTable;
     RandomTable posTable;
     private void Awake()
     {
         mainCamera ??= Camera.main;
     }
-    private void Start()
+    public void SetEvent(PhaseManager phaseManager,GameManager gameManager)
     {
-        posTable = new RandomTable(ManagerLocator.Instance.Game.GameSeed);
-        indexTable = new RandomTable(ManagerLocator.Instance.Game.GameSeed);
-        ManagerLocator.Instance.Game.OnGameModeChanged += OnGamePhaseChangeHandle;
-        ManagerLocator.Instance.Game.OnCreateTime += OnCreateTimeHandle;
+        phaseManager.OnGamePhaseChanged += OnGamePhaseChangeHandle;
+        phaseManager.OnCreateTime += OnCreateTimeHandle;
+        gameManager.OnGameStart += OnGameStartHandle;
     }
     private void OnDisable()
     {
-        ManagerLocator.Instance.Game.OnGameModeChanged -= OnGamePhaseChangeHandle;
-        ManagerLocator.Instance.Game.OnCreateTime -= OnCreateTimeHandle;
+        if(ManagerLocator.Instance.Phase != null)
+        {
+            ManagerLocator.Instance.Phase.OnGamePhaseChanged -= OnGamePhaseChangeHandle;
+            ManagerLocator.Instance.Phase.OnCreateTime -= OnCreateTimeHandle;
+        }
+        if (ManagerLocator.Instance.Game != null)
+        {
+            ManagerLocator.Instance.Game.OnGameStart -= OnGameStartHandle;
+        }
     }
-
+    private void Reset()
+    {
+        if (mainCamera == null)
+        {
+            //FindAndSetMainCamera
+            GameObject cameraObject = GameObject.FindWithTag("MainCamera");
+            if (cameraObject != null)
+            {
+                mainCamera = cameraObject.GetComponent<Camera>();
+            }
+        }
+    }
+    private void OnGameStartHandle()
+    {
+        posTable = new RandomTable(ManagerLocator.Instance.Game.GameSeed);
+        indexTable = new RandomTable(ManagerLocator.Instance.Game.GameSeed);
+    }
     public GameObject CreateInstanceAndSetCameraAndScripts(int listIndex)
-    => CreateTarget(listIndex, GetRandomPosFromTable(targetModels[listIndex].MinPosition, targetModels[listIndex].MaxPosition));
+    {
+        if (!IsValidIndex(listIndex)) return null;
+        return CreateTarget(listIndex, GetRandomPosFromTable(targetModels[listIndex].MinPosition, targetModels[listIndex].MaxPosition));
+    }
+    
 
     [OnInspectorButton("Spawn Targets with Scripts")]
-    public GameObject CreateInstanceAndSetCameraAndScripts(int listIndex, Vector3 localPosition)
+    private GameObject EditorSpawn(int listIndex, Vector3 localPosition)
         => CreateTarget(listIndex, localPosition);
 
     private GameObject CreateTarget(int listIndex, Vector3 localPosition)
@@ -52,7 +78,7 @@ public class CreateTargetManager : MonoBehaviour
             cloneModel.AddComponent<BoxCollider>();
 
         var controller = cloneBase.GetComponent<TargetCollisionController>();
-        controller.Init(data, cloneModel, mainCamera);
+        controller.Init(data, cloneModel,localPosition, mainCamera);
         return cloneBase;
     }
     private bool IsValidIndex(int index)
@@ -75,18 +101,7 @@ public class CreateTargetManager : MonoBehaviour
         return true;
     }
 
-    private void Reset()
-    {
-        if (mainCamera == null)
-        {
-            //FindAndSetMainCamera
-            GameObject cameraObject = GameObject.FindWithTag("MainCamera");
-            if (cameraObject != null) 
-            {
-                mainCamera = cameraObject.GetComponent<Camera>();
-            }
-        }
-    }
+    
     private Vector3 GetRandomPosFromTable(Vector3 minPos, Vector3 maxPos)
     {
         return new Vector3
@@ -96,7 +111,7 @@ public class CreateTargetManager : MonoBehaviour
             posTable.Range(minPos.z, maxPos.z)
             );
     }
-    private void OnGamePhaseChangeHandle(GameManager.GamePhaseSetting phaseSetting)
+    private void OnGamePhaseChangeHandle(PhaseSettingData phaseSetting)
     {
         if(phaseSetting.targetSettingSO.targetSettingData == null)
         {

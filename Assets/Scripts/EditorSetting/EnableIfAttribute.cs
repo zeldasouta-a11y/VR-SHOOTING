@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 public enum ConditionLogic
@@ -15,13 +15,13 @@ public enum ConditionLogic
 public class EnableIfAttribute : PropertyAttribute
 {
     /// <summary>
-    /// –¼‘O‚Ìæ“ª‚É!‚ğ‚Â‚¯‚½ê‡”Û’è‚É‚È‚é
+    /// åå‰ã®å…ˆé ­ã«!ã‚’ã¤ã‘ãŸå ´åˆå¦å®šã«ãªã‚‹
     /// </summary>
     public string[] conditionFieldNames;
     public bool hideWhenFalse;
     public ConditionLogic logic;
 
-    //‚±‚±‚É–¼‘O‚ğ“ü‚ê‚é
+    //ã“ã“ã«åå‰ã‚’å…¥ã‚Œã‚‹
     public EnableIfAttribute(string conditionFieldName, bool hideWhenFalse = false)
     {
         this.conditionFieldNames = new[] { conditionFieldName };
@@ -29,7 +29,7 @@ public class EnableIfAttribute : PropertyAttribute
         this.logic = ConditionLogic.AND;
     }
 
-    // •¡”ğŒ—pƒRƒ“ƒXƒgƒ‰ƒNƒ^
+    // è¤‡æ•°æ¡ä»¶ç”¨ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     public EnableIfAttribute(string[] conditionFieldNames, ConditionLogic logic = ConditionLogic.AND, bool hideWhenFalse = false)
     {
         this.conditionFieldNames = conditionFieldNames;
