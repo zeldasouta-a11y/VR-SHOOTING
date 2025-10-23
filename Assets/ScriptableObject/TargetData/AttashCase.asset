@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 237cf9b20ab93e743992ed3152be0ee4, type: 3}
-  m_Name: TutorialMode
+  m_Name: AttashCase
   m_EditorClassIdentifier: Assembly-CSharp::TargetDataSO
   targetSettingData:
-  - targetModel: {fileID: 5587836066146359011, guid: df777f1a66a444443bfbfbb2f7fadd6d, type: 3}
+  - targetModel: {fileID: 5812863914351243455, guid: 7aab430df8bc99146bf17c999926c25e, type: 3}
     targetModelName: TutorialTerget
-    minPosition: {x: -10, y: 3, z: 20}
-    maxPosition: {x: 10, y: 5, z: 50}
-    maxSpawn: 10
+    minPosition: {x: 0, y: 2, z: 10}
+    maxPosition: {x: 0, y: 2, z: 10}
+    maxSpawn: 1
     hitScore: 0
     hasVanishTime: 0
-    vanishTime: 30
+    vanishTime: 0
     isMovable: 0
     moveType: 0
     moveDurtation: 0

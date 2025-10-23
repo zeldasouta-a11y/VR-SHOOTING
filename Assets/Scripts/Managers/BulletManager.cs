@@ -11,8 +11,8 @@ public class BulletManager : MonoBehaviour
     {
         public GameObject prefab;
         public BulletData data;
+        public int initializeCount = 20;
     }
-    [SerializeField] int initializeCount = 20;
     //ここで弾丸データを管理するなら
     [SerializeField] List<BulletInfo> bulletInfoList = new List<BulletInfo>();
     //Object Pool
@@ -24,7 +24,7 @@ public class BulletManager : MonoBehaviour
         foreach (var info in bulletInfoList) 
         {
             Queue<GameObject> q = new();
-            for(int i = 0; i < initializeCount; i++)
+            for(int i = 0; i < info.initializeCount; i++)
             {
                 var obj = Instantiate(info.prefab, transform);
                 BulletController bulletController = obj.GetComponent<BulletController>();
@@ -57,7 +57,6 @@ public class BulletManager : MonoBehaviour
 
     private GameObject CreateInsitatce(BulletType type)
     {
-        if (!bulletInfoDict.ContainsKey(type)) return null;
         BulletInfo info = bulletInfoDict[type];
 
         GameObject clone = Instantiate(info.prefab,transform);

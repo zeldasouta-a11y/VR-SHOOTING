@@ -22,7 +22,7 @@ public class GunController : MonoBehaviour
 
     private float fireRate = 0;
     private float reloadConstant = 0;
-    
+    private int infiniteAmmo = -1;
 
     // 低残弾の色設定
     [SerializeField] private int lowAmmoThreshold = 3;
@@ -32,7 +32,7 @@ public class GunController : MonoBehaviour
     void Start()
     {
         bulletRemaining = gundata.MagazineCapacity;
-        reserveAmmo = gundata.ReserveAmmo;
+        reserveAmmo = gundata.IsInfiniteAmmo? infiniteAmmo:gundata.ReserveAmmo;
 
         // XRイベント
         var xrGrab = gundata.gunModelObject.GetComponent<XRGrabInteractable>();
@@ -96,8 +96,8 @@ public class GunController : MonoBehaviour
         {
             isFullAuto = true;
             gundata.FullAutoSound?.Play();
-            fireRate = 0.0f;
-            reloadConstant = 0.0f;
+            fireRate = gundata.FullAutoFireRate;
+            reloadConstant = gundata.FillAutoReloadConstant;
         }
         else
         {
@@ -151,9 +151,12 @@ public class GunController : MonoBehaviour
 
         int need = gundata.MagazineCapacity - bulletRemaining;
         if (need <= 0) return;             // 既に満タン
-        if (reserveAmmo <= 0) return;      // 予備弾なし
-
-        int load = Mathf.Min(need, reserveAmmo); // 装填できる弾数
+        if (reserveAmmo <= 0)
+        {
+            if (!gundata.IsInfiniteAmmo) return;      // 予備弾なしかつ有限設定
+        }
+        int load = gundata.IsInfiniteAmmo? need : Mathf.Min(need, reserveAmmo);
+        
         float seconds = load * reloadConstant  / 1000f;
 
         StartCoroutine(ReloadRoutine(load, seconds));
@@ -180,7 +183,11 @@ public class GunController : MonoBehaviour
         }
 
         bulletRemaining += load;
-        reserveAmmo -= load;
+        if (!gundata.IsInfiniteAmmo)
+        {
+            reserveAmmo -= load;
+        }
+        
 
         isReloading = false;
 
@@ -203,9 +210,10 @@ public class GunController : MonoBehaviour
     // UIまとめて更新
     private void UpdateUI()
     {
+        string reserveAmmoText = gundata.IsInfiniteAmmo ? "∞" : reserveAmmo.ToString();
         if (gundata.RemainText)
         {
-            gundata.RemainText.text = $"{bulletRemaining}/{gundata.MagazineCapacity} ({reserveAmmo})";
+            gundata.RemainText.text = $"{bulletRemaining}/{gundata.MagazineCapacity} ({reserveAmmoText})";
             gundata.RemainText.color = (bulletRemaining <= lowAmmoThreshold) ? lowAmmoColor : normalAmmoColor;
         }
     }

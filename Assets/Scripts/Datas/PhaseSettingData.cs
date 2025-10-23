@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public enum PhaseState { Tutorial, Phase1, Phase2, Phase3, Phase4, Phase5 }
+public enum PhaseState { Start, Tutorial, Easy, Normal, Hard, AttashCase, Bonus }
 public enum SpawnType { Time, Count };
 [Serializable]
 public class PhaseSettingData

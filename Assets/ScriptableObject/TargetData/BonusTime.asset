@@ -10,42 +10,54 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 237cf9b20ab93e743992ed3152be0ee4, type: 3}
-  m_Name: HardMode
+  m_Name: BonusTime
   m_EditorClassIdentifier: Assembly-CSharp::TargetDataSO
   targetSettingData:
   - targetModel: {fileID: 4824409105279076034, guid: b809e2ce5e833ac45bff0328c396b32d, type: 3}
     targetModelName: UFO
-    minPosition: {x: -70, y: 0, z: 100}
-    maxPosition: {x: 70, y: 10, z: 200}
-    maxSpawn: 100
+    minPosition: {x: -30, y: 0, z: 50}
+    maxPosition: {x: 30, y: 10, z: 100}
+    maxSpawn: 0
     hitScore: 10000
-    hasVanishTime: 0
+    hasVanishTime: 1
     vanishTime: 20
     isMovable: 1
     moveType: 2
     moveDurtation: 2
-    moveVector: {x: 15, y: 15, z: 15}
+    moveVector: {x: 20, y: 20, z: 20}
+  - targetModel: {fileID: 7575923230338825960, guid: 2f41ac8b8ecb2e14d9285ee2f278693a, type: 3}
+    targetModelName: "\u8D64\u3044\u6C17\u7403"
+    minPosition: {x: -30, y: -10, z: 50}
+    maxPosition: {x: 30, y: 0, z: 100}
+    maxSpawn: 0
+    hitScore: 1000
+    hasVanishTime: 1
+    vanishTime: 10
+    isMovable: 1
+    moveType: 0
+    moveDurtation: 0
+    moveVector: {x: 0, y: 20, z: 0}
   - targetModel: {fileID: 2263297054331644975, guid: a1c623815922a0b4d89bae91dba94562, type: 3}
     targetModelName: "\u91D1\u8272\u306E\u6C17\u7403"
-    minPosition: {x: -100, y: 30, z: 350}
-    maxPosition: {x: 100, y: 80, z: 450}
-    maxSpawn: 100
-    hitScore: 2000
+    minPosition: {x: -100, y: 0, z: 300}
+    maxPosition: {x: 100, y: 20, z: 400}
+    maxSpawn: 0
+    hitScore: 1000
     hasVanishTime: 0
-    vanishTime: 20
+    vanishTime: 0
     isMovable: 0
     moveType: 0
-    moveDurtation: 2
-    moveVector: {x: 15, y: 15, z: 15}
+    moveDurtation: 0
+    moveVector: {x: 0, y: 20, z: 0}
   - targetModel: {fileID: 5587836066146359011, guid: df777f1a66a444443bfbfbb2f7fadd6d, type: 3}
     targetModelName: "\u52D5\u304F\u7684"
-    minPosition: {x: -10, y: 1, z: 20}
-    maxPosition: {x: 0, y: 5, z: 40}
-    maxSpawn: 10
-    hitScore: 750
+    minPosition: {x: -100, y: 0, z: 20}
+    maxPosition: {x: 100, y: 10, z: 40}
+    maxSpawn: 0
+    hitScore: 500
     hasVanishTime: 0
-    vanishTime: 20
+    vanishTime: 0
     isMovable: 1
     moveType: 1
     moveDurtation: 2
-    moveVector: {x: 10, y: 0, z: 0}
+    moveVector: {x: 10, y: 0, z: 10}

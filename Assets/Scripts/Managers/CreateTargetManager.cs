@@ -26,14 +26,16 @@ public class CreateTargetManager : MonoBehaviour
     }
     private void OnDisable()
     {
-        if(ManagerLocator.Instance.Phase != null)
+        var phaseManager = ManagerLocator.Instance.Phase;
+        var gameManager = ManagerLocator.Instance.Game;
+        if( phaseManager!= null)
         {
-            ManagerLocator.Instance.Phase.OnGamePhaseChanged -= OnGamePhaseChangeHandle;
-            ManagerLocator.Instance.Phase.OnCreateTime -= OnCreateTimeHandle;
+            phaseManager.OnGamePhaseChanged -= OnGamePhaseChangeHandle;
+            phaseManager.OnCreateTime -= OnCreateTimeHandle;
         }
-        if (ManagerLocator.Instance.Game != null)
+        if (gameManager != null)
         {
-            ManagerLocator.Instance.Game.OnGameStart -= OnGameStartHandle;
+            gameManager.OnGameStart -= OnGameStartHandle;
         }
     }
     private void Reset()
