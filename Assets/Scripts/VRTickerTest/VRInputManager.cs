@@ -26,6 +26,8 @@ public class VRInputManager : MonoBehaviour
     [Header("UI Interaction")]
     public XRUIInputModule xrUIInputModule;
 
+    private Vector2 moveValue;
+
     private void OnEnable()
     {
         EnableActions(true);
@@ -47,8 +49,16 @@ public class VRInputManager : MonoBehaviour
         foreach (var action in list)
         {
             if (action.action == null) continue;
-            if (enable) action.action.Enable();
-            else action.action.Disable();
+            if (enable)
+            {
+                action.action.performed += OnZoom;
+                action.action.Enable(); 
+            }
+            else
+            {
+                action.action.performed -= OnZoom;
+                action.action.Disable(); 
+            }
         }
     }
 
@@ -59,9 +69,9 @@ public class VRInputManager : MonoBehaviour
 
         // スティック入力でFOVをズーム（右手のみ）
         Vector2 rightJoy = rightStick.action?.ReadValue<Vector2>() ?? Vector2.zero;
-        if (Mathf.Abs(rightJoy.y) > 0.1f)
+        if (Mathf.Abs(moveValue.y) > 0.1f)
         {
-            targetCamera.fieldOfView -= rightJoy.y * zoomSpeed;
+            targetCamera.fieldOfView -= moveValue.y * zoomSpeed;
             targetCamera.fieldOfView = Mathf.Clamp(targetCamera.fieldOfView, minFOV, maxFOV);
         }
     }
@@ -69,10 +79,17 @@ public class VRInputManager : MonoBehaviour
     private void HandleInput(InputActionProperty actionProp, string name)
     {
         if (actionProp.action == null) return;
-        float val = actionProp.action.ReadValue<float>();
-        if (val > 0.9f)
+        Vector2 val = actionProp.action.ReadValue<Vector2>();
+        if (val.y > 0.9f)
         {
             Debug.Log($"{name} pressed");
         }
+        
+    }
+    private void OnZoom(InputAction.CallbackContext context)
+    {
+        moveValue = context.ReadValue<Vector2>();
+        Debug.Log($"Read Vale:{moveValue.x},{moveValue.y}");
+        
     }
 }

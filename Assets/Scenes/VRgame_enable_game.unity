@@ -1102,7 +1102,7 @@ MonoBehaviour:
     fullAutoSound: {fileID: 745427925}
     reloadSound: {fileID: 745427924}
     remainText: {fileID: 339588621029733569}
-    reserveAmmo: 700
+    reserveAmmo: 1000
     reloadText: {fileID: 5083803226260582432}
     reloadProgress: {fileID: 2769012176324111402}
   - gunModel: {fileID: 994462377055736258}
@@ -1115,7 +1115,7 @@ MonoBehaviour:
     fullAutoSound: {fileID: 745427925}
     reloadSound: {fileID: 745427924}
     remainText: {fileID: 195057081612535153}
-    reserveAmmo: 700
+    reserveAmmo: 1000
     reloadText: {fileID: 2768625403066917953}
     reloadProgress: {fileID: 1953006638073472308}
 --- !u!4 &745427923
@@ -1528,7 +1528,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 745427921}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -2226,7 +2226,7 @@ GameObject:
   - component: {fileID: 1004223587}
   - component: {fileID: 1004223586}
   m_Layer: 0
-  m_Name: TestXRInput
+  m_Name: XRInputManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2244,9 +2244,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca3b9205e8290ba40b2f0ba525fc8fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VRInputManager
-  targetCamera: {fileID: 752074434}
-  minFOV: 40
-  maxFOV: 100
+  targetCamera: {fileID: 633152212027784885}
+  minFOV: 30
+  maxFOV: 120
   zoomSpeed: 1.5
   leftTrigger:
     m_UseReference: 0
@@ -2315,7 +2315,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 7ab0ffec-4c4f-4283-adad-bc30e5985f6e
+        m_Id: 6477897e-617a-4df9-884f-fe6d8a31ba64
         m_Path: <XRController>{RightHand}/joystick
         m_Interactions: 
         m_Processors: 
@@ -3030,7 +3030,7 @@ MonoBehaviour:
   m_SendPointerHoverToParent: 1
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
-  m_XRTrackingOrigin: {fileID: 0}
+  m_XRTrackingOrigin: {fileID: 1100138085}
   m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
@@ -3083,7 +3083,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1218511614}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ab68ce6587aab0146b8dabefbd806791, type: 3}
   m_Name: 
@@ -3419,7 +3419,7 @@ GameObject:
   - component: {fileID: 1300438470}
   - component: {fileID: 1300438469}
   m_Layer: 0
-  m_Name: ZoomTest
+  m_Name: KeyBoardMove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3438,7 +3438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VRZoomController
   moveAction:
-    m_UseReference: 1
+    m_UseReference: 0
     m_Action:
       m_Name: Move
       m_Type: 0
@@ -3447,17 +3447,104 @@ MonoBehaviour:
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
-      - m_Name: 
-        m_Id: f8d13cd1-e18f-4eb1-a02c-0e1aba5a9fea
-        m_Path: <XRController>{RightHand}/joystick
+      - m_Name: 2D Vector
+        m_Id: 67d8e4e8-ebd3-4818-b76f-8fe34a93ca1d
+        m_Path: 2DVector
         m_Interactions: 
         m_Processors: 
         m_Groups: 
         m_Action: Move
-        m_Flags: 0
+        m_Flags: 4
+      - m_Name: up
+        m_Id: febbe463-987d-426b-b8e1-51aa3b46abd0
+        m_Path: <Keyboard>/w
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Move
+        m_Flags: 8
+      - m_Name: down
+        m_Id: 264ad6d4-c100-4329-952c-d4de54fff1f5
+        m_Path: <Keyboard>/s
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Move
+        m_Flags: 8
+      - m_Name: left
+        m_Id: 9f0d1af0-0b33-4bd3-b35a-355b09db5fc3
+        m_Path: <Keyboard>/a
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Move
+        m_Flags: 8
+      - m_Name: right
+        m_Id: c9113b10-fbe3-4c13-9169-ef2594233443
+        m_Path: <Keyboard>/d
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Move
+        m_Flags: 8
       m_Flags: 0
     m_Reference: {fileID: 438436254729480425, guid: 007460ab8832e2d4da984fbbd9f54eda, type: 3}
+  rotationAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Rotation
+      m_Type: 0
+      m_ExpectedControlType: Vector2
+      m_Id: 05d7c605-53cd-4edf-976c-758990feb83c
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 2D Vector
+        m_Id: f4fc8af9-305e-4d60-8125-b920bca9204e
+        m_Path: 2DVector
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Rotation
+        m_Flags: 4
+      - m_Name: up
+        m_Id: e03b880d-9273-40ec-b5b6-c0be1e222ac8
+        m_Path: <Keyboard>/i
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Rotation
+        m_Flags: 8
+      - m_Name: down
+        m_Id: 8788dc3d-b85b-49c0-b824-a84db7607d47
+        m_Path: <Keyboard>/k
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Rotation
+        m_Flags: 8
+      - m_Name: left
+        m_Id: 01da2874-1292-43e0-9c4e-d3be8c758292
+        m_Path: <Keyboard>/j
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Rotation
+        m_Flags: 8
+      - m_Name: right
+        m_Id: 0ecb2277-aebd-498d-971d-d2fa9af4e389
+        m_Path: <Keyboard>/#(L)
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Rotation
+        m_Flags: 8
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  xrOrigin: {fileID: 1100138084}
+  character: {fileID: 1100138087}
   moveSpeed: 1.5
+  turnSpeed: 60
 --- !u!4 &1300438470
 Transform:
   m_ObjectHideFlags: 0
