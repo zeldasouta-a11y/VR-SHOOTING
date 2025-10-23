@@ -14,7 +14,7 @@ public class TargetCollisionController : MonoBehaviour
     private Vector3 moving;
     private readonly WaitForSeconds fixedUpdate = new WaitForSeconds(1f);
     private float time = 0f;
-    private bool isDestroy = false;
+    private bool isEnabled = false;
 
     /// <summary>
     /// �K���A�C���X�^���X�쐬����ɌĂԂ���
@@ -48,12 +48,17 @@ public class TargetCollisionController : MonoBehaviour
     }
     private void OnEnable()
     {
+        ManagerLocator.Instance.Phase.OnPhaseEnd += DisableObject;
         //StartCoroutine(ReturnToPoolAfterDelay());
+    }
+    private void OnDisable()
+    {
+        ManagerLocator.Instance.Phase.OnPhaseEnd -= DisableObject;
     }
     void Update()
     {
         if (!targetDatas.IsMovable) return;
-        if (isDestroy) return;
+        if (isEnabled) return;
         if (time > targetDatas.MoveDurtation)
         {
             time = 0f;
@@ -89,28 +94,30 @@ public class TargetCollisionController : MonoBehaviour
         yield return new WaitForSeconds(targetDatas.VanishTime);
         this.gameObject.SetActive(false);
     }
-    private void OnHitUI()
+    private void OnHit()
     {
-        if (targetModel != null) targetModel.gameObject.SetActive(false);
-
         if (hittext == null)
         {
             hittext = pointCanvas.AddComponent<TextMeshProUGUI>();
         }
-        isDestroy = true;
-        hittext.text = targetDatas.HitScore.ToString();
+        hittext.text = (targetDatas.HitScore != 0)? targetDatas.HitScore.ToString(): "";
         pointCanvas.gameObject.SetActive(true);
+        DisableObject();
+    }
+    private void DisableObject()
+    {
+        if (targetModel != null) targetModel.gameObject.SetActive(false);
+        isEnabled = true;
+        
+        Destroy(this.gameObject, 3.0f);
     }
     void OnTriggerEnter(Collider collision)
     {
         string objecttag = collision.gameObject.tag;
         if (objecttag == "bullet")
         {
-
-            OnHitUI();
+            OnHit();
             ManagerLocator.Instance.Game.AddScore(targetDatas.HitScore, targetDatas.ModelName);
-
-            Destroy(this.gameObject, 3.0f);
         }
     }
 

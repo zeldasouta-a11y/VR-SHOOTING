@@ -140,7 +140,7 @@ TrailRenderer:
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 26985
+      ctime0: 37265
       ctime1: 65535
       ctime2: 0
       ctime3: 0
@@ -184,9 +184,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eddc971fe6fa3d147b177180205b2fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  bulletdata:
-    bulletSpeed: 30
-    bulletVanishTime: 10
 --- !u!54 &8748565391019746393
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -234,6 +231,6 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.25
-  m_Height: 16
+  m_Height: 18
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: -8}
+  m_Center: {x: 0, y: 0, z: -9}

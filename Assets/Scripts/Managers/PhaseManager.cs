@@ -13,23 +13,28 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] float phaseChangeTime = 3.0f;
     [SerializeField] float fixedUpdate = 0.1f;
     [SerializeField] PhaseState nowGamePhase;
-    [SerializeField] bool isTurorialPhase = true;
+    [SerializeField] bool isEndPhase = true;
     [SerializeField] private List<PhaseSettingData> phaseSettings;
     private PhaseSettingData nowPhaseSetting;
-    private Dictionary<PhaseState,PhaseSettingData> PhaseToSettingDic = new Dictionary<PhaseState, PhaseSettingData>();
+    private Dictionary<PhaseState,PhaseSettingData> phaseToSettingDic = new Dictionary<PhaseState, PhaseSettingData>();
+    private Dictionary<PhaseState, int> phaseToIndexDict = new Dictionary<PhaseState, int>();
+    private Dictionary<PhaseState,int> phaseHitCountDict = new Dictionary<PhaseState,int>();
     //Resolve GC(Overhead)
     private static WaitForSeconds waitUpdate ;
     private static WaitForSeconds waitPhaseChange;
-    private PhaseState Phase
+    private int phaseHitCount = 0;
+    private int phaseIndex = 0;
+    public PhaseState Phase
     {
         get => nowGamePhase;
-        set
+        private set
         {
             nowGamePhase = value;
             //Event trigger
-            if (PhaseToSettingDic.TryGetValue(nowGamePhase, out var setting))
+            if (phaseToSettingDic.TryGetValue(nowGamePhase, out var setting))
             {
                 OnGamePhaseChanged?.Invoke(setting);
+                phaseHitCount = 0;
                 Debug.Log($"NextMode:{value.ToString()}");
             }
             else
@@ -40,24 +45,29 @@ public class PhaseManager : MonoBehaviour
     }
     public event Action<PhaseSettingData> OnGamePhaseChanged;
     public event Action OnCreateTime;
+    public event Action OnPhaseEnd;
     public void SetEvent(GameManager gameManager)
     {
         gameManager.OnGameStart += OnGameStartHandle;
+        gameManager.OnHit += OnHitHandle;
         OnGamePhaseChanged += OnPhaseChanedHandle;
+        
     }
     private void Start()
     {
        
         waitPhaseChange = new WaitForSeconds(phaseChangeTime);
         waitUpdate = new WaitForSeconds(fixedUpdate);
-        isTurorialPhase = (ManagerLocator.Instance.Game.Tutorial == Tutorial.Use);
+        isEndPhase = (ManagerLocator.Instance.Game.Tutorial == Tutorial.Use);
         
     }
     private void OnDisable()
     {
-        if(ManagerLocator.Instance.Game != null)
+        var gameManager = ManagerLocator.Instance.Game;
+        if(gameManager != null)
         {
-            ManagerLocator.Instance.Game.OnGameStart -= OnGameStartHandle;
+            gameManager.OnGameStart -= OnGameStartHandle;
+            gameManager.OnHit -= OnHitHandle;
         }
         
         OnGamePhaseChanged -= OnPhaseChanedHandle;
@@ -81,20 +91,22 @@ public class PhaseManager : MonoBehaviour
     }
     private IEnumerator GamePhaseTimer()
     {
-        foreach (PhaseSettingData phase in phaseSettings)
+        for(phaseIndex = 0; phaseIndex < phaseSettings.Count ;phaseIndex++)
         {
+            var phase = phaseSettings[phaseIndex];
             
             Phase = phase.gamePhase;
             StartCoroutine(CreateTimer(phase));
             if (!phase.hasExitTime)
             {
-                yield return RunPhaseForWait();
+                isEndPhase = false;
+                yield return RunWaitForEndPhase();
             }
             else
             {
                 yield return RunPhase(phase);
             }
-
+            OnPhaseEnd?.Invoke();
             yield return waitPhaseChange;
         }
         ManagerLocator.Instance.Game.GameEnd();
@@ -110,12 +122,12 @@ public class PhaseManager : MonoBehaviour
         
         ManagerLocator.Instance.Game.UpdateUI(0.0f);
     }
-    private IEnumerator RunPhaseForWait()
+    private IEnumerator RunWaitForEndPhase()
     {
         
         //WaitUntil() Falseの間待機
         //WaitWhile() Trueの間待機
-        yield return new WaitWhile(() => isTurorialPhase);
+        yield return new WaitWhile(() => !isEndPhase);
     }
     private IEnumerator CreateTimer(PhaseSettingData phase)
     {
@@ -147,22 +159,34 @@ public class PhaseManager : MonoBehaviour
             }
         }
     }
-    public void EndTutorial()
+    public void EndPhase()
     {
-        isTurorialPhase = false;
+        isEndPhase = true;
     }
     private void SetupDic(List<PhaseSettingData> phaseSettings)
     {
-        PhaseToSettingDic.Clear();
-        foreach (PhaseSettingData key in phaseSettings)
+        phaseToSettingDic.Clear();
+        phaseToIndexDict.Clear();
+        phaseHitCountDict.Clear();
+        for (int i = 0; i < phaseSettings.Count; i++)
         {
-            PhaseToSettingDic[key.gamePhase] = key;
+            var key = phaseSettings[i];
+            phaseToSettingDic[key.gamePhase] = key;
+            phaseToIndexDict[key.gamePhase] = i;
+            phaseHitCountDict[key.gamePhase] = 0;
+
         }
+    }
+    private void OnHitHandle()
+    {
+        phaseHitCountDict[nowGamePhase]++;
+        phaseChangeTime++;
     }
     [OnInspectorButton]
     public void ChangePhase(PhaseState nextPhase)
     {
-       Phase = nextPhase;
+        phaseIndex = phaseToIndexDict[nextPhase];
+        EndPhase();
     }
 
 }

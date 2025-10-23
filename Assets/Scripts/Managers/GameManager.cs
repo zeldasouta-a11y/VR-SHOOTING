@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using TMPro;
 using Unity.Collections;
 using UnityEngine;
@@ -18,14 +19,19 @@ public class GameManager : MonoBehaviour
     
 
     [Header("Seed")]
-    [SerializeField] int gameSeed = 12345; 
+    [SerializeField] int gameSeed = 12345;
     public int GameSeed => gameSeed;
-    
+
+    [Header("UI")]
+    [SerializeField] GameObject enddingPanel;
+    [SerializeField] TextMeshProUGUI resultText;
+    [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] TextMeshProUGUI timeLimitText;
+    [SerializeField] AudioSource enddingBGM;
     [Header("other")]
     [SerializeField] private int totalScore = 0;
     [SerializeField] float fullAutoDuration = 20.0f;
-    [SerializeField] TextMeshProUGUI scoreText;
-    [SerializeField] TextMeshProUGUI timeLimitText;
+    
     [SerializeField] Tutorial tutorial;
     public Tutorial Tutorial => tutorial;
     Dictionary<string, int> targetHitCount = new Dictionary<string, int>();
@@ -50,8 +56,9 @@ public class GameManager : MonoBehaviour
     //System Event
     
     public event Action<bool> OnFullAutoChanged;
-    
+
     public event Action OnGameStart;
+    public event Action OnHit;
     private void Start()
     {
         StartGame();
@@ -71,7 +78,7 @@ public class GameManager : MonoBehaviour
     [OnInspectorButton("",true)]
     public void StartGame()
     {
-        
+        enddingPanel.SetActive(false);
         if(gamestate == GameState.Playing)
         {
             return;
@@ -82,9 +89,22 @@ public class GameManager : MonoBehaviour
 
     public void GameEnd()
     {
-        timeLimitText.text = "End!";
-
         gamestate = GameState.Ended;
+        timeLimitText.text = "End!";
+        enddingBGM.Play();
+        ShowResult();
+    }
+    private void ShowResult()
+    {
+        resultText.text = "";
+        resultText.text += "スコア: " + totalScore.ToString() + "\n";
+        foreach (var item in targetHitCount)
+        {
+            if (item.Key == "TutorialTerget") continue;
+            resultText.text += item.Key + ": " + item.Value.ToString() + "\n";
+        };
+        enddingPanel.SetActive(true);
+
     }
     public void UpdateUI(float limitTimer)
     {
@@ -101,18 +121,20 @@ public class GameManager : MonoBehaviour
     
     public void AddScore(int point,string name)
     {
-        totalScore += point;
-        
-        if (targetHitCount.TryGetValue(name,out int count))
+        if(ManagerLocator.Instance.Phase.Phase != PhaseState.Bonus)
         {
-            targetHitCount[name] = count+1;
-        }
-        else
-        {
-            targetHitCount[name] = 1;
+            totalScore += point;
+            if (targetHitCount.TryGetValue(name, out int count))
+            {
+               targetHitCount[name] = count + 1;
+            }
+            else
+            {
+                targetHitCount[name] = 1;
+            }
         }
         
+        
+        OnHit?.Invoke();
     }
-
-
 }

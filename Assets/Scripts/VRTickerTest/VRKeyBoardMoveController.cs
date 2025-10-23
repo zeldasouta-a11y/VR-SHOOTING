@@ -76,7 +76,6 @@ using UnityEngine.InputSystem;
     private void OnMove(InputAction.CallbackContext content)
     {
         Vector2 input = content.ReadValue<Vector2>();
-        Debug.Log($"Move Vector:{input.x},{input.y}");
         Transform head = xrOrigin.Camera.transform;
 
         // 頭の向きに基づいた移動

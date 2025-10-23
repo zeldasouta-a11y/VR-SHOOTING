@@ -99,3 +99,5 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 Assets/XR/AndroidXR/AndroidXRSettingsInitializer
 Assets/XR/Settings/OpenXRPackageSettings.asset
+
+/[Aa]ssets/Font/makinas4/Makinas-4-Flat SDF.asset

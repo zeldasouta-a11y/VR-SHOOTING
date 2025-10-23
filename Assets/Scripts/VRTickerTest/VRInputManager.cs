@@ -7,8 +7,8 @@ public class VRInputManager : MonoBehaviour
 {
     [Header("Camera Settings")]
     public Camera targetCamera;
-    [Range(30f, 120f)] public float minFOV = 40f;
-    [Range(30f, 120f)] public float maxFOV = 100f;
+    [Range(1e-5f, 100f)] public float minFOV = 40f;
+    [Range(1e-5f, 100f)] public float maxFOV = 100f;
     public float zoomSpeed = 1.5f;
 
     [Header("Left Hand Input")]
@@ -64,32 +64,21 @@ public class VRInputManager : MonoBehaviour
 
     private void Update()
     {
-        HandleInput(leftTrigger, "LeftTrigger");
-        HandleInput(rightTrigger, "RightTrigger");
-
         // スティック入力でFOVをズーム（右手のみ）
-        Vector2 rightJoy = rightStick.action?.ReadValue<Vector2>() ?? Vector2.zero;
-        if (Mathf.Abs(moveValue.y) > 0.1f)
-        {
-            targetCamera.fieldOfView -= moveValue.y * zoomSpeed;
-            targetCamera.fieldOfView = Mathf.Clamp(targetCamera.fieldOfView, minFOV, maxFOV);
-        }
+        moveValue = rightTrigger.action?.ReadValue<Vector2>() ?? Vector2.zero;
+        targetCamera.fieldOfView -= moveValue.y * zoomSpeed;
+        targetCamera.fieldOfView = Mathf.Clamp(targetCamera.fieldOfView, minFOV, maxFOV);
     }
 
     private void HandleInput(InputActionProperty actionProp, string name)
     {
         if (actionProp.action == null) return;
         Vector2 val = actionProp.action.ReadValue<Vector2>();
-        if (val.y > 0.9f)
-        {
-            Debug.Log($"{name} pressed");
-        }
         
     }
     private void OnZoom(InputAction.CallbackContext context)
     {
         moveValue = context.ReadValue<Vector2>();
-        Debug.Log($"Read Vale:{moveValue.x},{moveValue.y}");
         
     }
 }
