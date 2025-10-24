@@ -10,6 +10,7 @@ public class TargetCollisionController : MonoBehaviour
     [SerializeField] TextMeshProUGUI hittext;
     [HideInInspector] GameObject targetModel;
     [SerializeField] TargetData targetDatas;
+    private Vector3 inverseY = new Vector3(1, -1, 1);
     private Vector3 spawnPoint;
     private Vector3 moving;
     private readonly WaitForSeconds fixedUpdate = new WaitForSeconds(1f);
@@ -76,12 +77,11 @@ public class TargetCollisionController : MonoBehaviour
                     moving *= -1;
                     break;
             }
-
         }
-        //UFO用,深くなったらひっくり返す
+        //UFO用,深くなったらYをひっくり返す
         if (this.gameObject.transform.localPosition.y < 0f && moving.y < 0f)
         {
-            moving *= -1;
+            moving = Vector3.Scale(moving ,inverseY);
         }
         this.gameObject.transform.localPosition += moving * Time.deltaTime;
         time += Time.deltaTime;
@@ -103,6 +103,7 @@ public class TargetCollisionController : MonoBehaviour
         hittext.text = (targetDatas.HitScore != 0)? targetDatas.HitScore.ToString(): "";
         pointCanvas.gameObject.SetActive(true);
         DisableObject();
+        ManagerLocator.Instance.Game.AddScore(targetDatas.HitScore, targetDatas.ModelName);
     }
     private void DisableObject()
     {
@@ -117,8 +118,11 @@ public class TargetCollisionController : MonoBehaviour
         if (objecttag == "bullet")
         {
             OnHit();
-            ManagerLocator.Instance.Game.AddScore(targetDatas.HitScore, targetDatas.ModelName);
         }
     }
-
+    [OnInspectorButton]
+    private void EditorHit()
+    {
+        OnHit();
+    }
 }

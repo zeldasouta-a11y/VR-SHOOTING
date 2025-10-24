@@ -5,7 +5,7 @@ public enum BulletType { Normal, Sniper };
 public class BulletData
 {
     [Header("Bullet Type")]
-    [SerializeField]BulletType type;
+    [SerializeField] BulletType type;
     public BulletType Type => type;
     [Header("bullet Speed (m/s)")]
     [SerializeField] float bulletSpeed = 30;

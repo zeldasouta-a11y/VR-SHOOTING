@@ -35,17 +35,12 @@ public class GunData
     public float FillAutoReloadConstant => fillAutoReloadConstant;
     [Header("Sound Settings")]
     /// <summary>
-    /// �m�[�}�����[�h�̔��ˉ�
+    /// 射撃音
     /// </summary>
     [SerializeField] private AudioSource shootSound;
     public AudioSource ShootSound => shootSound;
     /// <summary>
-    /// �t���I�[�g�̎��ɂȂ炷��
-    /// </summary>
-    [SerializeField] private AudioSource fullAutoSound;
-    public AudioSource FullAutoSound => fullAutoSound;
-    /// <summary>
-    /// �����[�h��
+    /// リロード音
     /// </summary>
     [SerializeField] private AudioSource reloadSound;
     public AudioSource ReloadSound => reloadSound;
@@ -53,7 +48,7 @@ public class GunData
     [SerializeField] private TextMeshProUGUI remainText;
     public TextMeshProUGUI RemainText => remainText;
     /// <summary>
-    /// �t���I�[�g���ǂ����̐^�U�l
+    /// 予備弾
     /// </summary>
 
     [Header("予備弾数(所持弾)")]

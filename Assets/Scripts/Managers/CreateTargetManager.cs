@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 
+public enum SpawnChooseType { Random,MaxSpawn,SpawnWeight}
 public class CreateTargetManager : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
@@ -10,8 +11,9 @@ public class CreateTargetManager : MonoBehaviour
 
 
     public event Action<GameObject, TargetData> OnTargetSpawned;
-    
-    private List<TargetData> targetModels = new List<TargetData>();
+    private Queue<int> spawnIndexQueue = new();
+    private List<TargetData> targetModels = new();
+    private SpawnChooseType chooseType;
     RandomTable indexTable;
     RandomTable posTable;
     private void Awake()
@@ -20,7 +22,7 @@ public class CreateTargetManager : MonoBehaviour
     }
     public void SetEvent(PhaseManager phaseManager,GameManager gameManager)
     {
-        phaseManager.OnGamePhaseChanged += OnGamePhaseChangeHandle;
+        phaseManager.OnPhaseChanged += OnGamePhaseChangeHandle;
         phaseManager.OnCreateTime += OnCreateTimeHandle;
         gameManager.OnGameStart += OnGameStartHandle;
     }
@@ -30,7 +32,7 @@ public class CreateTargetManager : MonoBehaviour
         var gameManager = ManagerLocator.Instance.Game;
         if( phaseManager!= null)
         {
-            phaseManager.OnGamePhaseChanged -= OnGamePhaseChangeHandle;
+            phaseManager.OnPhaseChanged -= OnGamePhaseChangeHandle;
             phaseManager.OnCreateTime -= OnCreateTimeHandle;
         }
         if (gameManager != null)
@@ -55,7 +57,7 @@ public class CreateTargetManager : MonoBehaviour
         posTable = new RandomTable(ManagerLocator.Instance.Game.GameSeed);
         indexTable = new RandomTable(ManagerLocator.Instance.Game.GameSeed);
     }
-    public GameObject CreateInstanceAndSetCameraAndScripts(int listIndex)
+    public GameObject CreateTergetRandomPos(int listIndex)
     {
         if (!IsValidIndex(listIndex)) return null;
         return CreateTarget(listIndex, GetRandomPosFromTable(targetModels[listIndex].MinPosition, targetModels[listIndex].MaxPosition));
@@ -120,11 +122,31 @@ public class CreateTargetManager : MonoBehaviour
             Debug.LogError("PhaseSettingData is Null!");
         }
         targetModels = phaseSetting.targetSettingSO.targetSettingData;
+        chooseType = phaseSetting.spawnChoose;
+        spawnIndexQueue = ManagerLocator.Instance.Phase.CustomIndexQueue;
 
     }
     private void OnCreateTimeHandle()
     {
-        CreateInstanceAndSetCameraAndScripts(indexTable.RangeInt(0, targetModels.Count));
+        int index;
+        switch (chooseType)
+        {
+            case SpawnChooseType.Random:
+                CreateTergetRandomPos(indexTable.RangeInt(0, targetModels.Count));
+                break;
+            case SpawnChooseType.MaxSpawn:
+                if (spawnIndexQueue.Count == 0) return;
+                index = spawnIndexQueue.Dequeue();
+                CreateTergetRandomPos(index);
+                break;
+            case SpawnChooseType.SpawnWeight:
+                if (spawnIndexQueue.Count == 0) return;
+                index = spawnIndexQueue.Dequeue();
+                CreateTergetRandomPos(index);
+                spawnIndexQueue.Enqueue(index);
+                break;
+        }
+        
     }
 }
 

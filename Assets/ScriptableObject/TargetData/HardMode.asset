@@ -17,7 +17,8 @@ MonoBehaviour:
     targetModelName: UFO
     minPosition: {x: -70, y: 0, z: 100}
     maxPosition: {x: 70, y: 10, z: 200}
-    maxSpawn: 100
+    maxSpawn: 5
+    spawnWeight: 5
     hitScore: 10000
     hasVanishTime: 0
     vanishTime: 20
@@ -29,7 +30,8 @@ MonoBehaviour:
     targetModelName: "\u91D1\u8272\u306E\u6C17\u7403"
     minPosition: {x: -100, y: 30, z: 350}
     maxPosition: {x: 100, y: 80, z: 450}
-    maxSpawn: 100
+    maxSpawn: 15
+    spawnWeight: 10
     hitScore: 2000
     hasVanishTime: 0
     vanishTime: 20
@@ -40,8 +42,9 @@ MonoBehaviour:
   - targetModel: {fileID: 5587836066146359011, guid: df777f1a66a444443bfbfbb2f7fadd6d, type: 3}
     targetModelName: "\u52D5\u304F\u7684"
     minPosition: {x: -10, y: 1, z: 20}
-    maxPosition: {x: 0, y: 5, z: 40}
-    maxSpawn: 10
+    maxPosition: {x: 0, y: 5, z: 35}
+    maxSpawn: 15
+    spawnWeight: 10
     hitScore: 750
     hasVanishTime: 0
     vanishTime: 20

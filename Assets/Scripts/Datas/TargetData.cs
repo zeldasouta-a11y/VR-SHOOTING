@@ -6,6 +6,7 @@ public enum MoveType { LinerMove , PendulumMove, UFOMove};
 [Serializable]
 public class TargetData
 {
+    [Header("Model Setting")]
     [SerializeField] private GameObject targetModel;
     public GameObject TargetModel => targetModel;
 
@@ -18,8 +19,13 @@ public class TargetData
     [SerializeField] Vector3 maxPosition;
     public Vector3 MaxPosition => maxPosition;
 
-    [SerializeField] int maxSpawn = 10;
+    [Header("出現上限数(MaxSpawnモード)"),Tooltip("出現上限数をいれてください")]
+    [SerializeField] int maxSpawn = 100;
     public int MaxSpawn => maxSpawn;
+
+    [Header("出現率の重み(SpawnWeightモード)"),Tooltip("出現率の重みをいれてください")]
+    [SerializeField] int spawnWeight = 1;
+    public int SpawnWeight => spawnWeight;
 
     [SerializeField] private int hitScore;
     public int HitScore => hitScore;
@@ -37,7 +43,7 @@ public class TargetData
     [SerializeField] MoveType moveType;
     public MoveType MoveType => moveType;
 
-    [EnableIf("isMovable", hideWhenFalse: true)]
+    [EnableIfEnum("moveType", hideWhenFalse: true,MoveType.PendulumMove,MoveType.UFOMove)]
     [SerializeField] private float moveDurtation;
     public float MoveDurtation => moveDurtation;
 
