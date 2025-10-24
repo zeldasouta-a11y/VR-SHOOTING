@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     
 
     [Header("Seed")]
+    [SerializeField] bool isCustomSeed = true;
+    [EnableIf("isCustomSeed",hideWhenFalse: false)]
     [SerializeField] int gameSeed = 12345;
     public int GameSeed => gameSeed;
 
@@ -27,11 +29,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI resultText;
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI timeLimitText;
+    [Header("BGM Setting")]
+    [SerializeField] AudioSource fullAutoBGM;
     [SerializeField] AudioSource enddingBGM;
     [Header("other")]
+    [EnableIf("isFullAutoMode",hideWhenFalse:false)]
     [SerializeField] private int totalScore = 0;
-    [SerializeField] float fullAutoDuration = 20.0f;
-    
+    [SerializeField] float fullAutoDuration = 35.0f;
+    [Header("チュートリアルが有効かどうか")]
     [SerializeField] Tutorial tutorial;
     public Tutorial Tutorial => tutorial;
     Dictionary<string, int> targetHitCount = new Dictionary<string, int>();
@@ -54,17 +59,14 @@ public class GameManager : MonoBehaviour
     }
 
     //System Event
-    
     public event Action<bool> OnFullAutoChanged;
-
     public event Action OnGameStart;
     public event Action OnHit;
     private void Start()
     {
         StartGame();
     }
-  
-    [OnInspectorButton("",true)]
+    [OnInspectorButton("", true)]
     public void StartFullAuto()
     {
         StartCoroutine(FullAutoMode());
@@ -72,12 +74,18 @@ public class GameManager : MonoBehaviour
     private IEnumerator FullAutoMode()
     {
         IsFullAutoMode = true;
+        fullAutoBGM.Play();
         yield return new WaitForSeconds(fullAutoDuration);
+        fullAutoBGM.Stop();
         IsFullAutoMode = false;
     }
-    [OnInspectorButton("",true)]
     public void StartGame()
     {
+        if (!isCustomSeed)
+        {
+            long tick = DateTime.Now.Ticks;
+            gameSeed = (int)tick;
+        }
         enddingPanel.SetActive(false);
         if(gamestate == GameState.Playing)
         {

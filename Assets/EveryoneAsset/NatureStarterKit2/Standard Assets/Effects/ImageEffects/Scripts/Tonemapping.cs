@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace UnityStandardAssets.ImageEffects
@@ -258,7 +258,7 @@ namespace UnityStandardAssets.ImageEffects
             }
             else
             {
-                Debug.LogError("No valid adaptive tonemapper spawnType found!");
+                Debug.LogError("No valid adaptive tonemapper spawnTiming found!");
                 Graphics.Blit(source, destination); // at least we get the TransformToLDR effect
             }
 

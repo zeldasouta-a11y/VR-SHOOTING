@@ -95,14 +95,12 @@ public class GunController : MonoBehaviour
         if (mode)
         {
             isFullAuto = true;
-            gundata.FullAutoSound?.Play();
             fireRate = gundata.FullAutoFireRate;
             reloadConstant = gundata.FillAutoReloadConstant;
         }
         else
         {
             isFullAuto = false;
-            gundata.FullAutoSound?.Stop();
             fireRate = gundata.FireRate;
             reloadConstant = gundata.ReloadConstant;
         }

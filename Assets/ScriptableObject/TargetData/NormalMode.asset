@@ -17,7 +17,8 @@ MonoBehaviour:
     targetModelName: "\u8D64\u3044\u6C17\u7403"
     minPosition: {x: -80, y: -10, z: 100}
     maxPosition: {x: 80, y: 0, z: 150}
-    maxSpawn: 250
+    maxSpawn: 10
+    spawnWeight: 1
     hitScore: 1000
     hasVanishTime: 0
     vanishTime: 10
@@ -29,7 +30,8 @@ MonoBehaviour:
     targetModelName: "\u91D1\u8272\u306E\u6C17\u7403"
     minPosition: {x: -100, y: 30, z: 250}
     maxPosition: {x: 100, y: 80, z: 350}
-    maxSpawn: 100
+    maxSpawn: 10
+    spawnWeight: 1
     hitScore: 2000
     hasVanishTime: 0
     vanishTime: 0
