@@ -202,7 +202,11 @@ public class GunController : MonoBehaviour
     // 弾生成
     private void ShootAmmo()
     {
-        ManagerLocator.Instance.Bullet.ActiveBullet(gundata.BulletType,gundata.MuzzlePos.position,gundata.MuzzlePos.rotation);
+        ManagerLocator.Instance.Bullet.ActiveBullet
+            (gundata.BulletType,
+            gundata.MuzzlePos.position,
+            gundata.MuzzlePos.rotation
+            );
     }
 
     // UIまとめて更新

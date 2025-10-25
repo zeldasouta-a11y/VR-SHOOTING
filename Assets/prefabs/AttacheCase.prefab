@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 2842217309265412470}
   - component: {fileID: 8327722908274113135}
   - component: {fileID: 5510512819274423870}
+  - component: {fileID: 9021281689750515662}
   m_Layer: 0
   m_Name: AttacheCase_top
   m_TagString: Untagged
@@ -123,6 +124,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &9021281689750515662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5635987753985296127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e223247764a029041b03e1201a1a7129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlowPulse
+  baseColor: {r: 0, g: 1, b: 0.57254905, a: 1}
+  intensity: 1
+  speed: 4
 --- !u!1 &5812863914351243455
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,7 +166,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5812863914351243455}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.79354, z: -0.07158}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -215,6 +231,7 @@ GameObject:
   - component: {fileID: 5186821919681418170}
   - component: {fileID: 8876435122025371486}
   - component: {fileID: 5593775749907447973}
+  - component: {fileID: 3944632015436269703}
   m_Layer: 0
   m_Name: AttacheCase_bottom
   m_TagString: Untagged
@@ -321,3 +338,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.365, y: 0.35189915, z: 0.15285087}
   m_Center: {x: 0, y: 0.17065561, z: -0.019236429}
+--- !u!114 &3944632015436269703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6971865363427651040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e223247764a029041b03e1201a1a7129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlowPulse
+  baseColor: {r: 0, g: 1, b: 0.57412434, a: 1}
+  intensity: 1
+  speed: 4

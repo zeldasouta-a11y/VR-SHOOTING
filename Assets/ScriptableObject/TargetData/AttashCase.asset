@@ -17,7 +17,8 @@ MonoBehaviour:
     targetModelName: TutorialTerget
     minPosition: {x: 0, y: 2, z: 10}
     maxPosition: {x: 0, y: 2, z: 10}
-    maxSpawn: 1
+    maxSpawn: 10
+    spawnWeight: 1
     hitScore: 0
     hasVanishTime: 0
     vanishTime: 0

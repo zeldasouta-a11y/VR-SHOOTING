@@ -280,7 +280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2476604403565435391}
   - component: {fileID: 3954604091363945559}
-  - component: {fileID: 3049213344127381429}
+  - component: {fileID: 3882608695176733832}
   m_Layer: 0
   m_Name: ShootingTargetBase
   m_TagString: Untagged
@@ -331,7 +331,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3049213344127381429
+--- !u!114 &3882608695176733832
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -340,10 +340,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4897060822646410914}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6565132af71ab2e469f0650cdcd159bd, type: 3}
+  m_Script: {fileID: 11500000, guid: f7dafcb28718c9a4dae12a8f72446f6f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TargetCollisionManager
-  pointCanvas: {fileID: 3987848732349203106}
+  m_EditorClassIdentifier: Assembly-CSharp::TargetController
+  pointCanvasObject: {fileID: 3987848732349203106}
   canvas: {fileID: 1933931872680082426}
   hittext: {fileID: 4440146674623171813}
   targetDatas:
@@ -351,11 +351,13 @@ MonoBehaviour:
     targetModelName: 
     minPosition: {x: 0, y: 0, z: 0}
     maxPosition: {x: 0, y: 0, z: 0}
-    hitScore: 200
-    isVanish: 1
-    vanishTime: 20
+    maxSpawn: 100
+    spawnWeight: 1
+    hitScore: 0
+    hasVanishTime: 0
+    vanishTime: 0
     isMovable: 0
-    isUFOMove: 0
-    isPendulumMove: 0
+    moveType: 0
     moveDurtation: 0
     moveVector: {x: 0, y: 0, z: 0}
+  moving: {x: 0, y: 0, z: 0}

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 
 public class BulletManager : MonoBehaviour
@@ -26,11 +27,11 @@ public class BulletManager : MonoBehaviour
             Queue<GameObject> q = new();
             for(int i = 0; i < info.initializeCount; i++)
             {
-                var obj = Instantiate(info.prefab, transform);
+                var obj = Instantiate(info.prefab);
+                obj.SetActive(false);
                 BulletController bulletController = obj.GetComponent<BulletController>();
                 bulletController.Init(info.data);
 
-                obj.SetActive(false);
                 q.Enqueue(obj);
             }
             bulletPoolDict.Add(info.data.Type, q);
@@ -40,10 +41,9 @@ public class BulletManager : MonoBehaviour
 
     public GameObject ActiveBullet(BulletType type,Vector3 pos,Quaternion rot)
     {
-        GameObject obj = null;
         if (!bulletPoolDict.ContainsKey(type)) return null;
         Queue<GameObject> bulletqueue = bulletPoolDict[type];
-        obj = bulletqueue.Count > 0 ? bulletqueue.Dequeue() : CreateInsitatce(type);
+        GameObject obj = bulletqueue.Count > 0 ? bulletqueue.Dequeue() : CreateInsitatce(type);
         ////弾の位置を、銃口の位置と同一にする。
         obj.transform.SetPositionAndRotation(pos, rot);
         obj.SetActive(true);
@@ -59,7 +59,8 @@ public class BulletManager : MonoBehaviour
     {
         BulletInfo info = bulletInfoDict[type];
 
-        GameObject clone = Instantiate(info.prefab,transform);
+        GameObject clone = Instantiate(info.prefab);
+        clone.SetActive(false);
         BulletController bulletController = clone.GetComponent<BulletController>();
         bulletController.Init(info.data);
         return clone;
