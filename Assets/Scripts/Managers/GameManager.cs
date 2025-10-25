@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Tutorial tutorial;
     public Tutorial Tutorial => tutorial;
     Dictionary<string, int> targetHitCount = new Dictionary<string, int>();
-    [SerializeField] GameState gamestate = GameState.Idle;
+    private GameState gamestate = GameState.Idle;
     public GameState State => gamestate;
     private bool isFullAutoMode = false;
     
@@ -66,6 +66,13 @@ public class GameManager : MonoBehaviour
     {
         StartGame();
     }
+    [OnInspectorButton("Game Restart", true)]
+    private void GameReStart(bool sameSeed)
+    {
+        enddingBGM.Stop();
+        isCustomSeed = sameSeed;
+        StartGame();
+    }
     [OnInspectorButton("", true)]
     public void StartFullAuto()
     {
@@ -79,7 +86,8 @@ public class GameManager : MonoBehaviour
         fullAutoBGM.Stop();
         IsFullAutoMode = false;
     }
-    public void StartGame()
+
+    private void StartGame()
     {
         if (!isCustomSeed)
         {

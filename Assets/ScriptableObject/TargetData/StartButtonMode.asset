@@ -17,11 +17,12 @@ MonoBehaviour:
     targetModelName: TutorialTerget
     minPosition: {x: 0, y: 3, z: 20}
     maxPosition: {x: 0, y: 3, z: 20}
-    maxSpawn: 1
+    maxSpawn: 10
+    spawnWeight: 1
     hitScore: 0
     hasVanishTime: 0
     vanishTime: 0
     isMovable: 0
-    moveType: 2
-    moveDurtation: 2
-    moveVector: {x: 0, y: 10, z: 0}
+    moveType: 0
+    moveDurtation: 0
+    moveVector: {x: 0, y: 0, z: 0}

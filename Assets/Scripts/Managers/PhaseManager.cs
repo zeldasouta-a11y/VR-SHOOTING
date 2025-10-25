@@ -61,8 +61,6 @@ public class PhaseManager : MonoBehaviour
        
         waitPhaseChange = new WaitForSeconds(phaseChangeTime);
         waitUpdate = new WaitForSeconds(fixedUpdate);
-        isTutrialSkip = (ManagerLocator.Instance.Game.Tutorial == Tutorial.Skip);
-        
     }
     private void OnDisable()
     {
@@ -75,6 +73,7 @@ public class PhaseManager : MonoBehaviour
     }
     private void OnGameStartHandle()
     {
+        isTutrialSkip = (ManagerLocator.Instance.Game.Tutorial == Tutorial.Skip);
         SetupAll(phaseSettings);
         StartCoroutine(GamePhaseMainTimer());
 
