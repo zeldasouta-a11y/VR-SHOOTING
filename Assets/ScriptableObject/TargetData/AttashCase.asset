@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: AttashCase
   m_EditorClassIdentifier: Assembly-CSharp::TargetDataSO
   targetSettingData:
-  - targetModel: {fileID: 5812863914351243455, guid: 7aab430df8bc99146bf17c999926c25e, type: 3}
-    targetModelName: TutorialTerget
+  - targetModel: {fileID: 4824409105279076034, guid: b809e2ce5e833ac45bff0328c396b32d, type: 3}
+    targetModelName: UFO
     minPosition: {x: 0, y: 2, z: 10}
     maxPosition: {x: 0, y: 2, z: 10}
     maxSpawn: 10
