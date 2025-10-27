@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "SniperZoom",
+    "maps": [
+        {
+            "name": "XR",
+            "id": "96a2026f-d20b-4993-957d-ec5d3b3f6d9a",
+            "actions": [
+                {
+                    "name": "Zoom",
+                    "type": "Value",
+                    "id": "1d2da4fa-ddee-4c4e-b521-f01c16de3d32",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2295aef8-7ef7-4a1d-8423-70294975f879",
+                    "path": "<XRController>{RightHand}/joystick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
