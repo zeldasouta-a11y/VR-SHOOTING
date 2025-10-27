@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1336331036975336639}
+  - component: {fileID: 9051424721436818060}
   m_Layer: 0
   m_Name: FX_BalloonPop
   m_TagString: Untagged
@@ -26,13 +27,34 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.13888, y: 0.00331, z: 27.35088}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 462039269649633602}
   - {fileID: 4838574883365597849}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9051424721436818060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3422904346198781676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7809a7e2ff717b499cfe94bfa7c86e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VFXController
+  breakFxPrefab: {fileID: 3422904346198781676}
+  breakSfxClip: {fileID: 8300000, guid: 9ba9ec3241ca3a2448061a7c6f5639c8, type: 3}
+  sfx: {fileID: 0}
+  debrisClips: []
+  sfxDelay: 0.07
+  addDistanceDelay: 0
+  distanceDelayScale: 1
+  pitchJitterSemitones: 0.5
+  volumeJitterMin: 0.9
 --- !u!1 &4095296066607358671
 GameObject:
   m_ObjectHideFlags: 0
