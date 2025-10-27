@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using TMPro;
 using UnityEngine;
-
 [RequireComponent(typeof(Rigidbody))]
 public class TargetCollisionController : MonoBehaviour
 {
-    [SerializeField] GameObject pointCanvas;
-    [SerializeField] Canvas canvas;
-    [SerializeField] TextMeshProUGUI hittext;
-    [HideInInspector] GameObject targetModel;
-    [SerializeField] TargetData targetDatas;
+    [Header("UI")][SerializeField] private GameObject pointCanvas; [SerializeField] private Canvas canvas; [SerializeField] private TextMeshProUGUI hittext;
+
+    [Header("Target Data")]
+    [SerializeField] private TargetData targetDatas;
+    [HideInInspector] public GameObject targetModel;
+
+    private VFXController controller;
     private Vector3 inverseY = new Vector3(1, -1, 1);
     private Vector3 spawnPoint;
     private Vector3 moving;
@@ -17,49 +18,44 @@ public class TargetCollisionController : MonoBehaviour
     private float time = 0f;
     private bool isEnabled = false;
 
-    /// <summary>
-    /// �K���A�C���X�^���X�쐬����ɌĂԂ���
-    /// </summary>
-    /// <param name="score"></param>
-    /// <param name="time"></param>
-    public void Init(TargetData _data, GameObject Model, Vector3 spawnAt, Camera targetCamera)
+   
+
+    public void Init(TargetData data, GameObject model, Vector3 spawnAt, Camera targetCamera)
     {
-        targetDatas = _data;
-        targetModel = Model;
+        targetDatas = data;
+        targetModel = model;
         spawnPoint = spawnAt;
-        canvas.worldCamera = targetCamera;
+        if (canvas) canvas.worldCamera = targetCamera;
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+
+    private void Start()
     {
-        if (pointCanvas == null)
-        {
-            Debug.LogError("PointCanvas is not assigned in the inspector.");
-        }
-        if (targetDatas.TargetModel == null)
-        {
-            Debug.LogError("TargetModel is not assigned in the inspector.");
-        }
-        moving = targetDatas.MoveVector;
-        pointCanvas.SetActive(false);
-        if (targetDatas.HasVanishTime)
-        {
-            Destroy(this.gameObject, targetDatas.VanishTime);
-        }
+        if (pointCanvas == null) Debug.LogError("PointCanvas is not assigned in the inspector.");
+        if (targetDatas != null && targetDatas.TargetModel == null) Debug.LogError("TargetModel is not assigned in the inspector.");
+
+        moving = (targetDatas != null) ? targetDatas.MoveVector : Vector3.zero;
+        if (pointCanvas) pointCanvas.SetActive(false);
+        if (targetDatas != null && targetDatas.HasVanishTime)
+            Destroy(gameObject, targetDatas.VanishTime);
+        controller = GetComponentInChildren<VFXController>();
     }
+
     private void OnEnable()
     {
         ManagerLocator.Instance.Phase.OnPhaseEnd += DisableObject;
-        //StartCoroutine(ReturnToPoolAfterDelay());
     }
+
     private void OnDisable()
     {
         ManagerLocator.Instance.Phase.OnPhaseEnd -= DisableObject;
     }
-    void Update()
+
+    private void Update()
     {
-        if (!targetDatas.IsMovable) return;
+        if (targetDatas == null || !targetDatas.IsMovable) return;
         if (isEnabled) return;
+
         if (time > targetDatas.MoveDurtation)
         {
             time = 0f;
@@ -68,61 +64,73 @@ public class TargetCollisionController : MonoBehaviour
                 case MoveType.LinerMove:
                     break;
                 case MoveType.UFOMove:
-                    int rotationX = Random.Range(0, 360);
-                    int rotationY = Random.Range(0, 360);
-                    int rotationZ = Random.Range(0, 360);
-                    moving = Quaternion.Euler(rotationX, rotationY, rotationZ) * targetDatas.MoveVector;
+                    int rx = Random.Range(0, 360);
+                    int ry = Random.Range(0, 360);
+                    int rz = Random.Range(0, 360);
+                    moving = Quaternion.Euler(rx, ry, rz) * targetDatas.MoveVector;
                     break;
                 case MoveType.PendulumMove:
                     moving *= -1;
                     break;
             }
         }
-        //UFO用,深くなったらYをひっくり返す
-        if (this.gameObject.transform.localPosition.y < 0f && moving.y < 0f)
-        {
-            moving = Vector3.Scale(moving ,inverseY);
-        }
-        this.gameObject.transform.localPosition += moving * Time.deltaTime;
+
+        if (transform.localPosition.y < 0f && moving.y < 0f)
+            moving = Vector3.Scale(moving, inverseY);
+
+        transform.localPosition += moving * Time.deltaTime;
         time += Time.deltaTime;
     }
+
     public IEnumerator ReturnToPoolAfterDelay()
     {
         yield return null;
-        if (!targetDatas.HasVanishTime) yield break;
+        if (targetDatas == null || !targetDatas.HasVanishTime) yield break;
 
         yield return new WaitForSeconds(targetDatas.VanishTime);
-        this.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
+
     private void OnHit()
     {
-        if (hittext == null)
-        {
+        if (hittext == null && pointCanvas != null)
             hittext = pointCanvas.AddComponent<TextMeshProUGUI>();
+
+        if (hittext != null)
+            hittext.text = (targetDatas != null && targetDatas.HitScore != 0) ? targetDatas.HitScore.ToString() : "";
+
+        if (pointCanvas != null) pointCanvas.SetActive(true);
+        if(controller != null)
+        {
+            controller.SpawnBreakFx();
+            controller.PlayBreakSfx();
         }
-        hittext.text = (targetDatas.HitScore != 0)? targetDatas.HitScore.ToString(): "";
-        pointCanvas.gameObject.SetActive(true);
+        
+
         DisableObject();
-        ManagerLocator.Instance.Game.AddScore(targetDatas.HitScore, targetDatas.ModelName);
+        if (targetDatas != null)
+            ManagerLocator.Instance.Game.AddScore(targetDatas.HitScore, targetDatas.ModelName);
     }
+
     private void DisableObject()
     {
-        if (targetModel != null) targetModel.gameObject.SetActive(false);
+        if (targetModel != null) targetModel.SetActive(false);
         isEnabled = true;
-        
-        Destroy(this.gameObject, 3.0f);
+        Destroy(gameObject, 3.0f);
     }
-    void OnTriggerEnter(Collider collision)
+
+    private void OnTriggerEnter(Collider collision)
     {
-        string objecttag = collision.gameObject.tag;
-        if (objecttag == "bullet")
-        {
+        if (isEnabled) return;                     // 二重ヒット防止
+        if (collision.gameObject.tag == "bullet")
             OnHit();
-        }
     }
+
     [OnInspectorButton]
     private void EditorHit()
     {
         OnHit();
     }
+
+    
 }
