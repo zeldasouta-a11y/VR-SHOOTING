@@ -1,26 +1,21 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 
-public class VFXController : MonoBehaviour
+public class VFXController : MonoBehaviour,IHitReceiver
 {
-    [Header("Break FX & SFX")]
-    [Tooltip("‰ó‚ê‚éuŠÔ‚Éo‚·VFXƒvƒŒƒnƒu")]
-    [SerializeField] private GameObject breakFxPrefab;
-    public GameObject BreakFxPrefab => breakFxPrefab;
 
-    [Tooltip("‰ó‚ê‚éuŠÔ‚ÌSEi1ƒNƒŠƒbƒv‚ÅOKj")]
+    [Tooltip("å£Šã‚Œã‚‹ç¬é–“ã®SEï¼ˆ1ã‚¯ãƒªãƒƒãƒ—ã§OKï¼‰")]
     [SerializeField] private AudioClip breakSfxClip;
-    public AudioClip BreakSfxClip => breakSfxClip;
     [Header("SFX (simple)")]
-    [SerializeField] private AudioSource sfx;                 // ‚±‚±‚É“¯‚¶ƒIƒuƒWƒFƒNƒg‚ÌAudioSource‚ğŠ„‚è“–‚Äi–¢İ’è‚È‚çAwake‚Å©“®’Ç‰Áj
-    [Tooltip("”Ä—p‚Ì”j•ĞSEi1‚Â‚Å‚à‰ÂjBTargetData.BreakSfxClip‚ªİ’è‚³‚ê‚Ä‚¢‚ê‚Î‚»‚¿‚ç‚ğ—DæB")]
+    [SerializeField] private AudioSource sfx;                 // ã“ã“ã«åŒã˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®AudioSourceã‚’å‰²ã‚Šå½“ã¦ï¼ˆæœªè¨­å®šãªã‚‰Awakeã§è‡ªå‹•è¿½åŠ ï¼‰
+    [Tooltip("æ±ç”¨ã®ç ´ç‰‡SEï¼ˆ1ã¤ã§ã‚‚å¯ï¼‰ã€‚TargetData.BreakSfxClipãŒè¨­å®šã•ã‚Œã¦ã„ã‚Œã°ãã¡ã‚‰ã‚’å„ªå…ˆã€‚")]
     [SerializeField] private AudioClip[] debrisClips;
-    [Range(0f, 0.3f)][SerializeField] private float sfxDelay = 0.07f;   // eº‚Æ­‚µƒYƒ‰‚·
-    [SerializeField] private bool addDistanceDelay = false;               // ‹——£‚É‚æ‚é‰¹‚Ì“`”À’x‰„
+    [Range(0f, 0.3f)][SerializeField] private float sfxDelay = 0.07f;   // éŠƒå£°ã¨å°‘ã—ã‚ºãƒ©ã™
+    [SerializeField] private bool addDistanceDelay = false;               // è·é›¢ã«ã‚ˆã‚‹éŸ³ã®ä¼æ¬é…å»¶
     [Range(0.5f, 1.5f)][SerializeField] private float distanceDelayScale = 1f;
     [Range(0f, 2f)][SerializeField] private float pitchJitterSemitones = 0.5f;
     [Range(0.7f, 1f)][SerializeField] private float volumeJitterMin = 0.9f;
-    //[SerializeField] Canvas canvas;
+    private Canvas canvas;
     private void Awake()
     {
         if (!sfx) sfx = GetComponent<AudioSource>();
@@ -36,30 +31,34 @@ public class VFXController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        breakFxPrefab.SetActive(false);
+        this.gameObject.SetActive(false);
     }
 
-    // ‹ŠoFBreak VFX‚ğ¶¬
-    public void SpawnBreakFx()
+    //å½“ãŸã£ãŸæ™‚
+    public void OnHitNotify()
     {
-        if ( BreakFxPrefab == null) return;
+        Debug.Log("Hit Receive");
+        this.gameObject.SetActive(true);
+        SpawnBreakFx();
+        PlayBreakSfx();
+    }
+    // è¦–è¦šï¼šBreak VFXã‚’ç”Ÿæˆ
+    private void SpawnBreakFx()
+    {
 
         Vector3 pos = transform.position;
 
         var r = GetComponentInChildren<Renderer>();
         if (r) pos = r.bounds.center;
 
-        breakFxPrefab.SetActive(true);
-        //Instantiate(BreakFxPrefab, pos, Quaternion.identity);
     }
 
-    // ‰¹FTargetData‚ÌŒÂ•ÊSE‚ğ—DæB‚È‚¯‚ê‚ÎdebrisClips‚©‚çÄ¶B
-    public void PlayBreakSfx()
+    // éŸ³ï¼šTargetDataã®å€‹åˆ¥SEã‚’å„ªå…ˆã€‚ãªã‘ã‚Œã°debrisClipsã‹ã‚‰å†ç”Ÿã€‚
+    private void PlayBreakSfx()
     {
         AudioClip clip = null;
-
-        if ( BreakSfxClip != null)
-            clip = BreakSfxClip;
+        if(breakSfxClip != null)
+            clip = breakSfxClip;
         else if (debrisClips != null && debrisClips.Length > 0)
             clip = debrisClips[Random.Range(0, debrisClips.Length)];
 
@@ -71,16 +70,16 @@ public class VFXController : MonoBehaviour
     {
         float delay = sfxDelay;
 
-        //if (addDistanceDelay)
-        //{
-        //    Transform listener = (canvas && canvas.worldCamera) ? canvas.worldCamera.transform
-        //                           : (Camera.main ? Camera.main.transform : null);
-        //    if (listener)
-        //    {
-        //        float dist = Vector3.Distance(listener.position, transform.position);
-        //        delay += (dist / 343f) * distanceDelayScale; // ‰¹‘¬‚¨‚¨‚æ‚»343m/s
-        //    }
-        //}
+        if (addDistanceDelay)
+        {
+            Transform listener = (canvas && canvas.worldCamera) ? canvas.worldCamera.transform
+                                   : (Camera.main ? Camera.main.transform : null);
+            if (listener)
+            {
+                float dist = Vector3.Distance(listener.position, transform.position);
+                delay += (dist / 343f) * distanceDelayScale; // éŸ³é€ŸãŠãŠã‚ˆã343m/s
+            }
+        }
 
         if (delay > 0f) yield return new WaitForSeconds(delay);
 

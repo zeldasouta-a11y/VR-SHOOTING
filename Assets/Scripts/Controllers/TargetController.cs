@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
+using Unity.XR.CoreUtils;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class TargetController : MonoBehaviour
@@ -7,13 +9,14 @@ public class TargetController : MonoBehaviour
     [SerializeField] GameObject pointCanvasObject;
     [SerializeField] Canvas canvas;
     [SerializeField] TextMeshProUGUI hittext;
-    [HideInInspector] GameObject targetModel;
     [SerializeField] TargetData targetDatas;
+    private GameObject targetModel = null;
+    private GameObject targetParentObject = null;
     private static WaitForSeconds waitThree = new WaitForSeconds(3.0f);
     private Vector3 inverseY = new Vector3(1, -1, 1);
     private Vector3 spawnPoint;
     private Vector3 moving;
-    private VFXController controller;
+    private List<IHitReceiver> receivers = new(); 
     private readonly WaitForSeconds fixedUpdate = new WaitForSeconds(1f);
     private float time = 0f;
     private bool isEnabled = false;
@@ -23,10 +26,17 @@ public class TargetController : MonoBehaviour
     public void Init(TargetData data, GameObject model, Vector3 spawnAt, Camera targetCamera)
     {
         targetDatas = data;
-        targetModel = model;
+        targetParentObject = model;
         spawnPoint = spawnAt;
         canvas.worldCamera = targetCamera;
         isEnabled = false;
+        foreach (Transform child in model.transform)
+        {
+            if (child.gameObject.CompareTag("Model"))
+            {
+                targetModel = child.gameObject;
+            }
+        }
         if (hittext == null)
         {
             hittext = pointCanvasObject.AddComponent<TextMeshProUGUI>();
@@ -37,7 +47,17 @@ public class TargetController : MonoBehaviour
         {
             StartCoroutine(AutoVanish(targetDatas.VanishTime));
         }
+        //ゲームオブジェクト初期化
+        targetParentObject.SetActive(true);
         pointCanvasObject.gameObject.SetActive(false);
+        targetModel.gameObject.SetActive(true);
+
+        //イベントリスナーを登録
+        receivers.Clear();
+        foreach(var receiver in GetComponentsInChildren<IHitReceiver>(true))
+        {
+            receivers.Add(receiver);
+        }
     }
 
 
@@ -51,7 +71,6 @@ public class TargetController : MonoBehaviour
         {
             Debug.LogError("TargetModel is not assigned in the inspector.");
         }
-        controller = GetComponentInChildren<VFXController>();
         
     }
 
@@ -96,30 +115,17 @@ public class TargetController : MonoBehaviour
         time += Time.deltaTime;
     }
 
-    public IEnumerator ReturnToPoolAfterDelay()
-    {
-        yield return null;
-        if (targetDatas == null || !targetDatas.HasVanishTime) yield break;
-
-        yield return new WaitForSeconds(targetDatas.VanishTime);
-        gameObject.SetActive(false);
-    }
-
     private void OnHit()
     {
-        if (hittext == null && pointCanvasObject != null)
-            hittext = pointCanvasObject.AddComponent<TextMeshProUGUI>();
-
-        if (hittext != null)
-            hittext.text = (targetDatas != null && targetDatas.HitScore != 0) ? targetDatas.HitScore.ToString() : "";
 
         if (pointCanvasObject != null) pointCanvasObject.SetActive(true);
-        if(controller != null)
+
+        //子供(VFXコントローラ)にヒット通知を送る
+        foreach (var receiver in receivers)
         {
-            controller.SpawnBreakFx();
-            controller.PlayBreakSfx();
+            if (receiver == null) continue; // 破棄済みスキップ
+            receiver.OnHitNotify();
         }
-        
 
         DisableObject();
         if (targetDatas != null)
@@ -128,11 +134,11 @@ public class TargetController : MonoBehaviour
 
     private void DisableObject()
     {
+        isEnabled = true;
         if (targetModel != null)
         {
             targetModel.gameObject.SetActive(false);
         } 
-        isEnabled = true;
         StartCoroutine(Release());
     }
     private IEnumerator AutoVanish(float vanishTime) 
@@ -144,18 +150,19 @@ public class TargetController : MonoBehaviour
     private IEnumerator Release()
     {
         yield return waitThree;
-        ManagerLocator.Instance.CreateTarget.ReturnPool(this.gameObject);
-        if(targetModel != null) 
+        if (targetParentObject != null)
         {
-            Destroy(targetModel);
+            Destroy(targetParentObject);
         }
+        ManagerLocator.Instance.CreateTarget.ReturnPool(this.gameObject);
+        
         
     }
 
     private void OnTriggerEnter(Collider collision)
     {
         if (isEnabled) return;                     // 二重ヒット防止
-        if (collision.gameObject.tag == "bullet")
+        if (collision.gameObject.CompareTag("bullet"))
             OnHit();
     }
 
