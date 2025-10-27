@@ -150,9 +150,6 @@ public class TargetController : MonoBehaviour
             Destroy(targetModel);
         }
         
-        if (targetModel != null) targetModel.SetActive(false);
-        isEnabled = true;
-        Destroy(gameObject, 3.0f);
     }
 
     private void OnTriggerEnter(Collider collision)

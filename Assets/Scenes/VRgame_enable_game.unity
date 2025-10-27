@@ -1087,7 +1087,7 @@ MonoBehaviour:
   enddingBGM: {fileID: 562927305}
   totalScore: 0
   fullAutoDuration: 36
-  tutorial: 1
+  tutorial: 0
 --- !u!4 &562927304
 Transform:
   m_ObjectHideFlags: 0
@@ -1118,7 +1118,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 0.3
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1310,9 +1310,9 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 9770a823e6a3a604bad108c65bfaaab8, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.3
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
