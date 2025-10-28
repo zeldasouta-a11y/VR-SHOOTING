@@ -45,19 +45,6 @@ public class GameManager : MonoBehaviour
     private bool isFullAutoMode = false;
     
 
-    public bool IsFullAutoMode
-    {
-        get => isFullAutoMode;
-        set
-        {
-            if (isFullAutoMode != value)
-            {
-                OnFullAutoChanged?.Invoke(value);
-                isFullAutoMode = value;
-            }
-        }
-    }
-
     //System Event
     public event Action<bool> OnFullAutoChanged;
     public event Action OnGameStart;
@@ -76,15 +63,18 @@ public class GameManager : MonoBehaviour
     [OnInspectorButton("", true)]
     public void StartFullAuto()
     {
+        if(!isFullAutoMode)
         StartCoroutine(FullAutoMode());
     }
     private IEnumerator FullAutoMode()
     {
-        IsFullAutoMode = true;
+        isFullAutoMode = true;
         fullAutoBGM.Play();
+        OnFullAutoChanged?.Invoke(true);
         yield return new WaitForSeconds(fullAutoDuration);
         fullAutoBGM.Stop();
-        IsFullAutoMode = false;
+        OnFullAutoChanged?.Invoke(false);
+        isFullAutoMode = false;
     }
 
     private void StartGame()

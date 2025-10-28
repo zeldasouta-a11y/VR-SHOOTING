@@ -97,12 +97,16 @@ public class GunController : MonoBehaviour
             isFullAuto = true;
             fireRate = gundata.FullAutoFireRate;
             reloadConstant = gundata.FillAutoReloadConstant;
+            gundata.ShootSound.volume = 0.3f;
+            gundata.ReloadSound.volume = 0;
         }
         else
         {
             isFullAuto = false;
             fireRate = gundata.FireRate;
             reloadConstant = gundata.ReloadConstant;
+            gundata.ShootSound.volume = 1.0f;
+            gundata.ReloadSound.volume = 1.0f;
         }
     }
 
@@ -114,7 +118,7 @@ public class GunController : MonoBehaviour
             StartReload(); 
             return; 
         }
-        if (ManagerLocator.Instance.Game.IsFullAutoMode) { return; }
+        if (isFullAuto) { return; }
 
         if (isShootable)
         {

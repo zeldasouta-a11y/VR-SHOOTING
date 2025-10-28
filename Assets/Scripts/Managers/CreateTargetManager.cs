@@ -159,7 +159,7 @@ public class CreateTargetManager : MonoBehaviour
     }
     private void OnGamePhaseChangeHandle(PhaseSettingData phaseSetting)
     {
-        if(phaseSetting.targetSettingSO.targetSettingData == null)
+        if (phaseSetting.targetSettingSO.targetSettingData == null)
         {
             Debug.LogError("PhaseSettingData is Null!");
         }
@@ -188,7 +188,8 @@ public class CreateTargetManager : MonoBehaviour
                 spawnIndexQueue.Enqueue(index);
                 break;
         }
-        
+
+
     }
 }
 

@@ -41,8 +41,8 @@ MonoBehaviour:
     moveVector: {x: 0, y: 20, z: 0}
   - targetModel: {fileID: 2263297054331644975, guid: a1c623815922a0b4d89bae91dba94562, type: 3}
     targetModelName: "\u91D1\u8272\u306E\u6C17\u7403"
-    minPosition: {x: -100, y: 0, z: 300}
-    maxPosition: {x: 100, y: 20, z: 400}
+    minPosition: {x: -100, y: 40, z: 300}
+    maxPosition: {x: 100, y: 100, z: 400}
     maxSpawn: 0
     spawnWeight: 1
     hitScore: 1000
