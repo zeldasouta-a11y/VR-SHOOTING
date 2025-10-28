@@ -151,6 +151,7 @@ MonoBehaviour:
   phaseChangeTime: 3
   fixedUpdate: 0.1
   nowGamePhase: 0
+  isTimeOnlySpawn: 0
   phaseEndTrigger: 1
   createTrigger: 0
   phaseSettings:
@@ -160,7 +161,8 @@ MonoBehaviour:
     exitBreakCount: 0
     spawnTiming: 0
     createDuration: 0
-    onSpawnCreateCount: 1
+    onSpawnTriggerCount: 1
+    onSpawnTimeCount: 1
     spawnChoose: 1
     targetSettingSO: {fileID: 11400000, guid: 773226c1f915c604eb0d3d297333539f, type: 2}
   - gamePhase: 1
@@ -169,7 +171,8 @@ MonoBehaviour:
     exitBreakCount: 10
     spawnTiming: 2
     createDuration: 0
-    onSpawnCreateCount: 2
+    onSpawnTriggerCount: 2
+    onSpawnTimeCount: 2
     spawnChoose: 0
     targetSettingSO: {fileID: 11400000, guid: 9590cba5e0235934d9e8698b848fb1b3, type: 2}
   - gamePhase: 2
@@ -178,7 +181,8 @@ MonoBehaviour:
     exitBreakCount: 0
     spawnTiming: 0
     createDuration: 5
-    onSpawnCreateCount: 2
+    onSpawnTriggerCount: 1
+    onSpawnTimeCount: 2
     spawnChoose: 1
     targetSettingSO: {fileID: 11400000, guid: 3cd0ee6768607a642b052c54eb839395, type: 2}
   - gamePhase: 3
@@ -187,7 +191,8 @@ MonoBehaviour:
     exitBreakCount: 0
     spawnTiming: 0
     createDuration: 4
-    onSpawnCreateCount: 2
+    onSpawnTriggerCount: 1
+    onSpawnTimeCount: 2
     spawnChoose: 1
     targetSettingSO: {fileID: 11400000, guid: 6ceb1bc873b37e6488d483058f104c33, type: 2}
   - gamePhase: 4
@@ -196,16 +201,18 @@ MonoBehaviour:
     exitBreakCount: 0
     spawnTiming: 0
     createDuration: 3
-    onSpawnCreateCount: 2
+    onSpawnTriggerCount: 1
+    onSpawnTimeCount: 2
     spawnChoose: 1
     targetSettingSO: {fileID: 11400000, guid: 451dae4a8f39ce64b9b0927f3e00db41, type: 2}
   - gamePhase: 5
     exitType: 1
     phaseTime: 0
     exitBreakCount: 0
-    spawnTiming: 0
+    spawnTiming: 1
     createDuration: 0
-    onSpawnCreateCount: 1
+    onSpawnTriggerCount: 0
+    onSpawnTimeCount: 1
     spawnChoose: 1
     targetSettingSO: {fileID: 11400000, guid: 47d5ce33c07161f459b8224d1d3b1db0, type: 2}
   - gamePhase: 6
@@ -214,7 +221,8 @@ MonoBehaviour:
     exitBreakCount: 0
     spawnTiming: 0
     createDuration: 2
-    onSpawnCreateCount: 8
+    onSpawnTriggerCount: 1
+    onSpawnTimeCount: 8
     spawnChoose: 0
     targetSettingSO: {fileID: 11400000, guid: d654114a044c14c44995ff639c0021d5, type: 2}
 --- !u!4 &135843703

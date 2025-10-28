@@ -17,9 +17,10 @@ public class PhaseSettingData
     public int exitBreakCount = 0;
     [Header("Target Setting")]
     public SpawnTimingType spawnTiming;
-    [EnableIfEnum("spawnTiming",hideWhenFalse:true,SpawnTimingType.Time)]
+    [EnableIfEnum("spawnTiming", hideWhenFalse: true, SpawnTimingType.Time)]
     public float createDuration = 0;
-    public int onSpawnCreateCount = 0;
+    public int onSpawnTriggerCount = 0;
+    public int onSpawnTimeCount = 0;
     public SpawnChooseType spawnChoose;
     public TargetDataSO targetSettingSO;
     //[Header("Gun Setting")]

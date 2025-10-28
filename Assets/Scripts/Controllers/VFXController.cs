@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class VFXController : MonoBehaviour,IHitReceiver
+[RequireComponent(typeof(AudioSource))]
+public class VFXController : MonoBehaviour, IHitReceiver
 {
 
     [Tooltip("壊れる瞬間のSE（1クリップでOK）")]
-    [SerializeField] private AudioClip breakSfxClip;
     [Header("SFX (simple)")]
     [SerializeField] private AudioSource sfx;                 // ここに同じオブジェクトのAudioSourceを割り当て（未設定ならAwakeで自動追加）
     [Tooltip("汎用の破片SE（1つでも可）。TargetData.BreakSfxClipが設定されていればそちらを優先。")]
@@ -14,19 +14,9 @@ public class VFXController : MonoBehaviour,IHitReceiver
     [SerializeField] private bool addDistanceDelay = false;               // 距離による音の伝搬遅延
     [Range(0.5f, 1.5f)][SerializeField] private float distanceDelayScale = 1f;
     [Range(0f, 2f)][SerializeField] private float pitchJitterSemitones = 0.5f;
-    [Range(0.7f, 1f)][SerializeField] private float volumeJitterMin = 0.9f;
+    [Range(0.0f, 1f)][SerializeField] private float soundVolume = 0.9f;
     private Canvas canvas;
-    private void Awake()
-    {
-        if (!sfx) sfx = GetComponent<AudioSource>();
-        if (!sfx) sfx = gameObject.AddComponent<AudioSource>();
-        sfx.playOnAwake = false;
-        sfx.spatialBlend = 1f;
-        sfx.rolloffMode = AudioRolloffMode.Logarithmic;
-        sfx.minDistance = 2f;
-        sfx.maxDistance = 50f;
-        sfx.dopplerLevel = 0f;
-    }
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -57,9 +47,8 @@ public class VFXController : MonoBehaviour,IHitReceiver
     private void PlayBreakSfx()
     {
         AudioClip clip = null;
-        if(breakSfxClip != null)
-            clip = breakSfxClip;
-        else if (debrisClips != null && debrisClips.Length > 0)
+
+        if (debrisClips != null && debrisClips.Length > 0)
             clip = debrisClips[Random.Range(0, debrisClips.Length)];
 
         if (clip == null) return;
@@ -86,8 +75,8 @@ public class VFXController : MonoBehaviour,IHitReceiver
         float semi = Random.Range(-pitchJitterSemitones, pitchJitterSemitones);
         sfx.pitch = Mathf.Pow(2f, semi / 12f);
 
-        float vol = Random.Range(volumeJitterMin, 1f);
-        sfx.PlayOneShot(clip, vol);
+        float vol = soundVolume;
+        sfx.Play();
 
         sfx.pitch = 1f;
     }

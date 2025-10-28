@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using NUnit.Framework;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.XR;
@@ -11,8 +12,9 @@ public class PhaseManager : MonoBehaviour
 
     [SerializeField] float phaseChangeTime = 3.0f;
     [SerializeField] float fixedUpdate = 0.1f;
-    [EnableIf("isEndPhase",hideWhenFalse:false)]
+    [EnableIf("isEndPhase", hideWhenFalse: false)]
     [SerializeField] PhaseState nowGamePhase;
+    [SerializeField] bool isTimeOnlySpawn = false;
     [SerializeField] bool phaseEndTrigger = true;
     [SerializeField] bool createTrigger = false;
     [SerializeField] private List<PhaseSettingData> phaseSettings;
@@ -29,6 +31,7 @@ public class PhaseManager : MonoBehaviour
     private int phaseIndex = 0;
     private bool isTutrialSkip = false;
     private bool isEndPhase = false;
+    private Coroutine _spawnCorutine;
     public PhaseState Phase
     {
         get => nowGamePhase;
@@ -91,7 +94,7 @@ public class PhaseManager : MonoBehaviour
             EndTriggerSet(false);
             Phase = phase.gamePhase;
             yield return waitPhaseChange;//先に待つ
-            StartCoroutine(StartSpawn(phase));
+            _spawnCorutine =  StartCoroutine(StartSpawn(phase));
             switch (phase.exitType)
             {
                 case PhaseExitType.Trigger:
@@ -107,6 +110,12 @@ public class PhaseManager : MonoBehaviour
             //フェイズ終了処理
             OnPhaseEnd?.Invoke();
             phaseHitCount = 0;
+            //CreateByTrigger()待つ処理が終わらない ので止める
+            //バグだけど、仕様として残す。
+            if(isTimeOnlySpawn)
+            {
+                StopCorutine();
+            } 
             isEndPhase = true;
         }
         ManagerLocator.Instance.Game.GameEnd();
@@ -141,15 +150,22 @@ public class PhaseManager : MonoBehaviour
         {
             case SpawnTimingType.Time:
                 yield return CreateByTime(phase);
-                break;
+                yield break;
             case SpawnTimingType.Count:
-                yield return CreateByCount(phase.onSpawnCreateCount);
-                break;
+                yield return CreateByCount(phase.onSpawnTimeCount);
+                yield break;
             case SpawnTimingType.Trigger:
                 CreateTrigger(true);
-                yield return CreateByTrigger(phase.onSpawnCreateCount);
-                break;
-
+                yield return CreateByTrigger(phase.onSpawnTriggerCount);
+                yield break;
+        }
+    }
+    private void StopCorutine()
+    {
+        if(_spawnCorutine != null)
+        {
+            StopCoroutine(_spawnCorutine);
+            _spawnCorutine = null;
         }
     }
     private IEnumerator CreateByTime(PhaseSettingData phase)
@@ -160,8 +176,9 @@ public class PhaseManager : MonoBehaviour
             if (timer >= phase.createDuration)
             {
                 if (isEndPhase) yield break;
-                for (int i = 0; i < phase.onSpawnCreateCount; i++)
+                for (int i = 0; i < phase.onSpawnTimeCount; i++)
                 {
+                    Debug.Log("Create By Time");
                     OnCreateTime?.Invoke();
                     yield return null;
                 }
@@ -174,6 +191,7 @@ public class PhaseManager : MonoBehaviour
     {
         for (int i = 0; i < spawnCount; i++)
         {
+            Debug.Log("Create By Count");
             OnCreateTime?.Invoke();
             yield return null;
         }
@@ -187,6 +205,7 @@ public class PhaseManager : MonoBehaviour
 
             for (int i = 0; i < spawnCount; i++)
             {
+                Debug.Log("Create By Trigger");
                 OnCreateTime?.Invoke();
                 yield return null;
             }
@@ -225,7 +244,7 @@ public class PhaseManager : MonoBehaviour
             else if (phaseSettings[i].spawnChoose == SpawnChooseType.SpawnWeight)
             {
                 customIndexqueue[key.gamePhase] = new Queue<int>();//初期化
-                int maxSpawn = phaseSettings[i].onSpawnCreateCount * 10;//10回生成と見なす(マジックナンバー)
+                int maxSpawn = phaseSettings[i].onSpawnTimeCount * 10;//10回生成と見なす(マジックナンバー)
                 int total = 0;//重み合計
                 List<TargetData> list = phaseSettings[i].targetSettingSO.targetSettingData;
                 for (int j = 0; j < list.Count; j++)
@@ -258,7 +277,7 @@ public class PhaseManager : MonoBehaviour
     {
         phaseHitCountDict[nowGamePhase]++;
         phaseHitCount++;
-        if (phaseHitCount % phaseToSettingDic[Phase].onSpawnCreateCount == 0)
+        if (phaseToSettingDic[Phase].onSpawnTimeCount != 0 &&phaseHitCount % phaseToSettingDic[Phase].onSpawnTimeCount == 0)
         {
             CreateTrigger(true);
         }
