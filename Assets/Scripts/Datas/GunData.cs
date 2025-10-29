@@ -11,12 +11,11 @@ public class GunData
     [SerializeField] BulletType bulletType;
     public BulletType BulletType => bulletType;
 
-    //[SerializeField] private GameObject bulletPrefab;
-    //public GameObject BulletPrefab => bulletPrefab;
-    //[SerializeField] BulletData bulletData;
-    //public BulletData BulletData => bulletData;
+
     [SerializeField] private Transform muzzlePos;
     public Transform MuzzlePos => muzzlePos;
+    [SerializeField] private Transform gunRespawnPoint;
+    public Transform GunRespawnPoint => gunRespawnPoint;
     [SerializeField] private int magazineCapacity = 10;
     public int MagazineCapacity => magazineCapacity;
 
