@@ -6,9 +6,11 @@ using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
+[RequireComponent(typeof(XRGrabInteractable),typeof(Rigidbody))]
 public class GunController : MonoBehaviour
 {
     [SerializeField] GunData gundata;
+
 
     // 弾管理
     private int bulletRemaining;
@@ -23,6 +25,7 @@ public class GunController : MonoBehaviour
     private float fireRate = 0;
     private float reloadConstant = 0;
     private int infiniteAmmo = -1;
+    Rigidbody thisRigidbody;
 
     // 低残弾の色設定
     [SerializeField] private int lowAmmoThreshold = 3;
@@ -32,14 +35,15 @@ public class GunController : MonoBehaviour
     void Start()
     {
         bulletRemaining = gundata.MagazineCapacity;
-        reserveAmmo = gundata.IsInfiniteAmmo? infiniteAmmo:gundata.ReserveAmmo;
+        reserveAmmo = gundata.IsInfiniteAmmo ? infiniteAmmo : gundata.ReserveAmmo;
 
         // XRイベント
         var xrGrab = gundata.gunModelObject.GetComponent<XRGrabInteractable>();
-        if (xrGrab == null) xrGrab = gundata.gunModelObject.AddComponent<XRGrabInteractable>();
+
         xrGrab.activated.AddListener(Activate);
         xrGrab.deactivated.AddListener(Deactivate);
-        xrGrab.hoverExited.AddListener(HoverExited);
+        xrGrab.lastHoverExited.AddListener(HoverExited);
+        thisRigidbody = GetComponent<Rigidbody>();
         // UI初期化
         if (gundata.RemainText) normalAmmoColor = gundata.RemainText.color;
         if (gundata.ReloadText) gundata.ReloadText.gameObject.SetActive(false);
@@ -51,7 +55,7 @@ public class GunController : MonoBehaviour
         fireRate = gundata.FireRate;
         reloadConstant = gundata.ReloadConstant;
         UpdateUI();
-        
+
     }
     private void OnEnable()
     {
@@ -60,19 +64,19 @@ public class GunController : MonoBehaviour
     }
     void OnDisable()
     {
-        if(ManagerLocator.Instance.Game != null)
+        if (ManagerLocator.Instance.Game != null)
         {
             //イベント解除
             ManagerLocator.Instance.Game.OnFullAutoChanged -= OnFullAutoHandle;
         }
-        
+
     }
 
     void Update()
     {
         // フルオート連射
-        if (!(isFullAuto && isActivate))return;
-        
+        if (!(isFullAuto && isActivate)) return;
+
         if (bulletRemaining <= 0)
         {
             StartReload();
@@ -113,10 +117,10 @@ public class GunController : MonoBehaviour
     public void Activate(ActivateEventArgs args)
     {
         isActivate = true;
-        if (bulletRemaining <= 0) 
+        if (bulletRemaining <= 0)
         {
-            StartReload(); 
-            return; 
+            StartReload();
+            return;
         }
         if (isFullAuto) { return; }
 
@@ -129,7 +133,13 @@ public class GunController : MonoBehaviour
     }
 
     public void Deactivate(DeactivateEventArgs args) { isActivate = false; }
-    public void HoverExited(HoverExitEventArgs args) { isActivate = false; }
+    public void HoverExited(HoverExitEventArgs args)
+    {
+        //thisRigidbody.linearVelocity = Vector3.zero;
+        //thisRigidbody.angularVelocity = Vector3.zero;
+        //this.transform.localPosition = gundata.GunRespawnPoint.localPosition;
+        isActivate = false;
+    }
 
     private void GunShotFire()
     {
@@ -137,7 +147,7 @@ public class GunController : MonoBehaviour
         bulletRemaining--;
         gundata.ShootSound?.Play();
         ShootAmmo();
-        
+
     }
     private IEnumerator FireRountine()
     {
@@ -157,9 +167,9 @@ public class GunController : MonoBehaviour
         {
             if (!gundata.IsInfiniteAmmo) return;      // 予備弾なしかつ有限設定
         }
-        int load = gundata.IsInfiniteAmmo? need : Mathf.Min(need, reserveAmmo);
-        
-        float seconds = load * reloadConstant  / 1000f;
+        int load = gundata.IsInfiniteAmmo ? need : Mathf.Min(need, reserveAmmo);
+
+        float seconds = load * reloadConstant / 1000f;
 
         StartCoroutine(ReloadRoutine(load, seconds));
     }
@@ -189,7 +199,7 @@ public class GunController : MonoBehaviour
         {
             reserveAmmo -= load;
         }
-        
+
 
         isReloading = false;
 
