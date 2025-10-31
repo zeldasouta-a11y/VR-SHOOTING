@@ -195,12 +195,12 @@ MonoBehaviour:
     exitType: 1
     phaseTime: 0
     exitBreakCount: 0
-    spawnTiming: 0
+    spawnTiming: 1
     createDuration: 0
     onSpawnTriggerCount: 1
     onSpawnTimeCount: 1
     spawnChoose: 1
-    targetSettingSO: {fileID: 11400000, guid: 773226c1f915c604eb0d3d297333539f, type: 2}
+    targetSettingSO: {fileID: 11400000, guid: 3b4d0b913b850bf44bf18da3df44d9ec, type: 2}
   - gamePhase: 1
     exitType: 2
     phaseTime: 0
@@ -212,6 +212,16 @@ MonoBehaviour:
     spawnChoose: 0
     targetSettingSO: {fileID: 11400000, guid: 9590cba5e0235934d9e8698b848fb1b3, type: 2}
   - gamePhase: 2
+    exitType: 1
+    phaseTime: 30
+    exitBreakCount: 0
+    spawnTiming: 1
+    createDuration: 1
+    onSpawnTriggerCount: 1
+    onSpawnTimeCount: 1
+    spawnChoose: 1
+    targetSettingSO: {fileID: 11400000, guid: 773226c1f915c604eb0d3d297333539f, type: 2}
+  - gamePhase: 3
     exitType: 0
     phaseTime: 30
     exitBreakCount: 0
@@ -221,7 +231,7 @@ MonoBehaviour:
     onSpawnTimeCount: 2
     spawnChoose: 1
     targetSettingSO: {fileID: 11400000, guid: 3cd0ee6768607a642b052c54eb839395, type: 2}
-  - gamePhase: 3
+  - gamePhase: 4
     exitType: 0
     phaseTime: 30
     exitBreakCount: 0
@@ -231,7 +241,7 @@ MonoBehaviour:
     onSpawnTimeCount: 2
     spawnChoose: 1
     targetSettingSO: {fileID: 11400000, guid: 6ceb1bc873b37e6488d483058f104c33, type: 2}
-  - gamePhase: 4
+  - gamePhase: 5
     exitType: 0
     phaseTime: 30
     exitBreakCount: 0
@@ -241,17 +251,17 @@ MonoBehaviour:
     onSpawnTimeCount: 2
     spawnChoose: 1
     targetSettingSO: {fileID: 11400000, guid: 451dae4a8f39ce64b9b0927f3e00db41, type: 2}
-  - gamePhase: 5
+  - gamePhase: 6
     exitType: 1
-    phaseTime: 0
+    phaseTime: 30
     exitBreakCount: 0
     spawnTiming: 1
-    createDuration: 0
-    onSpawnTriggerCount: 0
+    createDuration: 2
+    onSpawnTriggerCount: 1
     onSpawnTimeCount: 1
     spawnChoose: 1
     targetSettingSO: {fileID: 11400000, guid: 47d5ce33c07161f459b8224d1d3b1db0, type: 2}
-  - gamePhase: 6
+  - gamePhase: 7
     exitType: 0
     phaseTime: 30
     exitBreakCount: 0
@@ -620,6 +630,7 @@ MonoBehaviour:
   <Bullet>k__BackingField: {fileID: 352825920}
   <CreateTarget>k__BackingField: {fileID: 355095603}
   <Phase>k__BackingField: {fileID: 135843702}
+  <UI>k__BackingField: {fileID: 1392703163}
 --- !u!4 &353728977
 Transform:
   m_ObjectHideFlags: 0
@@ -638,6 +649,7 @@ Transform:
   - {fileID: 135843703}
   - {fileID: 745427923}
   - {fileID: 352825919}
+  - {fileID: 1392703162}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &355095602
@@ -1154,10 +1166,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   isCustomSeed: 0
   gameSeed: 123456
-  enddingPanel: {fileID: 1324008376}
-  resultText: {fileID: 892975411}
-  scoreText: {fileID: 865984234}
-  timeLimitText: {fileID: 2107811701}
   fullAutoBGM: {fileID: 562927307}
   enddingBGM: {fileID: 562927305}
   totalScore: 0
@@ -3937,6 +3945,55 @@ MonoBehaviour:
   followDictance: 2
   heightOffset: 0
   smoothSpeed: 5
+--- !u!1 &1392703161
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1392703162}
+  - component: {fileID: 1392703163}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1392703162
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392703161}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 353728977}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1392703163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392703161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d80fed0b91c9ea14593946e13576d04a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIManager
+  overLayPanel: {fileID: 1091746630}
+  panelImage: {fileID: 1091746632}
+  resultText: {fileID: 892975411}
+  scoreText: {fileID: 865984234}
+  timeLimitText: {fileID: 2107811701}
 --- !u!1 &1434742986 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2746493918707896725, guid: 89e80c47615e4f043926d66492d3ca5f, type: 3}

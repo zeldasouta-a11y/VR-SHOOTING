@@ -24,22 +24,19 @@ public class GameManager : MonoBehaviour
     [SerializeField] int gameSeed = 12345;
     public int GameSeed => gameSeed;
 
-    [Header("UI")]
-    [SerializeField] GameObject enddingPanel;
-    [SerializeField] TextMeshProUGUI resultText;
-    [SerializeField] TextMeshProUGUI scoreText;
-    [SerializeField] TextMeshProUGUI timeLimitText;
     [Header("BGM Setting")]
     [SerializeField] AudioSource fullAutoBGM;
     [SerializeField] AudioSource enddingBGM;
     [Header("other")]
     [EnableIf("isFullAutoMode",hideWhenFalse:false)]
     [SerializeField] private int totalScore = 0;
+    public int TotalScore => totalScore;
     [SerializeField] float fullAutoDuration = 35.0f;
     [Header("チュートリアルが有効かどうか")]
     [SerializeField] Tutorial tutorial;
     public Tutorial Tutorial => tutorial;
     Dictionary<string, int> targetHitCount = new Dictionary<string, int>();
+    public IReadOnlyDictionary<string, int> TargetHitDict => targetHitCount;
     private GameState gamestate = GameState.Idle;
     public GameState State => gamestate;
     private bool isFullAutoMode = false;
@@ -48,10 +45,23 @@ public class GameManager : MonoBehaviour
     //System Event
     public event Action<bool> OnFullAutoChanged;
     public event Action OnGameStart;
+    public event Action OnGameEnd;
     public event Action OnHit;
     private void Start()
     {
         StartGame();
+    }
+    private void OnDisable()
+    {
+        var phase = ManagerLocator.Instance.Phase;
+        if(phase != null)
+        {
+            phase.OnAllPhaseEnd -= GameEnd;
+        }
+    }
+    public void SetEvent(PhaseManager phase)
+    {
+        phase.OnAllPhaseEnd += GameEnd;
     }
     [OnInspectorButton("Game Restart", true)]
     private void GameReStart(bool sameSeed)
@@ -84,7 +94,6 @@ public class GameManager : MonoBehaviour
             long tick = DateTime.Now.Ticks;
             gameSeed = (int)tick;
         }
-        enddingPanel.SetActive(false);
         if(gamestate == GameState.Playing)
         {
             return;
@@ -95,34 +104,10 @@ public class GameManager : MonoBehaviour
 
     public void GameEnd()
     {
+        Debug.Log("GameEnd!");
         gamestate = GameState.Ended;
-        timeLimitText.text = "End!";
         enddingBGM.Play();
-        ShowResult();
-    }
-    private void ShowResult()
-    {
-        resultText.text = "";
-        resultText.text += "スコア: " + totalScore.ToString() + "\n";
-        foreach (var item in targetHitCount)
-        {
-            if (item.Key == "TutorialTerget") continue;
-            resultText.text += item.Key + ": " + item.Value.ToString() + "\n";
-        };
-        enddingPanel.SetActive(true);
-
-    }
-    public void UpdateUI(float limitTimer)
-    {
-        if(timeLimitText != null)
-        {
-            timeLimitText.text = limitTimer.ToString("n1");
-        }
-        
-        if (scoreText != null)
-        {
-            scoreText.text = "Score: " + totalScore.ToString();
-        }
+        OnGameEnd?.Invoke();
     }
     
     public void AddScore(int point,string name)

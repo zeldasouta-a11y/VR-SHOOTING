@@ -9,6 +9,7 @@ public class ManagerLocator : MonoBehaviour
     [field:SerializeField] public BulletManager Bullet { get; private set; }
     [field:SerializeField] public CreateTargetManager CreateTarget { get; private set; }
     [field:SerializeField] public PhaseManager Phase { get; private set; }
+    [field:SerializeField] public UIManager UI { get; private set; }
     void Awake()
     {
         if (Instance == null)
@@ -29,8 +30,10 @@ public class ManagerLocator : MonoBehaviour
     //Event購読関数
     private void InjectDependencies() 
     {
+        Game.SetEvent(Phase);
         Phase.SetEvent(Game);
         CreateTarget.SetEvent(Phase,Game);
+        UI.SetEvent(Game, Phase);
     }
     //Game Create Memo
     //Structure:

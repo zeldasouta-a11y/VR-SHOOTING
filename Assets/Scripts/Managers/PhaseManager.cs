@@ -53,6 +53,7 @@ public class PhaseManager : MonoBehaviour
     public event Action<PhaseSettingData> OnPhaseChanged;
     public event Action OnCreateTime;
     public event Action OnPhaseEnd;
+    public event Action OnAllPhaseEnd;
     public void SetEvent(GameManager gameManager)
     {
         gameManager.OnGameStart += OnGameStartHandle;
@@ -86,7 +87,7 @@ public class PhaseManager : MonoBehaviour
         for (phaseIndex = 0; phaseIndex < phaseSettings.Count; phaseIndex++)
         {
             var phase = phaseSettings[phaseIndex];
-            if (phase.gamePhase == PhaseState.Tutorial && isTutrialSkip)
+            if (isTutrialSkip && (phase.gamePhase == PhaseState.Tutorial || phase.gamePhase == PhaseState.TitorialBoard))
             {
                 continue;
             }
@@ -118,7 +119,7 @@ public class PhaseManager : MonoBehaviour
             } 
             isEndPhase = true;
         }
-        ManagerLocator.Instance.Game.GameEnd();
+        OnAllPhaseEnd?.Invoke();
     }
     private IEnumerator RunPhase(float phaseTime)
     {
@@ -126,11 +127,11 @@ public class PhaseManager : MonoBehaviour
         for (float limitTimer = phaseTime; limitTimer >= 0; limitTimer -= fixedUpdate)
         {
             if (phaseEndTrigger) yield break;
-            ManagerLocator.Instance.Game.UpdateUI(limitTimer);
+            ManagerLocator.Instance.UI.UpdateUI(limitTimer);
             yield return waitUpdate;
         }
         
-        ManagerLocator.Instance.Game.UpdateUI(0.0f);
+        ManagerLocator.Instance.UI.UpdateUI(0.0f);
     }
     private IEnumerator RunWaitForTrigger()
     {

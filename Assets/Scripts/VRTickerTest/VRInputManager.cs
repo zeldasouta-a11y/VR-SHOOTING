@@ -23,6 +23,8 @@ public class VRInputManager : MonoBehaviour
     public InputActionProperty rightSecondary;
     public InputActionProperty rightStick;
 
+    //登録しない場合はこう
+    public SniperZoom zoom;
     [Header("UI Interaction")]
     public XRUIInputModule xrUIInputModule;
 
