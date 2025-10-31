@@ -107,12 +107,13 @@ public class GameManager : MonoBehaviour
         Debug.Log("GameEnd!");
         gamestate = GameState.Ended;
         enddingBGM.Play();
+        fullAutoBGM?.Stop();
         OnGameEnd?.Invoke();
     }
     
     public void AddScore(int point,string name)
     {
-        if(ManagerLocator.Instance.Phase.Phase != PhaseState.Bonus)
+        if(!ManagerLocator.Instance.Phase.IsIgnoreScoreMode)
         {
             totalScore += point;
             if (targetHitCount.TryGetValue(name, out int count))

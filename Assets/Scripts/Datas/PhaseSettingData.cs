@@ -11,10 +11,13 @@ public class PhaseSettingData
     public PhaseState gamePhase;
     [Header("To Next Phase Setting")]
     public PhaseExitType exitType;
+    public bool isInstantlyChange;
     [EnableIfEnum("exitType",hideWhenFalse :true,PhaseExitType.Time)]
     public float phaseTime = 0;
     [EnableIfEnum("exitType", hideWhenFalse: true, PhaseExitType.BrekeCount)]
     public int exitBreakCount = 0;
+    [Header("Score Settiing")]
+    public bool isIgnoreScore;
     [Header("Target Setting")]
     public SpawnTimingType spawnTiming;
     [EnableIfEnum("spawnTiming", hideWhenFalse: true, SpawnTimingType.Time)]

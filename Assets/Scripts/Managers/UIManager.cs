@@ -14,7 +14,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI timeLimitText;
 
     private int score => ManagerLocator.Instance.Game.TotalScore;
+    private static WaitForSeconds wait05s = new WaitForSeconds(0.5f);
     private static WaitForSeconds wait1s = new WaitForSeconds(1);
+    private string[] dotArray = new string[4] {"",".","..","..."};
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -45,7 +47,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateUI(float limitTimer)
+    public void UpdateTimerUI(float limitTimer)
     {
         if (timeLimitText != null)
         {
@@ -58,6 +60,18 @@ public class UIManager : MonoBehaviour
             scoreText.text = "Score: " + score.ToString();
         }
     }
+    public void UpdateTimerUI(string stringText)
+    {
+        if (timeLimitText != null)
+        {
+            timeLimitText.text = stringText;
+        }
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + score.ToString();
+        }
+
+    }
     private void ShowResult()
     {
         timeLimitText.text = "End!";
@@ -66,7 +80,7 @@ public class UIManager : MonoBehaviour
         resultText.text += "スコア: " + score.ToString() + "\n";
         foreach (var item in ManagerLocator.Instance.Game.TargetHitDict)
         {
-            if (item.Key == "TutorialTerget") continue;
+            if (item.Key == "TutorialTerget" || string.IsNullOrEmpty(item.Key)) continue;
             resultText.text += item.Key + ": " + item.Value.ToString() + "\n";
         };
         overLayPanel.SetActive(true);
@@ -81,7 +95,6 @@ public class UIManager : MonoBehaviour
         switch(data.gamePhase)
         {
             case PhaseState.Tutorial:
-                timeLimitText.text = "Tutorial";
                 panelImage.color = new Color(255,255, 255, 0);
                 resultText.text = "Tutorial";
                 overLayPanel.SetActive(true);
@@ -90,6 +103,21 @@ public class UIManager : MonoBehaviour
             default:
                 break;
         }
+    }
+    public void StartLoading(float waitTime,string endMassage = "")
+    {
+        StartCoroutine(NowLoading(waitTime,endMassage));
+    }
+    private IEnumerator NowLoading(float waitTime,string endMessage = "")
+    {
+        int dotCount = 0;
+        for (float i = 0; i <= waitTime; i += 0.5f) 
+        {
+            dotCount %= dotArray.Length;
+            UpdateTimerUI("loading" + dotArray[dotCount++]);
+            yield return wait05s;
+        }
+        UpdateTimerUI(endMessage);
     }
     private IEnumerator PanelFade()
     {

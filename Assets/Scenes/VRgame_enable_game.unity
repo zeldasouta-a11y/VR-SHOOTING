@@ -193,8 +193,10 @@ MonoBehaviour:
   phaseSettings:
   - gamePhase: 0
     exitType: 1
+    isInstantlyChange: 1
     phaseTime: 0
     exitBreakCount: 0
+    isIgnoreScore: 1
     spawnTiming: 1
     createDuration: 0
     onSpawnTriggerCount: 1
@@ -203,8 +205,10 @@ MonoBehaviour:
     targetSettingSO: {fileID: 11400000, guid: 3b4d0b913b850bf44bf18da3df44d9ec, type: 2}
   - gamePhase: 1
     exitType: 2
+    isInstantlyChange: 0
     phaseTime: 0
     exitBreakCount: 10
+    isIgnoreScore: 0
     spawnTiming: 2
     createDuration: 0
     onSpawnTriggerCount: 2
@@ -213,8 +217,10 @@ MonoBehaviour:
     targetSettingSO: {fileID: 11400000, guid: 9590cba5e0235934d9e8698b848fb1b3, type: 2}
   - gamePhase: 2
     exitType: 1
+    isInstantlyChange: 1
     phaseTime: 30
     exitBreakCount: 0
+    isIgnoreScore: 1
     spawnTiming: 1
     createDuration: 1
     onSpawnTriggerCount: 1
@@ -223,8 +229,10 @@ MonoBehaviour:
     targetSettingSO: {fileID: 11400000, guid: 773226c1f915c604eb0d3d297333539f, type: 2}
   - gamePhase: 3
     exitType: 0
+    isInstantlyChange: 0
     phaseTime: 30
     exitBreakCount: 0
+    isIgnoreScore: 0
     spawnTiming: 0
     createDuration: 5
     onSpawnTriggerCount: 1
@@ -233,8 +241,10 @@ MonoBehaviour:
     targetSettingSO: {fileID: 11400000, guid: 3cd0ee6768607a642b052c54eb839395, type: 2}
   - gamePhase: 4
     exitType: 0
+    isInstantlyChange: 0
     phaseTime: 30
     exitBreakCount: 0
+    isIgnoreScore: 0
     spawnTiming: 0
     createDuration: 4
     onSpawnTriggerCount: 1
@@ -243,8 +253,10 @@ MonoBehaviour:
     targetSettingSO: {fileID: 11400000, guid: 6ceb1bc873b37e6488d483058f104c33, type: 2}
   - gamePhase: 5
     exitType: 0
+    isInstantlyChange: 0
     phaseTime: 30
     exitBreakCount: 0
+    isIgnoreScore: 0
     spawnTiming: 0
     createDuration: 3
     onSpawnTriggerCount: 1
@@ -253,8 +265,10 @@ MonoBehaviour:
     targetSettingSO: {fileID: 11400000, guid: 451dae4a8f39ce64b9b0927f3e00db41, type: 2}
   - gamePhase: 6
     exitType: 1
+    isInstantlyChange: 0
     phaseTime: 30
     exitBreakCount: 0
+    isIgnoreScore: 1
     spawnTiming: 1
     createDuration: 2
     onSpawnTriggerCount: 1
@@ -263,8 +277,10 @@ MonoBehaviour:
     targetSettingSO: {fileID: 11400000, guid: 47d5ce33c07161f459b8224d1d3b1db0, type: 2}
   - gamePhase: 7
     exitType: 0
+    isInstantlyChange: 1
     phaseTime: 30
     exitBreakCount: 0
+    isIgnoreScore: 1
     spawnTiming: 0
     createDuration: 2
     onSpawnTriggerCount: 1
@@ -631,6 +647,7 @@ MonoBehaviour:
   <CreateTarget>k__BackingField: {fileID: 355095603}
   <Phase>k__BackingField: {fileID: 135843702}
   <UI>k__BackingField: {fileID: 1392703163}
+  <Ranking>k__BackingField: {fileID: 875646341}
 --- !u!4 &353728977
 Transform:
   m_ObjectHideFlags: 0
@@ -650,6 +667,7 @@ Transform:
   - {fileID: 745427923}
   - {fileID: 352825919}
   - {fileID: 1392703162}
+  - {fileID: 875646342}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &355095602
@@ -2269,7 +2287,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 895.1
+  m_fontSize: 1126
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2329,7 +2347,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865984233}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.00088662}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2337,9 +2355,57 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1271, y: 139}
-  m_SizeDelta: {x: 2709, y: 280}
+  m_AnchoredPosition: {x: -1236, y: 269}
+  m_SizeDelta: {x: 2144, y: 538}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &875646340
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 875646342}
+  - component: {fileID: 875646341}
+  m_Layer: 0
+  m_Name: RankingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &875646341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875646340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dea8337e507d6b488ffd525a8c8b835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RankingManager
+  isSaveJson: 1
+  FileName: Ranking
+  rankingList:
+    Rankings: []
+--- !u!4 &875646342
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875646340}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 19.89193, y: 0.4654, z: 8.42755}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 353728977}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &892975409
 GameObject:
   m_ObjectHideFlags: 0
@@ -5014,7 +5080,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2107811699}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -5022,8 +5088,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 1077, y: -97}
-  m_SizeDelta: {x: 2319, y: 193}
+  m_AnchoredPosition: {x: 1250, y: -127}
+  m_SizeDelta: {x: 2199, y: 391}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2107811701
 MonoBehaviour:
@@ -5045,9 +5111,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'time:30
-
-'
+  m_text: Start!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5074,12 +5138,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 817.2
+  m_fontSize: 1126.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 1000
+  m_fontSizeMax: 10000
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -5112,7 +5176,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -263.75195, w: -147.08777}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

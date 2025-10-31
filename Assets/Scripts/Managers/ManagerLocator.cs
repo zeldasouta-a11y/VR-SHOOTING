@@ -10,6 +10,7 @@ public class ManagerLocator : MonoBehaviour
     [field:SerializeField] public CreateTargetManager CreateTarget { get; private set; }
     [field:SerializeField] public PhaseManager Phase { get; private set; }
     [field:SerializeField] public UIManager UI { get; private set; }
+    [field:SerializeField] public RankingManager Ranking { get; private set; }
     void Awake()
     {
         if (Instance == null)
@@ -34,6 +35,7 @@ public class ManagerLocator : MonoBehaviour
         Phase.SetEvent(Game);
         CreateTarget.SetEvent(Phase,Game);
         UI.SetEvent(Game, Phase);
+        Ranking.SetEvent(Game);
     }
     //Game Create Memo
     //Structure:

@@ -1,0 +1,46 @@
+{
+    "Rankings": [
+        {
+            "Time": "2025/11/01 1:44:03",
+            "GameSeed": -1758647005,
+            "TotalScore": 110750,
+            "detail": [
+                {
+                    "TargetName": "TutorialTerget",
+                    "BreakCount": 13
+                },
+                {
+                    "TargetName": "動かない的",
+                    "BreakCount": 15
+                },
+                {
+                    "TargetName": "動く的",
+                    "BreakCount": 17
+                },
+                {
+                    "TargetName": "金色の気球",
+                    "BreakCount": 22
+                },
+                {
+                    "TargetName": "赤い気球",
+                    "BreakCount": 15
+                },
+                {
+                    "TargetName": "UFO",
+                    "BreakCount": 4
+                }
+            ]
+        },
+        {
+            "Time": "2025/11/01 2:44:17",
+            "GameSeed": 370998737,
+            "TotalScore": 0,
+            "detail": [
+                {
+                    "TargetName": "TutorialTerget",
+                    "BreakCount": 10
+                }
+            ]
+        }
+    ]
+}

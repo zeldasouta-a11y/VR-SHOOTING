@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using NUnit.Framework;
-using Unity.Collections;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class PhaseManager : MonoBehaviour
 {
 
     [SerializeField] float phaseChangeTime = 3.0f;
+    public float PhaseChangeTime => phaseChangeTime;
     [SerializeField] float fixedUpdate = 0.1f;
     [EnableIf("isEndPhase", hideWhenFalse: false)]
     [SerializeField] PhaseState nowGamePhase;
+    public PhaseState Phase => nowGamePhase;
+    public bool IsIgnoreScoreMode => phaseToSettingDic[Phase].isIgnoreScore;
     [SerializeField] bool isTimeOnlySpawn = false;
     [SerializeField] bool phaseEndTrigger = true;
     [SerializeField] bool createTrigger = false;
@@ -21,35 +20,19 @@ public class PhaseManager : MonoBehaviour
     private Dictionary<PhaseState,PhaseSettingData> phaseToSettingDic = new();
     private Dictionary<PhaseState,int> phaseToIndexDict = new();
     private Dictionary<PhaseState,int> phaseHitCountDict = new();
-    private Dictionary<PhaseState,Queue<int>> customIndexqueue = new(); 
+    private Dictionary<PhaseState,Queue<int>> customIndexqueue = new();
+    private string[] dotArray = new string[4] { "", ".", "..", "..." };
     public Queue<int> CustomIndexQueue => customIndexqueue[Phase];
     RandomTable queueTable;
     //Resolve GC(Overhead)
     private static WaitForSeconds waitUpdate ;
-    private static WaitForSeconds waitPhaseChange;
+    private static WaitForSeconds wait05s = new WaitForSeconds(0.5f);
     private int phaseHitCount = 0;
     private int phaseIndex = 0;
     private bool isTutrialSkip = false;
     private bool isEndPhase = false;
     private Coroutine _spawnCorutine;
-    public PhaseState Phase
-    {
-        get => nowGamePhase;
-        private set
-        {
-            nowGamePhase = value;
-            //Event trigger
-            if (phaseToSettingDic.TryGetValue(nowGamePhase, out var setting))
-            {
-                OnPhaseChanged?.Invoke(setting);
-                Debug.Log($"NextMode:{value.ToString()}");
-            }
-            else
-            {
-                Debug.LogWarning($"[PhaseManager] Undefined phase: {nowGamePhase}");
-            }
-        }
-    }
+    
     public event Action<PhaseSettingData> OnPhaseChanged;
     public event Action OnCreateTime;
     public event Action OnPhaseEnd;
@@ -61,9 +44,7 @@ public class PhaseManager : MonoBehaviour
         
     }
     private void Start()
-    {
-       
-        waitPhaseChange = new WaitForSeconds(phaseChangeTime);
+    {  
         waitUpdate = new WaitForSeconds(fixedUpdate);
     }
     private void OnDisable()
@@ -73,6 +54,20 @@ public class PhaseManager : MonoBehaviour
         {
             gameManager.OnGameStart -= OnGameStartHandle;
             gameManager.OnHit -= OnHitHandle;
+        }
+    }
+    private void PhaseChange(PhaseState newPhase)
+    {
+        nowGamePhase = newPhase;
+        //Event trigger
+        if (phaseToSettingDic.TryGetValue(nowGamePhase, out var setting))
+        {
+            OnPhaseChanged?.Invoke(setting);
+            Debug.Log($"NextMode:{newPhase.ToString()}");
+        }
+        else
+        {
+            Debug.LogWarning($"[PhaseManager] Undefined phase: {nowGamePhase}");
         }
     }
     private void OnGameStartHandle()
@@ -87,14 +82,28 @@ public class PhaseManager : MonoBehaviour
         for (phaseIndex = 0; phaseIndex < phaseSettings.Count; phaseIndex++)
         {
             var phase = phaseSettings[phaseIndex];
+            //チュートリアルスキップの場合
             if (isTutrialSkip && (phase.gamePhase == PhaseState.Tutorial || phase.gamePhase == PhaseState.TitorialBoard))
             {
                 continue;
             }
             isEndPhase = false;
             EndTriggerSet(false);
-            Phase = phase.gamePhase;
-            yield return waitPhaseChange;//先に待つ
+            
+            PhaseChange(phase.gamePhase);
+            if (!phase.isInstantlyChange)
+            {
+                var UI = ManagerLocator.Instance.UI;
+                int dotCount = 0;
+                //先に待つ
+                for (float i = 0;i <= phaseChangeTime;i += 0.5f)
+                {
+                    dotCount %= dotArray.Length;
+                    UI.UpdateTimerUI("loading" + dotArray[dotCount++]);
+                    yield return wait05s;
+                }
+                UI.UpdateTimerUI("");
+            }
             _spawnCorutine =  StartCoroutine(StartSpawn(phase));
             switch (phase.exitType)
             {
@@ -127,11 +136,11 @@ public class PhaseManager : MonoBehaviour
         for (float limitTimer = phaseTime; limitTimer >= 0; limitTimer -= fixedUpdate)
         {
             if (phaseEndTrigger) yield break;
-            ManagerLocator.Instance.UI.UpdateUI(limitTimer);
+            ManagerLocator.Instance.UI.UpdateTimerUI(limitTimer);
             yield return waitUpdate;
         }
         
-        ManagerLocator.Instance.UI.UpdateUI(0.0f);
+        ManagerLocator.Instance.UI.UpdateTimerUI(0.0f);
     }
     private IEnumerator RunWaitForTrigger()
     {
@@ -142,7 +151,10 @@ public class PhaseManager : MonoBehaviour
     }
     private IEnumerator RunWaitForBreak(int count)
     {
+        string text = $"remain:{phaseToSettingDic[nowGamePhase].exitBreakCount}";
+        ManagerLocator.Instance.UI.UpdateTimerUI(text);
         yield return new WaitWhile(() => phaseHitCount < count);
+        ManagerLocator.Instance.UI.UpdateTimerUI("Great!");
     }
     private IEnumerator StartSpawn(PhaseSettingData phase)
     {
@@ -278,6 +290,12 @@ public class PhaseManager : MonoBehaviour
     {
         phaseHitCountDict[nowGamePhase]++;
         phaseHitCount++;
+        if (phaseToSettingDic[nowGamePhase].exitType == PhaseExitType.BrekeCount)
+        {
+            string text = "remain:";
+            text += phaseToSettingDic[nowGamePhase].exitBreakCount - phaseHitCount;
+            ManagerLocator.Instance.UI.UpdateTimerUI(text);
+        }
         if (phaseToSettingDic[Phase].onSpawnTimeCount != 0 &&phaseHitCount % phaseToSettingDic[Phase].onSpawnTimeCount == 0)
         {
             CreateTrigger(true);
