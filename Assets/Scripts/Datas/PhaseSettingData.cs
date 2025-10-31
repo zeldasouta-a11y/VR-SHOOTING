@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public enum PhaseState { Start, Tutorial, Easy, Normal, Hard, AttashCase, Bonus }
+public enum PhaseState { TitorialBoard,Tutorial,Start, Easy, Normal, Hard, AttashCase, Bonus }
 public enum PhaseExitType { Time,Trigger ,BrekeCount}
 public enum SpawnTimingType { Time, Count, Trigger };
 [Serializable]
