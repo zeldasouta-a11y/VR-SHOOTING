@@ -44,7 +44,7 @@ namespace UnityStandardAssets.ImageEffects
             serObj.Update ();
 
             GUILayout.Label("Detects spatial differences and converts into black outlines", EditorStyles.miniBoldLabel);
-            EditorGUILayout.PropertyField (mode, new GUIContent("Mode"));
+            EditorGUILayout.PropertyField (mode, new GUIContent("Phase"));
 
             if (mode.intValue < 2) {
                 EditorGUILayout.PropertyField (sensitivityDepth, new GUIContent(" Depth Sensitivity"));

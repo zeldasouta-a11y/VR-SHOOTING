@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,7 +25,7 @@ namespace UnityStandardAssets.ImageEffects
         void OnEnable () {
             serObj = new SerializedObject (target);
 
-            type = serObj.FindProperty ("type");
+            type = serObj.FindProperty ("spawnTiming");
             remapCurve = serObj.FindProperty ("remapCurve");
             exposureAdjustment = serObj.FindProperty ("exposureAdjustment");
             middleGrey = serObj.FindProperty ("middleGrey");

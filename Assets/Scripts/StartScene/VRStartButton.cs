@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -8,20 +8,20 @@ public class VRStartButton : MonoBehaviour
 
     void Start()
     {
-        // ƒ{ƒ^ƒ“‚ğ©“®‚Åæ“¾
+        // ãƒœã‚¿ãƒ³ã‚’è‡ªå‹•ã§å–å¾—
         if (startButton == null)
             startButton = GetComponent<Button>();
 
-        // ƒ{ƒ^ƒ“ƒNƒŠƒbƒNƒCƒxƒ“ƒg‚ğİ’è
+        // ãƒœã‚¿ãƒ³ã‚¯ãƒªãƒƒã‚¯ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¨­å®š
         if (startButton != null)
             startButton.onClick.AddListener(OnStartButtonClicked);
     }
 
     public void OnStartButtonClicked()
     {
-        Debug.Log("Start Button Pressed! Loading VRgeme_ver1...");
+        Debug.Log("Phase1 Button Pressed! Loading VRgame_enable_game...");
 
-        // GameScene‚É‘JˆÚ
-        SceneManager.LoadScene("VRgeme_ver1");
+        // GameSceneã«é·ç§»
+        SceneManager.LoadScene("VRgame_enable_game");
     }
 }
