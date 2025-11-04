@@ -11,6 +11,7 @@ public class CreateTargetManager : MonoBehaviour
     [SerializeField] private GameObject baseprefab;
     [SerializeField] int initializePoolSize = 10;
     [SerializeField] bool usePool = false;
+    [SerializeField] TargetDataSO defaultTargets;
 
     public event Action<GameObject, TargetData> OnTargetSpawned;
     private Queue<GameObject> targetPool = new Queue<GameObject>();
@@ -79,7 +80,21 @@ public class CreateTargetManager : MonoBehaviour
 
     [OnInspectorButton("Spawn Targets with Scripts")]
     private GameObject EditorSpawn(int listIndex, Vector3 localPosition)
-        => CreateTarget(listIndex, localPosition);
+    {
+        var data = defaultTargets.targetSettingData[listIndex];
+        GameObject cloneBase = (targetPool.Count > 0) ? targetPool.Dequeue() : Instantiate(baseprefab);
+        cloneBase.transform.SetPositionAndRotation(localPosition, Quaternion.Euler(0,0,0));
+
+        GameObject cloneModel = Instantiate(data.TargetModel, cloneBase.transform);
+        cloneModel.transform.localPosition = Vector3.zero;
+        cloneModel.transform.localRotation = Quaternion.Euler(0, 180, 0);
+
+        var controller = cloneBase.GetComponent<TargetController>();
+        cloneBase.SetActive(true);//先に起動しないとコルーチンが発動しない
+        controller.Init(data, cloneModel, localPosition, mainCamera);
+        
+        return cloneBase;
+    }
 
     private GameObject CreateTarget(int listIndex, Vector3 localPosition)
     {
