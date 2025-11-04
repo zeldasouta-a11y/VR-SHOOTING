@@ -72,8 +72,12 @@ public class UIManager : MonoBehaviour
         }
 
     }
-    private void ShowResult()
+    private void ShowResult(bool isgameComplete)
     {
+        if (!isgameComplete)
+        {
+            return;
+        }
         timeLimitText.text = "End!";
         panelImage.color = new Color(255,255,255,100);
         resultText.text = "";

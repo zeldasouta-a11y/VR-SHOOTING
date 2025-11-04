@@ -11,6 +11,7 @@ public class ManagerLocator : MonoBehaviour
     [field:SerializeField] public PhaseManager Phase { get; private set; }
     [field:SerializeField] public UIManager UI { get; private set; }
     [field:SerializeField] public RankingManager Ranking { get; private set; }
+    [field:SerializeField] public VRInputManager Input { get;private set; }
     void Awake()
     {
         if (Instance == null)
@@ -36,6 +37,7 @@ public class ManagerLocator : MonoBehaviour
         CreateTarget.SetEvent(Phase,Game);
         UI.SetEvent(Game, Phase);
         Ranking.SetEvent(Game);
+        Input.SetEvent(Game);
     }
     //Game Create Memo
     //Structure:

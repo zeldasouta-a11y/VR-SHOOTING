@@ -28,9 +28,9 @@ public class RankingManager : MonoBehaviour
         }
     }
 
-    private void OnGameEndHandle()
+    private void OnGameEndHandle(bool isgameComplete)
     {
-        if (isSaveJson)
+        if (isgameComplete && isSaveJson)
         {
             SaveJson();
         }
@@ -42,7 +42,7 @@ public class RankingManager : MonoBehaviour
         var game = ManagerLocator.Instance.Game;
         if (game == null) 
         {
-            Debug.Log("Game Manager is MIssing");
+            Debug.LogError("[Ranking Manager] Game Manager is MIssing");
             return;
         }
         RankingData data = new RankingData
@@ -65,13 +65,15 @@ public class RankingManager : MonoBehaviour
         string jsonText = JsonUtility.ToJson(wrapper, true);
         string writePath = FilePath;
         File.WriteAllText(writePath, jsonText);
+#if UNITY_EDITOR
         Debug.Log($"ExportedJson:\n{jsonText}at{writePath}");
+#endif
     }
     private RankingListWrapper LoadJson()
     {
         if (!System.IO.File.Exists(FilePath))
         {
-            Debug.LogWarning("No ranking file found");
+            Debug.LogError("[Ranking Manager]No ranking file found");
             return new RankingListWrapper();
         }
 

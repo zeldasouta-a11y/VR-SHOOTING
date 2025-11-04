@@ -27,7 +27,7 @@ public class GunManager : MonoBehaviour
             //GunController SetUp
             if (data == null || data.gunModelObject == null)
             {
-                Debug.LogWarning("[GunManager] Invalid GunData or missing gunModelObject.");
+                Debug.LogError("[GunManager] Invalid GunData or missing gunModelObject.");
                 continue;
             }
 
