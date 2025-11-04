@@ -5,6 +5,7 @@ using System.Drawing;
 using TMPro;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
 
 
 public enum GameState { Idle, Playing, Paused, Ended }
@@ -45,7 +46,8 @@ public class GameManager : MonoBehaviour
     //System Event
     public event Action<bool> OnFullAutoChanged;
     public event Action OnGameStart;
-    public event Action OnGameEnd;
+    //正常終了 true,中断はfalse
+    public event Action<bool> OnGameEnd;
     public event Action OnHit;
     private void Start()
     {
@@ -64,11 +66,20 @@ public class GameManager : MonoBehaviour
         phase.OnAllPhaseEnd += GameEnd;
     }
     [OnInspectorButton("Game Restart", true)]
-    private void GameReStart(bool sameSeed)
+    public void GameRestart()
     {
+#if UNITY_EDITOR
+        Debug.Log("GameRestart !");
+#endif
+        //ゲーム中断処理
+        if (gamestate != GameState.Ended)
+        {
+            gamestate = GameState.Ended;
+            OnGameEnd?.Invoke(false);
+        }
         enddingBGM.Stop();
-        isCustomSeed = sameSeed;
-        StartGame();
+        //1フレーム待ってから実行(厳密にはdeltaTime)
+        Invoke(nameof(StartGame), Time.deltaTime);
     }
     [OnInspectorButton("", true)]
     public void StartFullAuto()
@@ -89,26 +100,34 @@ public class GameManager : MonoBehaviour
 
     private void StartGame()
     {
+#if UNITY_EDITOR
+        Debug.Log("[GameManager]GameStart!");
+#endif
         if (!isCustomSeed)
         {
             long tick = DateTime.Now.Ticks;
             gameSeed = (int)tick;
         }
+        //多重スタート禁止
         if(gamestate == GameState.Playing)
         {
             return;
         }
+        totalScore = 0;
+        targetHitCount.Clear();
         gamestate = GameState.Playing;
         OnGameStart?.Invoke();
     }
 
     public void GameEnd()
     {
+#if UNITY_EDITOR
         Debug.Log("GameEnd!");
+#endif
         gamestate = GameState.Ended;
         enddingBGM.Play();
         fullAutoBGM?.Stop();
-        OnGameEnd?.Invoke();
+        OnGameEnd?.Invoke(true);
     }
     
     public void AddScore(int point,string name)

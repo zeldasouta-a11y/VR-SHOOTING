@@ -32,7 +32,8 @@ public class PhaseManager : MonoBehaviour
     private bool isTutrialSkip = false;
     private bool isEndPhase = false;
     private Coroutine _spawnCorutine;
-    
+    private Coroutine gameMainCorutine;
+
     public event Action<PhaseSettingData> OnPhaseChanged;
     public event Action OnCreateTime;
     public event Action OnPhaseEnd;
@@ -41,7 +42,8 @@ public class PhaseManager : MonoBehaviour
     {
         gameManager.OnGameStart += OnGameStartHandle;
         gameManager.OnHit += OnHitHandle;
-        
+        gameManager.OnGameEnd += OnGameEndHandle;
+
     }
     private void Start()
     {  
@@ -54,8 +56,19 @@ public class PhaseManager : MonoBehaviour
         {
             gameManager.OnGameStart -= OnGameStartHandle;
             gameManager.OnHit -= OnHitHandle;
+            gameManager.OnGameEnd -= OnGameEndHandle;
         }
     }
+
+    private void OnGameEndHandle(bool isGameComplete)
+    {
+        if(!isGameComplete && gameMainCorutine != null)
+        {
+            OnPhaseEnd?.Invoke();
+            StopAllCoroutines();
+        }
+    }
+
     private void PhaseChange(PhaseState newPhase)
     {
         nowGamePhase = newPhase;
@@ -63,7 +76,6 @@ public class PhaseManager : MonoBehaviour
         if (phaseToSettingDic.TryGetValue(nowGamePhase, out var setting))
         {
             OnPhaseChanged?.Invoke(setting);
-            Debug.Log($"NextMode:{newPhase.ToString()}");
         }
         else
         {
@@ -74,7 +86,7 @@ public class PhaseManager : MonoBehaviour
     {
         isTutrialSkip = (ManagerLocator.Instance.Game.Tutorial == Tutorial.Skip);
         SetupAll(phaseSettings);
-        StartCoroutine(GamePhaseMainTimer());
+        gameMainCorutine = StartCoroutine(GamePhaseMainTimer());
 
     }
     private IEnumerator GamePhaseMainTimer()
@@ -154,7 +166,7 @@ public class PhaseManager : MonoBehaviour
         string text = $"remain:{phaseToSettingDic[nowGamePhase].exitBreakCount}";
         ManagerLocator.Instance.UI.UpdateTimerUI(text);
         yield return new WaitWhile(() => phaseHitCount < count);
-        ManagerLocator.Instance.UI.UpdateTimerUI("Great!");
+        ManagerLocator.Instance.UI.UpdateTimerUI("Tutorial Clear!");
     }
     private IEnumerator StartSpawn(PhaseSettingData phase)
     {
@@ -191,7 +203,7 @@ public class PhaseManager : MonoBehaviour
                 if (isEndPhase) yield break;
                 for (int i = 0; i < phase.onSpawnTimeCount; i++)
                 {
-                    Debug.Log("Create By Time");
+                    //Debug.Log("Create By Time");
                     OnCreateTime?.Invoke();
                     yield return null;
                 }
@@ -204,7 +216,7 @@ public class PhaseManager : MonoBehaviour
     {
         for (int i = 0; i < spawnCount; i++)
         {
-            Debug.Log("Create By Count");
+            //Debug.Log("Create By Count");
             OnCreateTime?.Invoke();
             yield return null;
         }
@@ -218,7 +230,7 @@ public class PhaseManager : MonoBehaviour
 
             for (int i = 0; i < spawnCount; i++)
             {
-                Debug.Log("Create By Trigger");
+                //Debug.Log("Create By Trigger");
                 OnCreateTime?.Invoke();
                 yield return null;
             }
@@ -296,6 +308,7 @@ public class PhaseManager : MonoBehaviour
             text += phaseToSettingDic[nowGamePhase].exitBreakCount - phaseHitCount;
             ManagerLocator.Instance.UI.UpdateTimerUI(text);
         }
+        //一定数出現する敵を打つと次が出る
         if (phaseToSettingDic[Phase].onSpawnTimeCount != 0 &&phaseHitCount % phaseToSettingDic[Phase].onSpawnTimeCount == 0)
         {
             CreateTrigger(true);
