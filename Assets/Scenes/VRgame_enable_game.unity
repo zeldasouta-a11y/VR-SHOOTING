@@ -703,6 +703,7 @@ MonoBehaviour:
   baseprefab: {fileID: 4897060822646410914, guid: ba3755a610e593f44a461f8c0441b5d9, type: 3}
   initializePoolSize: 20
   usePool: 1
+  defaultTargets: {fileID: 11400000, guid: ae02a8835914ac3439c9b007618b9775, type: 2}
 --- !u!4 &355095604
 Transform:
   m_ObjectHideFlags: 0
@@ -1215,7 +1216,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 699a445879be6924a992ea0997c633ed, type: 3}
+  m_Resource: {fileID: 8300000, guid: cb2c6bb9fa8ca0d4da99e0d5afd89e49, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.3
   m_Pitch: 1
@@ -1313,7 +1314,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 759af3c10c0e2f34e889b31c5031c6dc, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
@@ -1780,7 +1781,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 7903222cf53a12c4c8fad9b2fdec2d0f, type: 3}
+  m_Resource: {fileID: 8300000, guid: 23b67a93848e57640a51b63018cff911, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -21647,7 +21648,7 @@ Transform:
   m_GameObject: {fileID: 8122468976935414219}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
