@@ -135,12 +135,15 @@ public class GunController : MonoBehaviour
     public void Deactivate(DeactivateEventArgs args) { isActivate = false; }
     public void HoverExited(HoverExitEventArgs args)
     {
-        //thisRigidbody.linearVelocity = Vector3.zero;
-        //thisRigidbody.angularVelocity = Vector3.zero;
-        //this.transform.localPosition = gundata.GunRespawnPoint.localPosition;
+        
         isActivate = false;
     }
-
+    public void GunRespawn()
+    {
+        thisRigidbody.linearVelocity = Vector3.zero;
+        thisRigidbody.angularVelocity = Vector3.zero;
+        this.transform.localPosition = gundata.GunRespawnPoint.localPosition;
+    }
     private void GunShotFire()
     {
         if (bulletRemaining <= 0) { return; }

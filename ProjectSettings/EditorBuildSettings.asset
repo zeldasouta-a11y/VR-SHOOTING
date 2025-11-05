@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 55daccc09a3b69647bbab145b54a3ab3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StartMenuScene.unity
     guid: 4bfc31c3d93dae8428b783cc98b558a0
   - enabled: 0
@@ -16,7 +16,7 @@ EditorBuildSettings:
     guid: e406063713a8292429236317afd30e07
   - enabled: 1
     path: Assets/Scenes/VRgame_enable_game.unity
-    guid: bfd9dc9f4db05a94fb51d61c0e920bbf
+    guid: b3df7cbc8fe6598449329115a58bbdd0
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bfa1182bd221b4ca89619141f66f1260, type: 2}
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: dc5a169419fa04987b057f65238cf3ba, type: 2}

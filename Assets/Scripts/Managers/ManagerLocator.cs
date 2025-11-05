@@ -11,7 +11,7 @@ public class ManagerLocator : MonoBehaviour
     [field:SerializeField] public PhaseManager Phase { get; private set; }
     [field:SerializeField] public UIManager UI { get; private set; }
     [field:SerializeField] public RankingManager Ranking { get; private set; }
-    [field:SerializeField] public VRInputManager Input { get;private set; }
+    [field:SerializeField] public VRInputManager Input { get; private set; }
     void Awake()
     {
         if (Instance == null)
@@ -33,6 +33,7 @@ public class ManagerLocator : MonoBehaviour
     private void InjectDependencies() 
     {
         Game.SetEvent(Phase);
+        Gun.SetEvent(Game);
         Phase.SetEvent(Game);
         CreateTarget.SetEvent(Phase,Game);
         UI.SetEvent(Game, Phase);

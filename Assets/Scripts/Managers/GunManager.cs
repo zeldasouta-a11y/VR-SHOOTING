@@ -9,12 +9,24 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class GunManager : MonoBehaviour
 {
     [SerializeField] private List<GunData> gundatas;
-    
+    [SerializeField] private List<GunController> gunObjects;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-       GunInitialize();
+        GunInitialize();
+    }
+    public void SetEvent(GameManager game)
+    {
+        game.OnGameStart += GunRespawn;
+    }
+    private void OnDisable()
+    {
+        var game = ManagerLocator.Instance.Game;
+        if(game != null)
+        {
+            game.OnGameStart -= GunRespawn;
+        }
     }
     public void GunInitialize()
     {
@@ -40,7 +52,14 @@ public class GunManager : MonoBehaviour
             }
             //�����Q�Ɠn��
             gun.Init(data);
-
+            gunObjects.Add(gun);
+        }
+    }
+    private void GunRespawn()
+    {
+        foreach(GunController gun in gunObjects)
+        {
+            gun.GunRespawn();
         }
     }
     [OnInspectorButton]
