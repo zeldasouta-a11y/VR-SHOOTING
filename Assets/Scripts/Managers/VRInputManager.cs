@@ -42,8 +42,8 @@ public class VRInputManager : MonoBehaviour
     [Header("UI Interaction")]
     public XRUIInputModule xrUIInputModule;
 
-    [Header("XR origin")]
-    [SerializeField] private GameObject player;
+    [Header("Player Camera")]
+    [SerializeField] private Transform player;
     private Vector2 moveValue;
     private void Start()
     {
@@ -151,11 +151,11 @@ public class VRInputManager : MonoBehaviour
         if (isActive)
         {
             //プレイヤーの前方 
-            Vector3 foward = player.transform.forward;
+            Vector3 foward = player.forward;
             //プレイヤーの前方 + プレイヤーの向きベクトル*距離 + 高さ
-            Vector3 targetPos = player.transform.position + foward.normalized * panelDist + panelOffset;
+            Vector3 targetPos = player.position + foward.normalized * panelDist + panelOffset;
             //パネルの場所-プレイヤーの場所で向きを作る(関数で向きに変換)
-            Vector3 lookDir = targetPos - player.transform.position;
+            Vector3 lookDir = targetPos - player.position;
             lookDir.y = 0;
             
             userSettingPanel.transform.SetPositionAndRotation(targetPos, Quaternion.LookRotation(lookDir));
@@ -164,10 +164,10 @@ public class VRInputManager : MonoBehaviour
     }
     private void OnTrigger(InputAction.CallbackContext context) 
     {
-        Debug.Log(context.ToString());
+        //Debug.Log(context.ToString());
     }
     private void OnTriggerCanceled(InputAction.CallbackContext context)
     {
-        Debug.Log(context.ToString());
+        //Debug.Log(context.ToString());
     }
 }
