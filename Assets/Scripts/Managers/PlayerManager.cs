@@ -1,6 +1,10 @@
-using UnityEngine;
-
-public class PlayerManager : MonoBehaviour
+﻿using UnityEngine;
+namespace VRShooting.Manager
 {
-    
+
+    public class PlayerManager : MonoBehaviour
+    {
+
+    }
+
 }

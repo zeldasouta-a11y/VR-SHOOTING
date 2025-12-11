@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 
-public interface IBullet
+namespace VRShooting.Bullet
 {
-    public void Hit();
+    public interface IBullet
+    {
+        public abstract void BulletHit();
+    }
 }
+
