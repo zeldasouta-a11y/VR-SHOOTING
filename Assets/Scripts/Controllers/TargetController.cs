@@ -81,6 +81,8 @@ namespace VRShooting.Target
 
         private void OnEnable()
         {
+            if(receiver == (IHitReceiver)this) continue;
+            receivers.Add(receiver);
             ManagerLocator.Instance.Phase.OnPhaseEnd += DisableObject;
         }
 
