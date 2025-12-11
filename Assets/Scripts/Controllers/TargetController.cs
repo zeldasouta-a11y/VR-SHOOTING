@@ -56,6 +56,7 @@ public class TargetController : MonoBehaviour,IHitReceiver
         receivers.Clear();
         foreach(var receiver in GetComponentsInChildren<IHitReceiver>(true))
         {
+            if(receiver == (IHitReceiver)this) continue;
             receivers.Add(receiver);
         }
     }
