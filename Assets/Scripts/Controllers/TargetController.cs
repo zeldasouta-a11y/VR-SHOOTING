@@ -4,7 +4,7 @@ using TMPro;
 using Unity.XR.CoreUtils;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
-public class TargetController : MonoBehaviour
+public class TargetController : MonoBehaviour,IHitReceiver
 {
     [SerializeField] GameObject pointCanvasObject;
     [SerializeField] Canvas canvas;
@@ -115,16 +115,16 @@ public class TargetController : MonoBehaviour
         time += Time.deltaTime;
     }
 
-    private void OnHit()
+    public void OnHitNotify(IHitSender sender)
     {
 
         if (pointCanvasObject != null) pointCanvasObject.SetActive(true);
 
-        //子供(VFXコントローラ)にヒット通知を送る
+        //子供(VFXコントローラ)にもヒット通知を送る
         foreach (var receiver in receivers)
         {
             if (receiver == null) continue; // 破棄済みスキップ
-            receiver.OnHitNotify();
+            receiver.OnHitNotify(sender);
         }
 
         DisableObject();
@@ -158,19 +158,21 @@ public class TargetController : MonoBehaviour
         
         
     }
+    
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (isEnabled) return;                     // 二重ヒット防止
-        if (collision.gameObject.CompareTag("bullet"))
-            OnHit();
+        if (isEnabled) return; // 二重ヒット防止
+        //MonobihabiorとGameObjetは別、要素が欲しければ、GetComponent<>();
+        var hitSender = collision.gameObject.GetComponent<IHitSender>();
+        if (hitSender != null)
+            OnHitNotify(hitSender);
     }
 
     [OnInspectorButton]
     private void EditorHit()
     {
-        OnHit();
+        OnHitNotify(null);
     }
 
-    
 }

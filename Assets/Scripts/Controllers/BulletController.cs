@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletController : MonoBehaviour
+public class BulletController : MonoBehaviour,IHitSender
 {
     
     BulletData bulletdata;
@@ -28,4 +28,7 @@ public class BulletController : MonoBehaviour
         yield return new WaitForSeconds(bulletdata.BulletVanishTime);
         ManagerLocator.Instance.Bullet.ReturnBullet(bulletdata.Type, this.gameObject);
     }
+
+    public void OnHit()
+    {}
 }
