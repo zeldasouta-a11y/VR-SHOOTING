@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
+using VRShooting.Manager;
 
-public class FullAutoStartObject : MonoBehaviour
+namespace VRShooting.Target
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void OnDisable()
+    public class FullAutoStartObject : MonoBehaviour
     {
-        var gameManager = ManagerLocator.Instance.Game;
-        if(gameManager != null)
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void OnDisable()
         {
-            gameManager.StartFullAuto();
+            var gameManager = ManagerLocator.Instance.Game;
+            if (gameManager != null)
+            {
+                gameManager.StartFullAuto();
+            }
         }
     }
+
 }

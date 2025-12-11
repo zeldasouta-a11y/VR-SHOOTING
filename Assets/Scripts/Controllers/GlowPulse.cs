@@ -1,22 +1,26 @@
 ﻿using UnityEngine;
 
-public class GlowPulse : MonoBehaviour
+namespace VRShooting.Effect
 {
-    private Material mat;
-    [SerializeField] private Color baseColor = Color.cyan;
-    [SerializeField] private float intensity = 2f;
-    [SerializeField] private float speed = 2f;
-
-    void Start()
+    public class GlowPulse : MonoBehaviour
     {
-        mat = GetComponent<Renderer>().material;
-        mat.EnableKeyword("_EMISSION");
-    }
+        private Material mat;
+        [SerializeField] private Color baseColor = Color.cyan;
+        [SerializeField] private float intensity = 2f;
+        [SerializeField] private float speed = 2f;
 
-    void Update()
-    {
-        float emission = (Mathf.Sin(Time.time * speed) + 1.0f) * 0.5f * intensity;
-        Color finalColor = baseColor * Mathf.LinearToGammaSpace(emission);
-        mat.SetColor("_EmissionColor", finalColor);
+        void Start()
+        {
+            mat = GetComponent<Renderer>().material;
+            mat.EnableKeyword("_EMISSION");
+        }
+
+        void Update()
+        {
+            float emission = (Mathf.Sin(Time.time * speed) + 1.0f) * 0.5f * intensity;
+            Color finalColor = baseColor * Mathf.LinearToGammaSpace(emission);
+            mat.SetColor("_EmissionColor", finalColor);
+        }
     }
 }
+

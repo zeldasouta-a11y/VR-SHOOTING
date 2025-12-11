@@ -1,20 +1,24 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerContoller : MonoBehaviour
+namespace VRShooting.Player
 {
-    [OnInspectorButton]
-    public void PlayerRespawn()
+    public class PlayerContoller : MonoBehaviour
     {
-        if (this.gameObject.transform.localPosition.y < -1)
+        [OnInspectorButton]
+        public void PlayerRespawn()
         {
-            this.gameObject.transform.localPosition = new Vector3(0, 1, 0);
+            if (this.gameObject.transform.localPosition.y < -1)
+            {
+                this.gameObject.transform.localPosition = new Vector3(0, 1, 0);
+            }
         }
-    }
-    void FixedUpdate()
-    {
-        if (this.gameObject.transform.localPosition.y < -1)
+        void FixedUpdate()
         {
-            PlayerRespawn();
+            if (this.gameObject.transform.localPosition.y < -1)
+            {
+                PlayerRespawn();
+            }
         }
     }
 }
+

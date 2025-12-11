@@ -1,8 +1,13 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
-[CreateAssetMenu(menuName = "GunGunSetting")]
-public class GunDataSO : ScriptableObject
+using VRShooting.Data;
+namespace VRShooting.Data
 {
-    public GunData gunDatas;
+    [CreateAssetMenu(menuName = "GunGunSetting")]
+    public class GunDataSO : ScriptableObject
+    {
+        public GunData gunDatas;
+    }
+
 }

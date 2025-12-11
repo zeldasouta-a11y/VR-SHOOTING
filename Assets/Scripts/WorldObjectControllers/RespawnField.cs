@@ -1,16 +1,21 @@
-using UnityEngine;
+﻿using UnityEngine;
+using VRShooting.Player;
 
-public class RespawnField : MonoBehaviour
+namespace VRShooting.Filed
 {
-    void OnCollisionEnter(Collision collision)
+    public class RespawnField : MonoBehaviour
     {
-        PlayerContoller contoller = collision.gameObject.GetComponent<PlayerContoller>();
-        if (contoller != null)
+        void OnCollisionEnter(Collision collision)
         {
-            contoller.PlayerRespawn();
-        }
+            PlayerContoller contoller = collision.gameObject.GetComponent<PlayerContoller>();
+            if (contoller != null)
+            {
+                contoller.PlayerRespawn();
+            }
 #if UNITY_EDITOR
-        Debug.Log($"collision {collision.gameObject.name}");
+            Debug.Log($"collision {collision.gameObject.name}");
 #endif
+        }
     }
+
 }

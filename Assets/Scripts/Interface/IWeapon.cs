@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public interface IWeapon
+namespace VRShooting.Weapon
 {
-    public void Shot();
+    public interface IWeapon
+    {
+        public abstract void WeaponShot();
+    }
 }

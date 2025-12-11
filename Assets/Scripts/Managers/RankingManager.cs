@@ -3,89 +3,93 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using static UnityEngine.Analytics.IAnalytic;
-
-public class RankingManager : MonoBehaviour
+using VRShooting.Data;
+namespace VRShooting.Manager
 {
-    [SerializeField] bool isSaveJson = true;
-    [SerializeField] string FileName = "Ranking";
-    [SerializeField] RankingListWrapper rankingList = new();
-    public RankingListWrapper RankingList => rankingList;
-    private string FilePath => Path.Combine(Application.streamingAssetsPath, FileName+".json");
-    public void SetEvent(GameManager game)
+    public class RankingManager : MonoBehaviour
     {
-        game.OnGameEnd += OnGameEndHandle;
-    }
-    private void Start()
-    {
-        rankingList = LoadJson();
-    }
-    private void OnDisable()
-    {
-        var game = ManagerLocator.Instance.Game;
-        if(game != null)
+        [SerializeField] bool isSaveJson = true;
+        [SerializeField] string FileName = "Ranking";
+        [SerializeField] RankingListWrapper rankingList = new();
+        public RankingListWrapper RankingList => rankingList;
+        private string FilePath => Path.Combine(Application.streamingAssetsPath, FileName + ".json");
+        public void SetEvent(GameManager game)
         {
-            game.OnGameEnd -= OnGameEndHandle;
+            game.OnGameEnd += OnGameEndHandle;
         }
-    }
-
-    private void OnGameEndHandle(bool isgameComplete)
-    {
-        if (isgameComplete && isSaveJson)
+        private void Start()
         {
-            SaveJson();
+            rankingList = LoadJson();
         }
-        
-    }
-
-    private void SaveJson() 
-    {
-        var game = ManagerLocator.Instance.Game;
-        if (game == null) 
+        private void OnDisable()
         {
-            Debug.LogError("[Ranking Manager] Game Manager is MIssing");
-            return;
+            var game = ManagerLocator.Instance.Game;
+            if (game != null)
+            {
+                game.OnGameEnd -= OnGameEndHandle;
+            }
         }
-        RankingData data = new RankingData
+
+        private void OnGameEndHandle(bool isgameComplete)
         {
-            Time = DateTime.Now.ToString(),
-            GameSeed = game.GameSeed,
-            TotalScore = game.TotalScore
-        };
-        data.MakeDetailData(game.TargetHitDict);
-        RankingListWrapper wrapper = LoadJson();
-        wrapper.Rankings.Add(data);
-        ExportJson(wrapper);
-        //ランキングデータ更新
-        rankingList = wrapper;
+            if (isgameComplete && isSaveJson)
+            {
+                SaveJson();
+            }
+
+        }
+
+        private void SaveJson()
+        {
+            var game = ManagerLocator.Instance.Game;
+            if (game == null)
+            {
+                Debug.LogError("[Ranking Manager] Game Manager is MIssing");
+                return;
+            }
+            RankingData data = new RankingData
+            {
+                Time = DateTime.Now.ToString(),
+                GameSeed = game.GameSeed,
+                TotalScore = game.TotalScore
+            };
+            data.MakeDetailData(game.TargetHitDict);
+            RankingListWrapper wrapper = LoadJson();
+            wrapper.Rankings.Add(data);
+            ExportJson(wrapper);
+            //ランキングデータ更新
+            rankingList = wrapper;
 
 
-    }
-    private void ExportJson(RankingListWrapper wrapper)
-    {
-        string jsonText = JsonUtility.ToJson(wrapper, true);
-        string writePath = FilePath;
-        File.WriteAllText(writePath, jsonText);
+        }
+        private void ExportJson(RankingListWrapper wrapper)
+        {
+            string jsonText = JsonUtility.ToJson(wrapper, true);
+            string writePath = FilePath;
+            File.WriteAllText(writePath, jsonText);
 #if UNITY_EDITOR
-        Debug.Log($"ExportedJson:\n{jsonText}at{writePath}");
+            Debug.Log($"ExportedJson:\n{jsonText}at{writePath}");
 #endif
-    }
-    private RankingListWrapper LoadJson()
-    {
-        if (!System.IO.File.Exists(FilePath))
-        {
-            Debug.LogError("[Ranking Manager]No ranking file found");
-            return new RankingListWrapper();
         }
+        private RankingListWrapper LoadJson()
+        {
+            if (!System.IO.File.Exists(FilePath))
+            {
+                Debug.LogError("[Ranking Manager]No ranking file found");
+                return new RankingListWrapper();
+            }
 
-        string json = File.ReadAllText(FilePath);
-        return JsonUtility.FromJson<RankingListWrapper>(json);
+            string json = File.ReadAllText(FilePath);
+            return JsonUtility.FromJson<RankingListWrapper>(json);
+        }
+        private void SortJson()
+        {
+            // スコアの降順にソート（高いほど上位）
+            rankingList.Rankings = rankingList.Rankings
+                .OrderByDescending(r => r.TotalScore)
+                .ThenBy(r => r.Time) // 同点ならタイム順
+                .ToList();
+        }
     }
-    private void SortJson()
-    {
-        // スコアの降順にソート（高いほど上位）
-        rankingList.Rankings = rankingList.Rankings
-            .OrderByDescending(r => r.TotalScore)
-            .ThenBy(r => r.Time) // 同点ならタイム順
-            .ToList();
-    }
+
 }
