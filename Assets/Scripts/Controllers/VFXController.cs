@@ -25,7 +25,7 @@ public class VFXController : MonoBehaviour, IHitReceiver
     }
 
     //当たった時
-    public void OnHitNotify()
+    public void OnHitNotify(IHitSender sender)
     {
         Debug.Log("Hit Receive");
         this.gameObject.SetActive(true);
