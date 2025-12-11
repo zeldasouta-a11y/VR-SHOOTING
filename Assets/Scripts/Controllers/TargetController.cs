@@ -9,7 +9,7 @@ using VRShooting.Manager;
 namespace VRShooting.Target
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class TargetController : MonoBehaviour, IHitReceiver
+    public class TargetController : MonoBehaviour, IHitReceiver,IScorable
     {
         [SerializeField] GameObject pointCanvasObject;
         [SerializeField] Canvas canvas;
@@ -26,7 +26,11 @@ namespace VRShooting.Target
         private float time = 0f;
         private bool isEnabled = false;
 
+        public int Score => targetDatas.HitScore;
 
+        public string Name => targetDatas.ModelName;
+
+        public System.Tuple<int, string> ScoreAndName => new(Score, Name);
 
         public void Init(TargetData data, GameObject model, Vector3 spawnAt, Camera targetCamera)
         {
@@ -81,8 +85,11 @@ namespace VRShooting.Target
 
         private void OnEnable()
         {
-            if(receiver == (IHitReceiver)this) continue;
-            receivers.Add(receiver);
+            foreach (var receiver in GetComponentsInChildren<IHitReceiver>())
+            {
+                if(receiver == (IHitReceiver)this) continue;
+                receivers.Add(receiver);
+            }
             ManagerLocator.Instance.Phase.OnPhaseEnd += DisableObject;
         }
 
@@ -169,6 +176,14 @@ namespace VRShooting.Target
 
 
         private void OnTriggerEnter(Collider collision)
+        {
+            if (isEnabled) return; // 二重ヒット防止
+                                   //MonobihabiorとGameObjetは別、要素が欲しければ、GetComponent<>();
+            var hitSender = collision.gameObject.GetComponent<IHitSender>();
+            if (hitSender != null)
+                OnHitNotify(hitSender);
+        }
+        private void OnCollisionEnter(Collision collision)
         {
             if (isEnabled) return; // 二重ヒット防止
                                    //MonobihabiorとGameObjetは別、要素が欲しければ、GetComponent<>();

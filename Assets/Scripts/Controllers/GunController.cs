@@ -7,6 +7,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using VRShooting.Data;
 using VRShooting.Manager;
+using VRShooting.Player;
 
 namespace VRShooting.Weapon
 {
@@ -17,7 +18,10 @@ namespace VRShooting.Weapon
     public class GunController : MonoBehaviour,IWeapon
     {
         [SerializeField] GunData gundata;
-
+        /// <summary>
+        /// 得点集める人
+        /// </summary>
+        private IScoreCollector collector;
 
         // 弾管理
         private int bulletRemaining;
@@ -49,6 +53,10 @@ namespace VRShooting.Weapon
         /// </summary>
         private float reloadConstant = 0;
         /// <summary>
+        /// 球一発のリロード時間
+        /// </summary>
+        protected float reloadTime => reloadConstant / 1000f;
+        /// <summary>
         /// 残弾
         /// </summary>
         private int infiniteAmmo = -1;
@@ -58,8 +66,8 @@ namespace VRShooting.Weapon
         private Rigidbody thisRigidbody;
 
         // 低残弾の色設定
-        [SerializeField] private int lowAmmoThreshold = 3;
-        [SerializeField] private Color lowAmmoColor = Color.red;
+        private int lowAmmoThreshold = 3;
+        private Color lowAmmoColor = Color.red;
         private Color normalAmmoColor = Color.white;
 
         protected virtual void Start()
@@ -87,12 +95,29 @@ namespace VRShooting.Weapon
             UpdateUI();
 
         }
-        protected virtual void OnEnable()
+        protected void OnEnable()
         {
+            ManagerLocator instance = ManagerLocator.Instance;
             //イベント購読
-            ManagerLocator.Instance.Game.OnFullAutoChanged += OnFullAutoHandle;
+            if(instance != null)
+            {
+                GameManager game = instance.Game;
+                if(game != null)
+                {
+                    ManagerLocator.Instance.Game.OnFullAutoChanged += OnFullAutoHandle;
+                }
+                else
+                {
+                    Debug.LogError("Game Manager is null");
+                }
+            }
+            else
+            {
+                Debug.LogError("ManagerLocator is null");
+            }
+            
         }
-        protected virtual void OnDisable()
+        protected void OnDisable()
         {
             if (ManagerLocator.Instance.Game != null)
             {
@@ -115,8 +140,7 @@ namespace VRShooting.Weapon
             }
             if (isShootable)
             {
-                WeaponShot();
-                UpdateUI();
+                FireRountine();
                 return;
             }
         }
@@ -137,7 +161,7 @@ namespace VRShooting.Weapon
                 fireRate = gundata.FullAutoFireRate;
                 reloadConstant = gundata.FillAutoReloadConstant;
                 gundata.ShootSound.volume = 0.3f;
-                gundata.ReloadSound.volume = 0;
+                gundata.EmptySound.volume = 0;
             }
             else
             {
@@ -145,7 +169,7 @@ namespace VRShooting.Weapon
                 fireRate = gundata.FireRate;
                 reloadConstant = gundata.ReloadConstant;
                 gundata.ShootSound.volume = 1.0f;
-                gundata.ReloadSound.volume = 1.0f;
+                gundata.EmptySound.volume = 1.0f;
             }
         }
 
@@ -161,8 +185,19 @@ namespace VRShooting.Weapon
 
             if (isShootable)
             {
-                WeaponShot();
-                UpdateUI();
+                FireRountine();
+            }
+        }
+        private void FireRountine()
+        {
+            if (bulletRemaining <= 0) { return; }
+            bulletRemaining--;
+            WeaponShot();
+            StartCoroutine(FireRateRountine());   
+            UpdateUI();
+            if(bulletRemaining == 0)
+            {
+                StartReload();
             }
         }
         /// <summary>
@@ -170,8 +205,7 @@ namespace VRShooting.Weapon
         /// </summary>
         public virtual void WeaponShot()
         {
-            GunShotFire();
-            StartCoroutine(FireRountine());   
+            ShootAmmo();
         }
 
         public void Deactivate(DeactivateEventArgs args) { isActivate = false; }
@@ -186,26 +220,22 @@ namespace VRShooting.Weapon
             thisRigidbody.angularVelocity = Vector3.zero;
             this.transform.localPosition = gundata.GunRespawnPoint.localPosition;
         }
-        private void GunShotFire()
-        {
-            if (bulletRemaining <= 0) { return; }
-            bulletRemaining--;
-            gundata.ShootSound?.Play();
-            ShootAmmo();
-
-        }
-        private IEnumerator FireRountine()
+        private IEnumerator FireRateRountine()
         {
             isShootable = false;
+            gundata.ShootSound?.Play();
             yield return new WaitForSeconds(fireRate);
             isShootable = true;
         }
 
         private void StartReload()
         {
-            gundata.ReloadSound?.Play();
-            if (isReloading) return;
-
+            
+            if (isReloading) 
+            {
+                gundata.EmptySound?.Play();
+                return;
+            }
             int need = gundata.MagazineCapacity - bulletRemaining;
             if (need <= 0) return;             // 既に満タン
             if (reserveAmmo <= 0)
@@ -214,7 +244,7 @@ namespace VRShooting.Weapon
             }
             int load = gundata.IsInfiniteAmmo ? need : Mathf.Min(need, reserveAmmo);
 
-            float seconds = load * reloadConstant / 1000f;
+            float seconds = load * reloadTime;
 
             StartCoroutine(ReloadRoutine(load, seconds));
         }
@@ -231,6 +261,16 @@ namespace VRShooting.Weapon
             }
 
             float t = 0f;
+            float epsilon = 0.4f;
+            float reloadSoundTime = (gundata.ReloadSound != null)? gundata.ReloadSound.clip.length: 0;
+            while (t < (seconds - reloadSoundTime + epsilon))
+            {
+                t += Time.deltaTime;
+                if (gundata.ReloadProgress)
+                    gundata.ReloadProgress.fillAmount = Mathf.Clamp01(t / seconds);
+                yield return null;
+            }
+            gundata.ReloadSound?.Play();
             while (t < seconds)
             {
                 t += Time.deltaTime;
@@ -264,7 +304,8 @@ namespace VRShooting.Weapon
             ManagerLocator.Instance.Bullet.ActiveBullet
                 (gundata.BulletType,
                 gundata.MuzzlePos.position,
-                gundata.MuzzlePos.rotation
+                gundata.MuzzlePos.rotation,
+                collector
                 );
         }
 
