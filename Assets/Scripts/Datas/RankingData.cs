@@ -2,33 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class RankingListWrapper
+namespace VRShooting.Data
 {
-    public List<RankingData> Rankings = new();
-}
-
-[Serializable]
-public class RankingData 
-{
-    public string Time;
-    public int GameSeed;
-    public int TotalScore;
-    public List<DetailData> detail = new();
-
-    public void MakeDetailData(IReadOnlyDictionary<string, int> data)
+    [Serializable]
+    public class RankingListWrapper
     {
-        detail.Clear();
-        foreach (KeyValuePair<string, int> kvp in data)
+        public List<RankingData> Rankings = new();
+    }
+
+    [Serializable]
+    public class RankingData
+    {
+        public string Time;
+        public int GameSeed;
+        public int TotalScore;
+        public List<DetailData> detail = new();
+
+        public void MakeDetailData(IReadOnlyDictionary<string, int> data)
         {
-            detail.Add(new DetailData { TargetName = kvp.Key, BreakCount = kvp.Value });
+            detail.Clear();
+            foreach (KeyValuePair<string, int> kvp in data)
+            {
+                detail.Add(new DetailData { TargetName = kvp.Key, BreakCount = kvp.Value });
+            }
         }
     }
-}
 
-[Serializable]
-public class DetailData
-{
-    public string TargetName;
-    public int BreakCount;
+    [Serializable]
+    public class DetailData
+    {
+        public string TargetName;
+        public int BreakCount;
+    }
 }

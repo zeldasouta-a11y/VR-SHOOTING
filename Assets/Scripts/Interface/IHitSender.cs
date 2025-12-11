@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// 弾などヒットさせるもの
-/// </summary>
-public interface IHitSender
+namespace VRShooting.Bullet
 {
-    public void OnHit();
+    /// <summary>
+    /// 弾などヒットさせるもの
+    /// </summary>
+    public interface IHitSender
+    {
+        public abstract void OnHit();
+    }
 }
+

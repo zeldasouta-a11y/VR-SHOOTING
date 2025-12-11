@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-namespace BigRookGames.Weapons
+using VRShooting.Target;
+namespace VRShooting.Bullet
 {
-    public class ProjectileController : MonoBehaviour
+    public class ProjectileController : BulletController
     {
         // --- Config ---
         public float speed = 100;
@@ -25,7 +26,7 @@ namespace BigRookGames.Weapons
         public ParticleSystem disableOnHit;
 
 
-        private void Update()
+        protected override void Update()
         {
             // --- Check to see if the target has been hit. We don't want to update the position if the target was hit ---
             if (targetHit) return;
@@ -41,7 +42,8 @@ namespace BigRookGames.Weapons
         /// <param name="collision"></param>
         private void OnCollisionEnter(Collision collision)
         {
-            if(collision.gameObject.CompareTag("Weapon")) return;
+            IHitReceiver receiver = collision.gameObject.GetComponent<IHitReceiver>();
+            if (receiver == null) return;
             // --- return if not enabled because OnCollision is still called if compoenent is disabled ---
             if (!enabled) return;
 
@@ -71,6 +73,10 @@ namespace BigRookGames.Weapons
             GameObject newExplosion = Instantiate(rocketExplosion, transform.position, rocketExplosion.transform.rotation, null);
 
 
+        }
+        public override void BulletHit()
+        {
+            Explode();
         }
     }
 }

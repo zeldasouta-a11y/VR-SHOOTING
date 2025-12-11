@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
+using VRShooting.Bullet;
 
-/// <summary>
-/// ヒットを受信するもの
-/// </summary>
-public interface IHitReceiver
+namespace VRShooting.Target
 {
-    public void OnHitNotify(IHitSender hitsource);
+    /// <summary>
+    /// ヒットを受信するもの
+    /// </summary>
+    public interface IHitReceiver
+    {
+        public abstract void OnHitNotify(IHitSender hitsource);
+    }
+
 }

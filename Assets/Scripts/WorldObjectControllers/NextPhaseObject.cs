@@ -1,10 +1,15 @@
 ﻿using UnityEngine;
+using VRShooting.Manager;
 
-public class NextPhaseObject : MonoBehaviour
+namespace VRShooting.Target
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void OnDisable()
+    public class NextPhaseObject : MonoBehaviour
     {
-        ManagerLocator.Instance.Phase.EndTriggerSet(true); 
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void OnDisable()
+        {
+            ManagerLocator.Instance.Phase.EndTriggerSet(true);
+        }
     }
+
 }

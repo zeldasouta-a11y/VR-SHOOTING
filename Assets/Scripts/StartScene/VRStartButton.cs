@@ -2,26 +2,30 @@
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class VRStartButton : MonoBehaviour
+namespace VRShooting.UI
 {
-    public Button startButton;
-
-    void Start()
+    public class VRStartButton : MonoBehaviour
     {
-        // ボタンを自動で取得
-        if (startButton == null)
-            startButton = GetComponent<Button>();
+        public Button startButton;
 
-        // ボタンクリックイベントを設定
-        if (startButton != null)
-            startButton.onClick.AddListener(OnStartButtonClicked);
+        void Start()
+        {
+            // ボタンを自動で取得
+            if (startButton == null)
+                startButton = GetComponent<Button>();
+
+            // ボタンクリックイベントを設定
+            if (startButton != null)
+                startButton.onClick.AddListener(OnStartButtonClicked);
+        }
+
+        public void OnStartButtonClicked()
+        {
+            Debug.Log("Phase1 Button Pressed! Loading VRgame_enable_game...");
+
+            // GameSceneに遷移
+            SceneManager.LoadScene("VRgame_enable_game");
+        }
     }
 
-    public void OnStartButtonClicked()
-    {
-        Debug.Log("Phase1 Button Pressed! Loading VRgame_enable_game...");
-
-        // GameSceneに遷移
-        SceneManager.LoadScene("VRgame_enable_game");
-    }
 }
