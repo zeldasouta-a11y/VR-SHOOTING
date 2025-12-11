@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Pool;
 using VRShooting.Bullet;
 using VRShooting.Data;
+using VRShooting.Player;
 namespace VRShooting.Manager
 {
     public class BulletManager : MonoBehaviour
@@ -48,13 +49,14 @@ namespace VRShooting.Manager
             }
         }
 
-        public GameObject ActiveBullet(BulletType type, Vector3 pos, Quaternion rot)
+        public GameObject ActiveBullet(BulletType type, Vector3 pos, Quaternion rot,IScoreCollector collector)
         {
             if (!bulletPoolDict.ContainsKey(type)) return null;
             Queue<GameObject> bulletqueue = bulletPoolDict[type];
             GameObject obj = bulletqueue.Count > 0 ? bulletqueue.Dequeue() : CreateInsitatce(type);
             ////弾の位置を、銃口の位置と同一にする。
             obj.transform.SetPositionAndRotation(pos, rot);
+            obj.GetComponent<BulletController>().SetIScoreCollector(collector);
             obj.SetActive(true);
             return obj;
         }

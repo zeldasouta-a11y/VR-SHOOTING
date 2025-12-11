@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using VRShooting.Data;
 using VRShooting.Manager;
+using VRShooting.Player;
+using VRShooting.Target;
 namespace VRShooting.Bullet
 {
     /// <summary>
@@ -12,6 +14,12 @@ namespace VRShooting.Bullet
     {
 
         BulletData bulletdata;
+        IScoreCollector collector;
+        private float bulletSpeed = 0;
+        private float bulletVanishTime = 3.0f;
+        private BulletType bulletType;
+
+        public IScoreCollector GetScoreCollector => collector;
 
         protected virtual void OnEnable()
         {
@@ -22,20 +30,27 @@ namespace VRShooting.Bullet
         {
             //弾を前に進ませる
             transform.position +=
-                transform.forward * bulletdata.BulletSpeed * Time.deltaTime;
+                transform.forward * bulletSpeed * Time.deltaTime;
+        }
+        public void SetIScoreCollector(IScoreCollector collector)
+        {
+            this.collector = collector;
         }
         public void Init(BulletData data)
         {
             bulletdata = data;
+            bulletSpeed = bulletdata.BulletSpeed;
+            bulletVanishTime = bulletdata.BulletVanishTime;
+            bulletType = bulletdata.Type;
         }
         private IEnumerator ReturnToPoolAfterDelay()
         {
             yield return null;//1f待つことで参照切れを防ぐ.
-            yield return new WaitForSeconds(bulletdata.BulletVanishTime);
-            ManagerLocator.Instance.Bullet.ReturnBullet(bulletdata.Type, this.gameObject);
+            yield return new WaitForSeconds(bulletVanishTime);
+            ManagerLocator.Instance.Bullet.ReturnBullet(bulletType, this.gameObject);
         }
 
-        public  virtual void OnHit()
+        public  virtual void OnHit(IHitReceiver receiver)
         { }
 
         public virtual void BulletHit()

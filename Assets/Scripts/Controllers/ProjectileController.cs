@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VRShooting.Player;
 using VRShooting.Target;
+using VRShooting.Weapon;
 namespace VRShooting.Bullet
 {
     public class ProjectileController : BulletController
@@ -42,8 +44,11 @@ namespace VRShooting.Bullet
         /// <param name="collision"></param>
         private void OnCollisionEnter(Collision collision)
         {
-            IHitReceiver receiver = collision.gameObject.GetComponent<IHitReceiver>();
-            if (receiver == null) return;
+            IWeapon weapon = collision.gameObject.GetComponent<IWeapon>();
+            if(weapon != null) return;
+            PlayerContoller player = collision.gameObject.GetComponentInParent<PlayerContoller>();
+            if(player != null) return;
+
             // --- return if not enabled because OnCollision is still called if compoenent is disabled ---
             if (!enabled) return;
 

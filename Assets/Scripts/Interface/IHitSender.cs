@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using VRShooting.Player;
+using VRShooting.Target;
 
 namespace VRShooting.Bullet
 {
@@ -7,7 +9,8 @@ namespace VRShooting.Bullet
     /// </summary>
     public interface IHitSender
     {
-        public abstract void OnHit();
+        public abstract IScoreCollector GetScoreCollector{get;}
+        public abstract void OnHit(IHitReceiver receiver);
     }
 }
 
