@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public enum BulletType { Normal, Sniper };
+public enum BulletType { Normal, Sniper, Projectile };
 [System.Serializable]
 public class BulletData
 {
