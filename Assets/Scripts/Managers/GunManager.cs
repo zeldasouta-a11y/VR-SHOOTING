@@ -12,16 +12,17 @@ namespace VRShooting.Manager
     public class GunManager : MonoBehaviour
     {
         [SerializeField] private List<GunData> gundatas;
-        [SerializeField] private List<GunController> gunObjects;
+        private List<GunController> gunObjects = new ();
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
             GunInitialize();
         }
-        public void SetEvent(GameManager game)
+        public void SetEvent(GameManager game,PhaseManager phase)
         {
             game.OnGameStart += GunRespawn;
+            phase.OnPhaseChanged += GunSpawn;
         }
         private void OnDisable()
         {
@@ -29,6 +30,10 @@ namespace VRShooting.Manager
             if (game != null)
             {
                 game.OnGameStart -= GunRespawn;
+            }
+            var phase = ManagerLocator.Instance.Phase;
+            if(phase != null){
+                phase.OnPhaseChanged -= GunSpawn;
             }
         }
         public void GunInitialize()
@@ -63,6 +68,13 @@ namespace VRShooting.Manager
             foreach (GunController gun in gunObjects)
             {
                 gun.GunRespawn();
+            }
+        }
+        private void GunSpawn(PhaseSettingData data)
+        {
+            if(data.gamePhase == PhaseState.AttashCase)
+            {
+                GunRespawn();
             }
         }
         [OnInspectorButton]

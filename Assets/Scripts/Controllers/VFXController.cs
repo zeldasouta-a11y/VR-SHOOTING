@@ -20,8 +20,6 @@ namespace VRShooting.Effect
         [Range(0f, 2f)][SerializeField] private float pitchJitterSemitones = 0.5f;
         [Range(0.0f, 1f)][SerializeField] private float soundVolume = 0.9f;
         private Canvas canvas;
-
-
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
@@ -31,7 +29,7 @@ namespace VRShooting.Effect
         //当たった時
         public void OnHitNotify(IHitSender sender)
         {
-            Debug.Log("BulletHit Receive");
+            //Debug.Log("BulletHit Receive");
             this.gameObject.SetActive(true);
             SpawnBreakFx();
             PlayBreakSfx();

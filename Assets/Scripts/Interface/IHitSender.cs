@@ -9,7 +9,7 @@ namespace VRShooting.Bullet
     /// </summary>
     public interface IHitSender
     {
-        public abstract IScoreCollector GetScoreCollector{get;}
+        public abstract IScoreCollector ScoreCollector { get; }
         public abstract void OnHit(IHitReceiver receiver);
     }
 }

@@ -19,7 +19,7 @@ namespace VRShooting.Bullet
         private float bulletVanishTime = 3.0f;
         private BulletType bulletType;
 
-        public IScoreCollector GetScoreCollector => collector;
+        public IScoreCollector ScoreCollector => collector;
 
         protected virtual void OnEnable()
         {

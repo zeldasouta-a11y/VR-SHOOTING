@@ -62,6 +62,9 @@ namespace VRShooting.Manager
         }
         public void ReturnBullet(BulletType type, GameObject obj)
         {
+            Rigidbody rbody = obj.GetComponent<Rigidbody>();
+            rbody.linearVelocity = Vector3.zero;
+            rbody.angularVelocity = Vector3.zero;
             obj.SetActive(false);
             bulletPoolDict[type].Enqueue(obj);
         }
