@@ -17,7 +17,7 @@ namespace VRShooting.Manager
         public bool IsIgnoreScoreMode => phaseToSettingDic[Phase].isIgnoreScore;
         [SerializeField] bool isTimeOnlySpawn = false;
         [SerializeField] bool phaseEndTrigger = true;
-        [SerializeField] bool createTrigger = false;
+        [SerializeField] int createTriggerCount = 0;
         [SerializeField] private List<PhaseSettingData> phaseSettings;
         private Dictionary<PhaseState, PhaseSettingData> phaseToSettingDic = new();
         private Dictionary<PhaseState, int> phaseToIndexDict = new();
@@ -182,7 +182,7 @@ namespace VRShooting.Manager
                     yield return CreateByCount(phase.onSpawnTimeCount);
                     yield break;
                 case SpawnTimingType.Trigger:
-                    CreateTrigger(true);
+                    CreateTriggerCount(1);
                     yield return CreateByTrigger(phase.onSpawnTriggerCount);
                     yield break;
             }
@@ -223,24 +223,27 @@ namespace VRShooting.Manager
                 yield return null;
             }
         }
+
+        //ここで詰まってる
+        //
         private IEnumerator CreateByTrigger(int spawnCount)
         {
             while (!isEndPhase)
             {
-                yield return new WaitUntil(() => createTrigger || isEndPhase);//ここで待つことで余計なコードが走らない.
+                yield return new WaitUntil(() => createTriggerCount > 0 || isEndPhase);//ここで待つことで余計なコードが走らない.
                 if (isEndPhase) yield break;
 
                 for (int i = 0; i < spawnCount; i++)
                 {
-                    //Debug.Log("Create By Trigger");
+                    Debug.Log("Create By Trigger");
                     OnCreateTime?.Invoke();
                     yield return null;
                 }
-                CreateTrigger(false);
+                CreateTriggerCount(-1);
             }
         }
         public void EndTriggerSet(bool trigger) => phaseEndTrigger = trigger;
-        private void CreateTrigger(bool trigger) => createTrigger = trigger;
+        private void CreateTriggerCount(int cnt) => createTriggerCount += cnt;
         private void SetupAll(List<PhaseSettingData> phaseSettings)
         {
             queueTable = new RandomTable(ManagerLocator.Instance.Game.GameSeed);
@@ -313,7 +316,7 @@ namespace VRShooting.Manager
             //一定数出現する敵を打つと次が出る
             if (phaseToSettingDic[Phase].onSpawnTimeCount != 0 && phaseHitCount % phaseToSettingDic[Phase].onSpawnTimeCount == 0)
             {
-                CreateTrigger(true);
+                CreateTriggerCount(1);
             }
         }
         [OnInspectorButton]

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using VRShooting.Data;
+using VRShooting.Manager;
 using VRShooting.Weapon;
 
 namespace VRShooting.Weapon
@@ -86,10 +88,16 @@ namespace VRShooting.Weapon
             var flash = Instantiate(muzzlePrefab, muzzlePosition.transform);
 
             // --- Shoot Projectile Object ---
-            if (projectilePrefab != null)
-            {
-                GameObject newProjectile = Instantiate(projectilePrefab, muzzlePosition.transform.position, muzzlePosition.transform.rotation);
-            }
+            // if (projectilePrefab != null)
+            // {
+            //     GameObject newProjectile = Instantiate(projectilePrefab, muzzlePosition.transform.position, muzzlePosition.transform.rotation);
+            // }
+            ManagerLocator.Instance.Bullet.ActiveBullet(
+                GunDatas.BulletType,
+                GunDatas.MuzzlePos.position,
+                GunDatas.MuzzlePos.rotation,
+                Collector
+            );
 
             // --- Disable any gameobjects, if needed ---
             if (projectileToDisableOnFire != null)
@@ -139,6 +147,7 @@ namespace VRShooting.Weapon
 
         public override void WeaponShot()
         {
+            
             FireWeapon();
         }
     }

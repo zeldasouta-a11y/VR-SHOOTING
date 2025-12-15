@@ -34566,6 +34566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VRShooting.Bullet.ExplodeWind
   vanishTime: 0.1
+  extendSize: 10
 --- !u!1 &1924202265790126
 GameObject:
   m_ObjectHideFlags: 0
