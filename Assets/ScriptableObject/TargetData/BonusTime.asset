@@ -26,8 +26,8 @@ MonoBehaviour:
     moveType: 2
     moveDurtation: 2
     moveVector: {x: 20, y: 20, z: 20}
-  - targetModel: {fileID: 7575923230338825960, guid: 2f41ac8b8ecb2e14d9285ee2f278693a, type: 3}
-    targetModelName: "\u8D64\u3044\u6C17\u7403"
+  - targetModel: {fileID: 977174749816992835, guid: 91abaed05ccca514d88c5cfdf0189d95, type: 3}
+    targetModelName: "\u8D64\u3044\u8239"
     minPosition: {x: -30, y: -10, z: 50}
     maxPosition: {x: 30, y: 0, z: 100}
     maxSpawn: 100
@@ -39,8 +39,8 @@ MonoBehaviour:
     moveType: 0
     moveDurtation: 0
     moveVector: {x: 0, y: 20, z: 0}
-  - targetModel: {fileID: 2263297054331644975, guid: a1c623815922a0b4d89bae91dba94562, type: 3}
-    targetModelName: "\u91D1\u8272\u306E\u6C17\u7403"
+  - targetModel: {fileID: 1669491610487658433, guid: 51d95ecbebb0b5f41b99867d57f6bef9, type: 3}
+    targetModelName: "\u5DE8\u5927\u6226\u8266"
     minPosition: {x: -100, y: 40, z: 300}
     maxPosition: {x: 100, y: 100, z: 400}
     maxSpawn: 0
@@ -52,8 +52,8 @@ MonoBehaviour:
     moveType: 0
     moveDurtation: 0
     moveVector: {x: 0, y: 20, z: 0}
-  - targetModel: {fileID: 8862306565856226886, guid: b3bbe9d0d886db14590bd32f4f727056, type: 3}
-    targetModelName: "\u52D5\u304F\u7684"
+  - targetModel: {fileID: 3789896600023451612, guid: 957b55cb6eb37ca448f6bf658f88d829, type: 3}
+    targetModelName: "\u5C0F\u821F"
     minPosition: {x: -10, y: 3, z: 20}
     maxPosition: {x: 10, y: 10, z: 35}
     maxSpawn: 100
