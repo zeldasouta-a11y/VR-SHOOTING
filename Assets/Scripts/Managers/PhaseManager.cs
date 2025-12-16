@@ -78,6 +78,7 @@ namespace VRShooting.Manager
             if (phaseToSettingDic.TryGetValue(nowGamePhase, out var setting))
             {
                 OnPhaseChanged?.Invoke(setting);
+                Debug.Log($"[PhaseManager] Now phase: {nowGamePhase}");
             }
             else
             {
