@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: EasyMode
   m_EditorClassIdentifier: Assembly-CSharp::TargetDataSO
   targetSettingData:
-  - targetModel: {fileID: 8862306565856226886, guid: b3bbe9d0d886db14590bd32f4f727056, type: 3}
-    targetModelName: "\u52D5\u304B\u306A\u3044\u7684"
+  - targetModel: {fileID: 3789896600023451612, guid: 957b55cb6eb37ca448f6bf658f88d829, type: 3}
+    targetModelName: "\u5C0F\u821F\uFF08\u9759\u6B62\uFF09"
     minPosition: {x: -15, y: 1, z: 20}
     maxPosition: {x: 15, y: 10, z: 35}
     maxSpawn: 15
@@ -26,8 +26,8 @@ MonoBehaviour:
     moveType: 0
     moveDurtation: 0
     moveVector: {x: 0, y: 0, z: 0}
-  - targetModel: {fileID: 8862306565856226886, guid: b3bbe9d0d886db14590bd32f4f727056, type: 3}
-    targetModelName: "\u52D5\u304F\u7684"
+  - targetModel: {fileID: 3789896600023451612, guid: 957b55cb6eb37ca448f6bf658f88d829, type: 3}
+    targetModelName: "\u5C0F\u821F"
     minPosition: {x: -5, y: 1, z: 20}
     maxPosition: {x: -5, y: 7, z: 35}
     maxSpawn: 10
