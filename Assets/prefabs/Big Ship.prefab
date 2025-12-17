@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1182180716496050714}
   m_Layer: 0
   m_Name: model
-  m_TagString: Untagged
+  m_TagString: Model
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 6566930144173227888}
   m_Layer: 0
   m_Name: Big Ship
-  m_TagString: Untagged
+  m_TagString: Model
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
