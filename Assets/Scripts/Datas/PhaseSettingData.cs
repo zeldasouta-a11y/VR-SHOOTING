@@ -4,7 +4,7 @@ using VRShooting.Manager;
 
 namespace VRShooting.Data
 {
-    public enum PhaseState { TitorialBoard, Tutorial, Start, Easy, Normal, Hard, AttashCase, Bonus }
+    public enum PhaseState { TitorialBoard, Tutorial, Start, Easy, Normal, Hard, AttashCase,UltraHard, Bonus }
     public enum PhaseExitType { Time, Trigger, BrekeCount }
     public enum SpawnTimingType { Time, Count, Trigger };
     [Serializable]

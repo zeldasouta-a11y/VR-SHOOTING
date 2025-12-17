@@ -47,7 +47,7 @@ namespace VRShooting.Bullet
         /// <param name="collision"></param>
         private void OnCollisionEnter(Collision collision)
         {
-            IWeapon weapon = collision.gameObject.GetComponent<IWeapon>();
+            IWeapon weapon = collision.gameObject.GetComponentInParent<IWeapon>();
             if(weapon != null) return;
             PlayerContoller player = collision.gameObject.GetComponentInParent<PlayerContoller>();
             if(player != null) return;
@@ -58,7 +58,7 @@ namespace VRShooting.Bullet
             if(terrain != null) return;
             // --- return if not enabled because OnCollision is still called if compoenent is disabled ---
             if (!enabled) return;
-            Debug.Log(collision.gameObject.name + " Hit");
+            Debug.Log($"[ProjectileController] {collision.gameObject.name} Collision Hit");
             // --- Explode when hitting an object and disable the projectile mesh ---
             Explode();
             projectileMesh.enabled = false;
@@ -78,9 +78,9 @@ namespace VRShooting.Bullet
         /// Explodes on contact.
         /// </summary>
         /// <param name="collision"></param>
-        void OnTriggerEnter(Collision collision)
+        void OnTriggerEnter(Collider collision)
         {
-            IWeapon weapon = collision.gameObject.GetComponent<IWeapon>();
+            IWeapon weapon = collision.gameObject.GetComponentInParent<IWeapon>();
             if(weapon != null) return;
             PlayerContoller player = collision.gameObject.GetComponentInParent<PlayerContoller>();
             if(player != null) return;
@@ -91,7 +91,7 @@ namespace VRShooting.Bullet
             if(terrain != null) return;
             // --- return if not enabled because OnCollision is still called if compoenent is disabled ---
             if (!enabled) return;
-            Debug.Log(collision.gameObject.name + " Hit");
+            Debug.Log($"[ProjectileController] {collision.gameObject.name} Trigger Hit");
             // --- Explode when hitting an object and disable the projectile mesh ---
             Explode();
             projectileMesh.enabled = false;

@@ -34565,8 +34565,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6b4cc1d62a19f45967035b97edb6ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VRShooting.Bullet.ExplodeWind
-  vanishTime: 0.1
+  vanishTime: 1
   extendSize: 10
+  extendInitialzie: -10
 --- !u!1 &1924202265790126
 GameObject:
   m_ObjectHideFlags: 0
