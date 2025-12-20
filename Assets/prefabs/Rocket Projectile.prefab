@@ -55,6 +55,11 @@ MonoBehaviour:
   projectileMesh: {fileID: 4769861055726943317}
   inFlightAudioSource: {fileID: 1422680376257204169}
   disableOnHit: {fileID: 198057225787543630, guid: 6637f6efebd5b0d4eb939586be277cd9, type: 3}
+  expandMin: 0.01
+  expandMax: 3
+  expandStartDistance: 0
+  saturationDistance: 10
+  saturationPercent: 0.715
 --- !u!54 &571525074443819958
 Rigidbody:
   m_ObjectHideFlags: 0

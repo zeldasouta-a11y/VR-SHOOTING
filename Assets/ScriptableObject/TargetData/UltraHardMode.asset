@@ -41,8 +41,8 @@ MonoBehaviour:
     moveVector: {x: 15, y: 15, z: 15}
   - targetModel: {fileID: 3789896600023451612, guid: 957b55cb6eb37ca448f6bf658f88d829, type: 3}
     targetModelName: "\u5C0F\u821F"
-    minPosition: {x: -10, y: 1, z: 20}
-    maxPosition: {x: 0, y: 10, z: 35}
+    minPosition: {x: -20, y: -10, z: 20}
+    maxPosition: {x: -10, y: 0, z: 35}
     maxSpawn: 15
     spawnWeight: 10
     hitScore: 750
@@ -54,7 +54,7 @@ MonoBehaviour:
     moveVector: {x: 8, y: 0, z: 0}
   - targetModel: {fileID: 977174749816992835, guid: 91abaed05ccca514d88c5cfdf0189d95, type: 3}
     targetModelName: "\u8D64\u3044\u8239"
-    minPosition: {x: -80, y: -10, z: 100}
+    minPosition: {x: -80, y: -30, z: 100}
     maxPosition: {x: 80, y: 0, z: 150}
     maxSpawn: 15
     spawnWeight: 10

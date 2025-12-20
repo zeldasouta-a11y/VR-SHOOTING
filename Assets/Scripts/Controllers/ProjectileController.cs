@@ -27,6 +27,13 @@ namespace VRShooting.Bullet
 
         // --- VFX ---
         public ParticleSystem disableOnHit;
+        
+        [Header("Explosion expand (distance -> expand)")]
+        [SerializeField] private float expandMin = 2f;          // 近距離の爆発範囲
+        [SerializeField] private float expandMax = 10f;         // 遠距離の上限
+        [SerializeField] private float expandStartDistance = 0f; // ここまではほぼ最小
+        [SerializeField] private float saturationDistance = 50f; // startからこの距離でほぼ上限へ
+        [SerializeField, Range(0.5f, 0.999f)] private float saturationPercent = 0.95f;
 
 
         protected override void Update()
@@ -78,6 +85,18 @@ namespace VRShooting.Bullet
         /// Explodes on contact.
         /// </summary>
         /// <param name="collision"></param>
+        private float CalcExpand(float distance)
+        {
+            float x = Mathf.Max(0f, distance - expandStartDistance);
+
+            // 「saturationDistance で saturationPercent に到達」する k を計算
+            float p = Mathf.Clamp(saturationPercent, 0.0001f, 0.9999f);
+            float k = -Mathf.Log(1f - p) / Mathf.Max(0.0001f, saturationDistance);
+
+            float t = 1f - Mathf.Exp(-k * x); // 0→1へ指数的に近づく
+            return Mathf.Lerp(expandMin, expandMax, t);
+        }
+
         void OnTriggerEnter(Collider collision)
         {
             IWeapon weapon = collision.gameObject.GetComponentInParent<IWeapon>();
@@ -116,11 +135,14 @@ namespace VRShooting.Bullet
         {
             // --- Instantiate new explosion option. I would recommend using an object pool ---
             GameObject newExplosion = Instantiate(rocketExplosion, transform.position, rocketExplosion.transform.rotation, null);
+            float expand = CalcExpand(elapsed);
+             // 見た目の拡大（VFX全体を拡大）
+            newExplosion.transform.localScale = Vector3.one * expand;
             ExplodeWind wind = newExplosion.GetComponent<ExplodeWind>();
-            wind.SetExpand(elapsed);
-
-
-
+            float expandValue = CalcExpand(elapsed);
+            wind.SetExpand(CalcExpand(elapsed));
+            Vector3 baseScale = rocketExplosion.transform.localScale;
+            newExplosion.transform.localScale = baseScale * expand;
         }
         public override void BulletHit()
         {
