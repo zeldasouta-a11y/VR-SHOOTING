@@ -8,7 +8,7 @@ using VRShooting.Manager;
 using static UnityEngine.Rendering.DebugUI.Table;
 namespace VRShooting.Manager
 {
-    public enum SpawnChooseType { Random, MaxSpawn, SpawnWeight }
+    public enum SpawnChooseType { Random, MaxSpawn, SpawnWeight, Index }
     public class CreateTargetManager : MonoBehaviour
     {
         [SerializeField] private Camera mainCamera;
@@ -41,6 +41,7 @@ namespace VRShooting.Manager
         {
             phaseManager.OnPhaseChanged += OnGamePhaseChangeHandle;
             phaseManager.OnCreateTime += OnCreateTimeHandle;
+            phaseManager.RequestCreate += OnCreateIndex;
             gameManager.OnGameStart += OnGameStartHandle;
         }
         private void OnDisable()
@@ -51,6 +52,7 @@ namespace VRShooting.Manager
             {
                 phaseManager.OnPhaseChanged -= OnGamePhaseChangeHandle;
                 phaseManager.OnCreateTime -= OnCreateTimeHandle;
+                phaseManager.RequestCreate -= OnCreateIndex;
             }
             if (gameManager != null)
             {
@@ -169,6 +171,11 @@ namespace VRShooting.Manager
 
         private Vector3 GetRandomPosFromTable(Vector3 minPos, Vector3 maxPos)
         {
+
+            if(posTable == null)
+            {
+                Debug.LogWarning("PosTable in s null");
+            }
             return new Vector3
                 (
                 posTable.Range(minPos.x, maxPos.x),
@@ -207,8 +214,10 @@ namespace VRShooting.Manager
                     spawnIndexQueue.Enqueue(index);
                     break;
             }
-
-
+        }
+        private void OnCreateIndex(int index)
+        {
+            CreateTergetRandomPos(index);
         }
     }
 

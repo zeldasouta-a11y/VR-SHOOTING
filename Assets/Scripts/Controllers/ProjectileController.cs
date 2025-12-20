@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VRShooting.Player;
 using VRShooting.Target;
-using VRShooting.Weapon;
+using VRShooting.Item;
 namespace VRShooting.Bullet
 {
     public class ProjectileController : BulletController
@@ -139,8 +139,7 @@ namespace VRShooting.Bullet
              // 見た目の拡大（VFX全体を拡大）
             newExplosion.transform.localScale = Vector3.one * expand;
             ExplodeWind wind = newExplosion.GetComponent<ExplodeWind>();
-            float expandValue = CalcExpand(elapsed);
-            wind.SetExpand(CalcExpand(elapsed));
+            wind.SetExpand(expand);
             Vector3 baseScale = rocketExplosion.transform.localScale;
             newExplosion.transform.localScale = baseScale * expand;
         }

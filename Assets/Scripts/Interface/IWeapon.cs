@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-namespace VRShooting.Weapon
+namespace VRShooting.Item
 {
-    public interface IWeapon
+    public interface IWeapon : IUsable
     {
         public abstract void WeaponShot();
     }

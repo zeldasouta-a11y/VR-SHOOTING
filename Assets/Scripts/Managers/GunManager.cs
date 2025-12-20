@@ -5,13 +5,16 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
-using VRShooting.Weapon;
+using VRShooting.Item.Gun;
 using VRShooting.Data;
+using VRShooting.Item;
 namespace VRShooting.Manager
 {
     public class GunManager : MonoBehaviour
     {
         [SerializeField] private List<GunData> gundatas;
+        private Dictionary<string,GunData> gunDataDic = new ();
+        public IReadOnlyDictionary<string,GunData> GunDataDic => gunDataDic;
         private List<GunController> gunObjects = new ();
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -22,7 +25,6 @@ namespace VRShooting.Manager
         public void SetEvent(GameManager game,PhaseManager phase)
         {
             game.OnGameStart += GunRespawn;
-            phase.OnPhaseChanged += GunSpawn;
         }
         private void OnDisable()
         {
@@ -31,50 +33,48 @@ namespace VRShooting.Manager
             {
                 game.OnGameStart -= GunRespawn;
             }
-            var phase = ManagerLocator.Instance.Phase;
-            if(phase != null){
-                phase.OnPhaseChanged -= GunSpawn;
-            }
         }
         public void GunInitialize()
         {
-            Initialize();
-        }
-        private void Initialize()
-        {
             foreach (GunData data in gundatas)
             {
-                //GunController SetUp
-                if (data == null || data.gunModelObject == null)
-                {
-                    Debug.LogError("[GunManager] Invalid GunData or missing gunModelObject.");
-                    continue;
-                }
-
-                // GunController�̏�����
-                GunController gun = data.gunModelObject.GetComponent<GunController>();
-                if (gun == null)
-                {
-                    gun = data.gunModelObject.AddComponent<GunController>();
-                    Debug.LogWarning($"[GunManager] Added GunController to {data.gunModelObject.name}");
-                }
-                //�����Q�Ɠn��
-                gun.Init(data);
-                gunObjects.Add(gun);
+                Initialize(data);
             }
+        }
+        public void Initialize()
+        {
+            
+        }
+        private void Initialize(GunData data)
+        {
+            //GunController SetUp
+            if (data.gunModelObject == null)
+            {
+                Debug.LogError("[GunManager] Invalid GunData or missing gunModelObject.");
+                return;
+            }
+
+            // GunController�̏�����
+            GunController gun = data.gunModelObject.GetComponent<GunController>();
+            if (gun == null)
+            {
+                gun = data.gunModelObject.AddComponent<GunController>();
+                Debug.LogWarning($"[GunManager] Added GunController to {data.gunModelObject.name}");
+            }
+            gunDataDic[data.Name] = data;
+            //�����Q�Ɠn��
+            gun.Init(data);
+            AddController(gun);
+        }
+        public void AddController(GunController controller)
+        {
+            gunObjects.Add(controller);
         }
         private void GunRespawn()
         {
-            foreach (GunController gun in gunObjects)
+            foreach (IUsable gun in gunObjects)
             {
-                gun.GunRespawn();
-            }
-        }
-        private void GunSpawn(PhaseSettingData data)
-        {
-            if(data.gamePhase == PhaseState.AttashCase)
-            {
-                GunRespawn();
+                gun.Respawn();
             }
         }
         [OnInspectorButton]

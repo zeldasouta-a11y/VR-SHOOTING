@@ -50,7 +50,7 @@ namespace VRShooting.Manager
         public event Action OnGameStart;
         //正常終了 true,中断はfalse
         public event Action<bool> OnGameEnd;
-        public event Action OnHit;
+        public event Action<string> OnHit;
         private void Start()
         {
             StartGame();
@@ -148,7 +148,7 @@ namespace VRShooting.Manager
             }
 
 
-            OnHit?.Invoke();
+            OnHit?.Invoke(name);
         }
     }
 

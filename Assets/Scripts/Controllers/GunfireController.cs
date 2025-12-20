@@ -2,7 +2,7 @@
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using VRShooting.Data;
 using VRShooting.Manager;
-using VRShooting.Weapon;
+using VRShooting.Item.Gun;
 
 namespace VRShooting.Weapon
 {

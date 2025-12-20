@@ -8,7 +8,10 @@ namespace VRShooting.Effect
     [RequireComponent(typeof(AudioSource))]
     public class VFXController : MonoBehaviour, IHitReceiver
     {
-
+        [Tooltip("壊れる瞬間のエフェクト 撃たれた瞬間に生成します")]
+        [Header("SFX (simple)")]
+        [SerializeField] GameObject Explosion;
+        [SerializeField, Range(0.5f, 0.999f)] private float saturationPercent = 0.95f;
         [Tooltip("壊れる瞬間のSE（1クリップでOK）")]
         [Header("SFX (simple)")]
         [SerializeField] private AudioSource sfx;                 // ここに同じオブジェクトのAudioSourceを割り当て（未設定ならAwakeで自動追加）
@@ -31,6 +34,7 @@ namespace VRShooting.Effect
         {
             //Debug.Log("BulletHit Receive");
             this.gameObject.SetActive(true);
+            Explode();
             SpawnBreakFx();
             PlayBreakSfx();
         }
@@ -81,6 +85,18 @@ namespace VRShooting.Effect
             sfx.Play();
 
             sfx.pitch = 1f;
+        }
+        /// <summary>
+        /// Instantiates an explode object.
+        /// </summary>
+        private void Explode()
+        {
+            if(Explosion != null)
+            {
+                // --- Instantiate new explosion option. I would recommend using an object pool ---
+                GameObject newExplosion = Instantiate(Explosion, transform.position, Explosion.transform.rotation, null);
+            }
+            
         }
     }
 

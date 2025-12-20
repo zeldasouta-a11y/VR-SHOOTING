@@ -7,7 +7,9 @@ namespace VRShooting.Manager
 {
     public class PhaseManager : MonoBehaviour
     {
+        [SerializeField] bool isTestPhase = false;
 
+        [SerializeField] List<PhaseSettingData> testPhases;
         [SerializeField] float phaseChangeTime = 3.0f;
         public float PhaseChangeTime => phaseChangeTime;
         [SerializeField] float fixedUpdate = 0.1f;
@@ -21,6 +23,7 @@ namespace VRShooting.Manager
         [SerializeField] private List<PhaseSettingData> phaseSettings;
         private Dictionary<PhaseState, PhaseSettingData> phaseToSettingDic = new();
         private Dictionary<PhaseState, int> phaseToIndexDict = new();
+        private Dictionary<PhaseState,Dictionary<string,int>> phaseAndNameToIndexDic = new();
         private Dictionary<PhaseState, int> phaseHitCountDict = new();
         private Dictionary<PhaseState, Queue<int>> customIndexqueue = new();
         private string[] dotArray = new string[4] { "", ".", "..", "..." };
@@ -38,6 +41,7 @@ namespace VRShooting.Manager
 
         public event Action<PhaseSettingData> OnPhaseChanged;
         public event Action OnCreateTime;
+        public event Action<int> RequestCreate;
         public event Action OnPhaseEnd;
         public event Action OnAllPhaseEnd;
         public void SetEvent(GameManager gameManager)
@@ -60,6 +64,21 @@ namespace VRShooting.Manager
                 gameManager.OnHit -= OnHitHandle;
                 gameManager.OnGameEnd -= OnGameEndHandle;
             }
+        }
+        private void OnGameStartHandle()
+        {
+            if (isTestPhase)
+            {
+                SetupAll(testPhases);
+                gameMainCorutine = StartCoroutine(TestGamePhaseMainTimer());
+            }
+            else
+            {
+                isTutrialSkip = ManagerLocator.Instance.Game.Tutorial == Tutorial.Skip;
+                SetupAll(phaseSettings);
+                gameMainCorutine = StartCoroutine(GamePhaseMainTimer());
+            }
+            
         }
 
         private void OnGameEndHandle(bool isGameComplete)
@@ -85,15 +104,26 @@ namespace VRShooting.Manager
                 Debug.LogWarning($"[PhaseManager] Undefined phase: {nowGamePhase}");
             }
         }
-        private void OnGameStartHandle()
+        private IEnumerator TestGamePhaseMainTimer()
         {
-            isTutrialSkip = (ManagerLocator.Instance.Game.Tutorial == Tutorial.Skip);
-            SetupAll(phaseSettings);
-            gameMainCorutine = StartCoroutine(GamePhaseMainTimer());
-
+            //初期化のため待つ
+            yield return null;
+            for(phaseIndex = 0; phaseIndex < testPhases.Count; phaseIndex++)
+            {
+                var phase = phaseSettings[phaseIndex];
+                PhaseChange(phase.gamePhase);
+                StartCoroutine(CreateAll());
+                yield return new WaitWhile(()=>isTestPhase);
+                OnPhaseEnd?.Invoke();
+                phaseHitCount = 0;
+            }
+            OnAllPhaseEnd?.Invoke();
+            
         }
         private IEnumerator GamePhaseMainTimer()
         {
+            //初期化のため待つ
+            yield return null;
             for (phaseIndex = 0; phaseIndex < phaseSettings.Count; phaseIndex++)
             {
                 var phase = phaseSettings[phaseIndex];
@@ -241,7 +271,21 @@ namespace VRShooting.Manager
                     yield return null;
                 }
                 CreateTriggerCount(-1);
+                yield return null;
             }
+        }
+        private IEnumerator CreateAll()
+        {
+            if(phaseToSettingDic.TryGetValue(nowGamePhase,out PhaseSettingData data))
+            {
+                List<TargetData> targetDatas = data.targetSettingSO.targetSettingData;
+                for(int i = 0; i < targetDatas.Count; i++)
+                {
+                    RequestCreate.Invoke(i);
+                    yield return null;
+                }
+            }
+            
         }
         public void EndTriggerSet(bool trigger) => phaseEndTrigger = trigger;
         private void CreateTriggerCount(int cnt) => createTriggerCount += cnt;
@@ -251,19 +295,28 @@ namespace VRShooting.Manager
             phaseToSettingDic.Clear();
             phaseToIndexDict.Clear();
             phaseHitCountDict.Clear();
+            phaseAndNameToIndexDic.Clear();
             for (int i = 0; i < phaseSettings.Count; i++)
             {
                 var key = phaseSettings[i];
                 phaseToSettingDic[key.gamePhase] = key;
                 phaseToIndexDict[key.gamePhase] = i;
                 phaseHitCountDict[key.gamePhase] = 0;
+                phaseAndNameToIndexDic[key.gamePhase] = new ();
+
+                List<TargetData> data = key.targetSettingSO.targetSettingData;
+                //オブジェクトへにのインデックスを作成
+                for(int j = 0; j < data.Count; j++)
+                {
+                    phaseAndNameToIndexDic[key.gamePhase][data[j].ModelName] = j;
+                }
                 //CustomQueueの生成
-                if (phaseSettings[i].spawnChoose == SpawnChooseType.MaxSpawn)
+                if (key.spawnChoose == SpawnChooseType.MaxSpawn)
                 {
                     List<int> tmpList = new();
-                    for (int j = 0; j < key.targetSettingSO.targetSettingData.Count; j++)
+                    for (int j = 0; j < data.Count; j++)
                     {
-                        int maxSpawn = key.targetSettingSO.targetSettingData[j].MaxSpawn;
+                        int maxSpawn = data[j].MaxSpawn;
                         for (int k = 0; k < maxSpawn; k++)
                         {
                             tmpList.Add(j);
@@ -272,23 +325,22 @@ namespace VRShooting.Manager
                     queueTable.ShuffleList(tmpList);
                     customIndexqueue[key.gamePhase] = new Queue<int>(tmpList);
                 }
-                else if (phaseSettings[i].spawnChoose == SpawnChooseType.SpawnWeight)
+                else if (key.spawnChoose == SpawnChooseType.SpawnWeight)
                 {
                     customIndexqueue[key.gamePhase] = new Queue<int>();//初期化
-                    int maxSpawn = phaseSettings[i].onSpawnTimeCount * 10;//10回生成と見なす(マジックナンバー)
+                    int maxSpawn = key.onSpawnTimeCount * 10;//10回生成と見なす(マジックナンバー)
                     int total = 0;//重み合計
-                    List<TargetData> list = phaseSettings[i].targetSettingSO.targetSettingData;
-                    for (int j = 0; j < list.Count; j++)
+                    for (int j = 0; j < data.Count; j++)
                     {
-                        total += list[j].SpawnWeight;
+                        total += data[j].SpawnWeight;
                     }
                     for (int j = 0; j < maxSpawn; j++)
                     {
                         int r = queueTable.RangeInt(0, total);//0~totalを生成
                         int value = 0;
-                        for (int k = 0; k < list.Count; k++)
+                        for (int k = 0; k < data.Count; k++)
                         {
-                            r -= list[k].SpawnWeight;//それぞれの重みで引き、初めて0以下になれば使用 //jをkに変更しました。
+                            r -= data[k].SpawnWeight;//それぞれの重みで引き、初めて0以下になれば使用 //jをkに変更しました。
                             if (r < 0)
                             {
                                 value = k; //jをkに変更しました。
@@ -304,7 +356,7 @@ namespace VRShooting.Manager
                 }
             }
         }
-        private void OnHitHandle()
+        private void OnHitHandle(string name)
         {
             phaseHitCountDict[nowGamePhase]++;
             phaseHitCount++;
@@ -318,6 +370,10 @@ namespace VRShooting.Manager
             if (phaseToSettingDic[Phase].onSpawnTimeCount != 0 && phaseHitCount % phaseToSettingDic[Phase].onSpawnTimeCount == 0)
             {
                 CreateTriggerCount(1);
+            }
+            if (isTestPhase)
+            {
+                RequestCreate?.Invoke(phaseAndNameToIndexDic[Phase][name]);
             }
         }
         [OnInspectorButton]
