@@ -13,6 +13,9 @@ namespace VRShooting.Manager
         public Camera targetCamera;
         [Range(1e-5f, 100f)] public float minFOV = 40f;
         [Range(1e-5f, 100f)] public float maxFOV = 100f;
+        public Camera rocketCamera;
+        [Range(1e-5f, 100f)] public float rocketminFOV = 40f;
+        [Range(1e-5f, 100f)] public float rocketmaxFOV = 100f;
         [SerializeField] float zoomSpeed = 1.5f;
         [Header("User Setting UI")]
         [SerializeField] GameObject userSettingPanel;
@@ -129,6 +132,8 @@ namespace VRShooting.Manager
             moveValue = rightTrigger.action?.ReadValue<Vector2>() ?? Vector2.zero;
             targetCamera.fieldOfView -= moveValue.y * zoomSpeed;
             targetCamera.fieldOfView = Mathf.Clamp(targetCamera.fieldOfView, minFOV, maxFOV);
+            rocketCamera.fieldOfView -= moveValue.y * zoomSpeed;
+            rocketCamera.fieldOfView = Mathf.Clamp(targetCamera.fieldOfView, rocketminFOV, rocketmaxFOV);
         }
 
         private void HandleInput(InputActionProperty actionProp, string name)
