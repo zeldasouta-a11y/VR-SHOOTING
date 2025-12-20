@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.XR.CoreUtils;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -142,6 +143,10 @@ namespace VRShooting.Manager
 
         }
         //lefttrigger.action.canceld += で呼べば、毎フレーム観測しなくていい
+        private void OnZoomCanceled(InputAction.CallbackContext context)
+        {
+            moveValue = Vector2.zero;
+        }
         private void OnSettingOpen(InputAction.CallbackContext context)
         {
             isActive = !isActive;

@@ -5504,18 +5504,10 @@
             ]
         },
         {
-            "Time": "2025/11/04 12:09:14",
-            "GameSeed": -2002624223,
-            "TotalScore": 59650,
+            "Time": "2025/11/04 23:42:30",
+            "GameSeed": 1274996735,
+            "TotalScore": 93100,
             "detail": [
-                {
-                    "TargetName": "TutorialTerget",
-                    "BreakCount": 10
-                },
-                {
-                    "TargetName": "動かない的",
-                    "BreakCount": 9
-                },
                 {
                     "TargetName": "動く的",
                     "BreakCount": 15
@@ -5527,6 +5519,33 @@
                 {
                     "TargetName": "赤い気球",
                     "BreakCount": 10
+                }
+            ]
+        },
+        {
+            "Time": "2025/11/04 12:09:14",
+            "GameSeed": -2002624223,
+            "TotalScore": 59650,
+            "detail": [
+                {
+                    "TargetName": "TutorialTerget",
+                    "BreakCount": 10
+                },
+                {
+                    "TargetName": "動かない的",
+                    "BreakCount": 16
+                },
+                {
+                    "TargetName": "動く的",
+                    "BreakCount": 12
+                },
+                {
+                    "TargetName": "金色の気球",
+                    "BreakCount": 18
+                },
+                {
+                    "TargetName": "赤い気球",
+                    "BreakCount": 19
                 },
                 {
                     "TargetName": "UFO",

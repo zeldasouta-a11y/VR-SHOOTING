@@ -2,7 +2,7 @@
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using VRShooting.Player;
-using VRShooting.Item;
+using VRShooting.Weapon;
 
 
 namespace VRShooting.Pl
