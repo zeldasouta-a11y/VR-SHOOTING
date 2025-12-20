@@ -34,15 +34,8 @@ namespace VRShooting.Bullet
 
         IEnumerator Expload(float vanishTime)
         {
-            float time = 0;
-            while (time < vanishTime)
-            {
-                time += Time.deltaTime;
-                radius = extendInitialzie + time*extendSize;
-                if(radius > 0)
-                    sphereCollider.radius = radius;
-                yield return null;
-            }
+            sphereCollider.radius = extendSize;
+            yield return null;
             sphereCollider.radius = 0;
         }
         void OnCollisionEnter(Collision collision)

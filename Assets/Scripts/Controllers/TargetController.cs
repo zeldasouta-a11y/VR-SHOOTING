@@ -141,6 +141,7 @@ namespace VRShooting.Target
                 if (receiver == (IHitReceiver)this) continue;//自身スキップ
                 receiver.OnHitNotify(sender);
             }
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
             DisableObject();
             if (targetDatas != null)
                 ManagerLocator.Instance.Game.AddScore(targetDatas.HitScore, targetDatas.ModelName);

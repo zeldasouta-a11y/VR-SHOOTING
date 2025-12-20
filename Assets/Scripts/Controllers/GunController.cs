@@ -9,7 +9,7 @@ using VRShooting.Data;
 using VRShooting.Manager;
 using VRShooting.Player;
 
-namespace VRShooting.Weapon
+namespace VRShooting.Item.Gun
 {
     /// <summary>
     /// 銃の基底クラス
@@ -17,6 +17,7 @@ namespace VRShooting.Weapon
     [RequireComponent(typeof(XRGrabInteractable), typeof(Rigidbody))]
     public class GunController : MonoBehaviour,IWeapon
     {
+        [SerializeField] string gunName;
         [SerializeField] GunData gundata;
         protected GunData GunDatas => gundata;
         /// <summary>
@@ -72,33 +73,25 @@ namespace VRShooting.Weapon
         private Color lowAmmoColor = Color.red;
         private Color normalAmmoColor = Color.white;
 
+        private bool isInitilalize = false;
+        public bool IsExist{get;set;} = false;
+        public bool IsRespwanable{get;set;} = true;
+
         protected virtual void Start()
         {
             bulletRemaining = gundata.MagazineCapacity;
             reserveAmmo = gundata.IsInfiniteAmmo ? infiniteAmmo : gundata.ReserveAmmo;
 
             // XRイベント
-            var xrGrab = gundata.gunModelObject.GetComponent<XRGrabInteractable>();
-
-            xrGrab.activated.AddListener(Activate);
+            var xrGrab = this.gameObject.GetComponent<XRGrabInteractable>();
+            if(xrGrab == null)
+            {
+                Debug.LogError("XRGrab is null!");
+            }            xrGrab.activated.AddListener(Activate);
             xrGrab.deactivated.AddListener(Deactivate);
             xrGrab.lastHoverExited.AddListener(HoverExited);
             thisRigidbody = GetComponent<Rigidbody>();
-            // UI初期化
-            if (gundata.RemainText) normalAmmoColor = gundata.RemainText.color;
-            if (gundata.ReloadText) gundata.ReloadText.gameObject.SetActive(false);
-            if (gundata.ReloadProgress)
-            {
-                gundata.ReloadProgress.fillAmount = 0f;
-                gundata.ReloadProgress.gameObject.SetActive(false);
-            }
-            fireRate = gundata.FireRate;
-            reloadConstant = gundata.ReloadConstant;
-            UpdateUI();
 
-        }
-        protected void OnEnable()
-        {
             ManagerLocator instance = ManagerLocator.Instance;
             //イベント購読
             if(instance != null)
@@ -117,6 +110,11 @@ namespace VRShooting.Weapon
             {
                 Debug.LogError("ManagerLocator is null");
             }
+
+        }
+        protected void OnEnable()
+        {
+            
             
         }
         protected void OnDisable()
@@ -150,7 +148,22 @@ namespace VRShooting.Weapon
         /// 初期化
         /// </summary>
         /// <param name="_data"></param>
-        public void Init(GunData _data) { gundata = _data; }
+        public void Init(GunData _data) {
+
+            gundata = _data; 
+            // UI初期化
+            if (gundata.RemainText) normalAmmoColor = gundata.RemainText.color;
+            if (gundata.ReloadText) gundata.ReloadText.gameObject.SetActive(false);
+            if (gundata.ReloadProgress)
+            {
+                gundata.ReloadProgress.fillAmount = 0f;
+                gundata.ReloadProgress.gameObject.SetActive(false);
+            }
+            fireRate = gundata.FireRate;
+            reloadConstant = gundata.ReloadConstant;
+            UpdateUI();
+            isInitilalize = true;
+        }
         /// <summary>
         /// フルオートモードの変更
         /// </summary>
@@ -216,10 +229,40 @@ namespace VRShooting.Weapon
 
             isActivate = false;
         }
-        public void GunRespawn()
+        public void Spawn()
         {
-            thisRigidbody.linearVelocity = Vector3.zero;
-            thisRigidbody.angularVelocity = Vector3.zero;
+            if (!isInitilalize)
+            {
+                GunManager gun = ManagerLocator.Instance.Gun;
+                gun.GunDataDic.TryGetValue(gunName, out GunData data);
+                if (data != null)
+                {
+                    this.gundata.SetWorlddata(data);
+                    Init(gundata);
+                    gun.AddController(this);
+                }
+                else
+                {
+                    Debug.LogError("Gun data is not Defined");
+                    return;
+                }
+            }
+            Respawn();
+            IsExist = true;
+        }
+        public void Respawn()
+        {
+            if(thisRigidbody == null)
+            {
+                Debug.LogError("[GunContller]this Rigidboduy is null");
+            }
+            else
+            {
+                thisRigidbody.linearVelocity = Vector3.zero;
+                thisRigidbody.angularVelocity = Vector3.zero;
+            }
+
+            
             this.transform.localPosition = gundata.GunRespawnPoint.localPosition;
         }
         private IEnumerator FireRateRountine()

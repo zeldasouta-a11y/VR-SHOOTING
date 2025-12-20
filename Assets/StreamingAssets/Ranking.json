@@ -5977,6 +5977,180 @@
                     "BreakCount": 18
                 }
             ]
+        },
+        {
+            "Time": "2025/12/20 14:02:19",
+            "GameSeed": -20316933,
+            "TotalScore": 93500,
+            "detail": [
+                {
+                    "TargetName": "TutorialTerget",
+                    "BreakCount": 10
+                },
+                {
+                    "TargetName": "小舟",
+                    "BreakCount": 22
+                },
+                {
+                    "TargetName": "小舟（静止）",
+                    "BreakCount": 15
+                },
+                {
+                    "TargetName": "赤い船",
+                    "BreakCount": 34
+                },
+                {
+                    "TargetName": "巨大戦艦",
+                    "BreakCount": 12
+                },
+                {
+                    "TargetName": "UFO",
+                    "BreakCount": 2
+                }
+            ]
+        },
+        {
+            "Time": "2025/12/20 15:52:09",
+            "GameSeed": 1300941776,
+            "TotalScore": 91500,
+            "detail": [
+                {
+                    "TargetName": "TutorialTerget",
+                    "BreakCount": 10
+                },
+                {
+                    "TargetName": "小舟",
+                    "BreakCount": 18
+                },
+                {
+                    "TargetName": "小舟（静止）",
+                    "BreakCount": 15
+                },
+                {
+                    "TargetName": "巨大戦艦",
+                    "BreakCount": 13
+                },
+                {
+                    "TargetName": "赤い船",
+                    "BreakCount": 13
+                },
+                {
+                    "TargetName": "UFO",
+                    "BreakCount": 4
+                }
+            ]
+        },
+        {
+            "Time": "2025/12/20 16:03:33",
+            "GameSeed": -383084368,
+            "TotalScore": 32100,
+            "detail": [
+                {
+                    "TargetName": "TutorialTerget",
+                    "BreakCount": 10
+                },
+                {
+                    "TargetName": "小舟",
+                    "BreakCount": 10
+                },
+                {
+                    "TargetName": "小舟（静止）",
+                    "BreakCount": 11
+                },
+                {
+                    "TargetName": "赤い船",
+                    "BreakCount": 10
+                },
+                {
+                    "TargetName": "巨大戦艦",
+                    "BreakCount": 8
+                }
+            ]
+        },
+        {
+            "Time": "2025/12/20 16:26:27",
+            "GameSeed": 21990517,
+            "TotalScore": 40750,
+            "detail": [
+                {
+                    "TargetName": "TutorialTerget",
+                    "BreakCount": 10
+                },
+                {
+                    "TargetName": "小舟（静止）",
+                    "BreakCount": 15
+                },
+                {
+                    "TargetName": "小舟",
+                    "BreakCount": 13
+                },
+                {
+                    "TargetName": "赤い船",
+                    "BreakCount": 10
+                },
+                {
+                    "TargetName": "巨大戦艦",
+                    "BreakCount": 6
+                },
+                {
+                    "TargetName": "UFO",
+                    "BreakCount": 1
+                }
+            ]
+        },
+        {
+            "Time": "2025/12/20 16:35:43",
+            "GameSeed": 1596681317,
+            "TotalScore": 35000,
+            "detail": [
+                {
+                    "TargetName": "TutorialTerget",
+                    "BreakCount": 10
+                },
+                {
+                    "TargetName": "小舟（静止）",
+                    "BreakCount": 15
+                },
+                {
+                    "TargetName": "小舟",
+                    "BreakCount": 16
+                },
+                {
+                    "TargetName": "巨大戦艦",
+                    "BreakCount": 8
+                },
+                {
+                    "TargetName": "赤い船",
+                    "BreakCount": 8
+                }
+            ]
+        },
+        {
+            "Time": "2025/12/20 18:01:09",
+            "GameSeed": 1529909253,
+            "TotalScore": 57000,
+            "detail": [
+                {
+                    "TargetName": "TutorialTerget",
+                    "BreakCount": 12
+                },
+                {
+                    "TargetName": "小舟（静止）",
+                    "BreakCount": 15
+                },
+                {
+                    "TargetName": "小舟",
+                    "BreakCount": 12
+                },
+                {
+                    "TargetName": "赤い船",
+                    "BreakCount": 11
+                },
+                {
+                    "TargetName": "巨大戦艦",
+                    "BreakCount": 19
+                }
+            ]
         }
     ]
 }

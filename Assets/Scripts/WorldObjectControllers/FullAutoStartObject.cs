@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
+using VRShooting.Bullet;
 using VRShooting.Manager;
 
 namespace VRShooting.Target
 {
-    public class FullAutoStartObject : MonoBehaviour
+    public class FullAutoStartObject : MonoBehaviour,IHitReceiver
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void OnDisable()
+        public void OnHitNotify(IHitSender hitsource)
         {
             var gameManager = ManagerLocator.Instance.Game;
             if (gameManager != null)

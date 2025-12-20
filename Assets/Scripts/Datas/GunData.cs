@@ -8,6 +8,9 @@ namespace VRShooting.Data
     public class GunData
     {
         [Header("Gun Base Settings")]
+        [Tooltip("名前")]
+        [SerializeField] private string name;
+        public string Name => name;
         [Tooltip("銃のモデル")]
         [SerializeField] private GameObject gunModel;
         public GameObject gunModelObject { get { return gunModel; } }
@@ -82,10 +85,35 @@ namespace VRShooting.Data
         [SerializeField] private Image reloadProgress;
         public Image ReloadProgress => reloadProgress;
 
+     
+        /// <summary>
+        /// 銃の間隔、リロード時間を更新
+        /// </summary>
+        /// <param name="newFireRate"></param>
+        /// <param name="newReloadConst"></param>
         public void ModeChange(float newFireRate, int newReloadConst)
         {
             fireRate = newFireRate;
             reloadConstant = newReloadConst;
+        }
+        /// <summary>
+        /// 固有値以外を更新「
+        /// </summary>
+        /// <param name="data"></param>
+        public void SetWorlddata(GunData data)
+        {
+            bulletType = data.BulletType;
+            magazineCapacity = data.MagazineCapacity;
+            reloadConstant = data.ReloadConstant;
+            fireRate = data.FireRate;
+            fullAutoFireRate = data.FullAutoFireRate;
+            fillAutoReloadConstant = data.FillAutoReloadConstant;
+            reserveAmmo = data.ReserveAmmo;
+            isInfiniteAmmo = data.IsInfiniteAmmo;
+            gunRespawnPoint = data.GunRespawnPoint;
+            shootSound = ShootSound;
+            emptySound = EmptySound;
+            reloadSound = ReloadSound;
         }
     }
 

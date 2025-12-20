@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using VRShooting.Player;
-using VRShooting.Weapon;
+using VRShooting.Item.Gun;
 
 namespace VRShooting.Filed
 {
@@ -16,7 +16,7 @@ namespace VRShooting.Filed
             GunController gunController= collision.gameObject.GetComponentInParent<GunController>();
             if(gunController != null)
             {
-                gunController.GunRespawn();
+                gunController.Respawn();
             }
 #if UNITY_EDITOR
             Debug.Log($"[RespawnField] {collision.gameObject.name}");
