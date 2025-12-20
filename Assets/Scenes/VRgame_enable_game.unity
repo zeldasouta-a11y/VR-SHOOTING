@@ -15,12 +15,12 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.43137252, g: 0.7482395, b: 1, a: 1}
+  m_FogColor: {r: 0.716091, g: 0.839555, b: 0.93710685, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.078
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.20599997, g: 0.46132573, b: 1, a: 1}
+  m_AmbientSkyColor: {r: 0.45692405, g: 0.6154859, b: 0.9496855, a: 1}
   m_AmbientEquatorColor: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
   m_AmbientGroundColor: {r: 1, g: 1, b: 1, a: 1}
   m_AmbientIntensity: 1
@@ -1842,11 +1842,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RaycastTriggerInteraction: 1
---- !u!4 &613961366 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6870533421867724177, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
-  m_PrefabInstance: {fileID: 718954371}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &656895481
 GameObject:
   m_ObjectHideFlags: 0
@@ -4159,7 +4154,37 @@ PrefabInstance:
     - {fileID: 870833803973077722, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
     - {fileID: 4364972580631527955, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1693546209799778127, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1802163939}
+    - targetCorrespondingSourceObject: {fileID: 7541671327875276175, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1961756173}
+    - targetCorrespondingSourceObject: {fileID: 9039662984132616849, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 308733865}
+    - targetCorrespondingSourceObject: {fileID: 1867659205428466023, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1016962405}
+    - targetCorrespondingSourceObject: {fileID: 347459772460278422, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1484144955}
+    - targetCorrespondingSourceObject: {fileID: 5015179838038517457, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1855370150}
+    - targetCorrespondingSourceObject: {fileID: 8155735210978111927, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 25919906}
+    - targetCorrespondingSourceObject: {fileID: 3618830211904644911, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 354289869}
+    - targetCorrespondingSourceObject: {fileID: 2808082438879114205, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 873208581}
+    - targetCorrespondingSourceObject: {fileID: 8914027157971654800, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1809522909}
   m_SourcePrefab: {fileID: 100100000, guid: 2a29ba4b4c3968442b9a54a8e5fc7596, type: 3}
 --- !u!1 &745427921
 GameObject:
@@ -5461,7 +5486,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 613961366}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &895747404
 MonoBehaviour:
@@ -23078,3 +23103,4 @@ SceneRoots:
   - {fileID: 718954371}
   - {fileID: 460195408}
   - {fileID: 1259450350}
+  - {fileID: 895747403}
