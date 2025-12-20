@@ -1,6 +1,6 @@
 ﻿using Unity.XR.CoreUtils;
 using UnityEngine;
-using VRShooting.Weapon;
+using VRShooting.Item;
 
 namespace VRShooting.Player
 {
