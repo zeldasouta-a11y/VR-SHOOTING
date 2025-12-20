@@ -130,3 +130,16 @@ MonoBehaviour:
     moveType: 0
     moveDurtation: 0
     moveVector: {x: 0, y: 0, z: 0}
+  - targetModel: {fileID: 977174749816992835, guid: 91abaed05ccca514d88c5cfdf0189d95, type: 3}
+    targetModelName: RedShip
+    minPosition: {x: -30, y: 20, z: 100}
+    maxPosition: {x: -30, y: 20, z: 100}
+    maxSpawn: 0
+    spawnWeight: 0
+    hitScore: 0
+    hasVanishTime: 0
+    vanishTime: 0
+    isMovable: 0
+    moveType: 0
+    moveDurtation: 0
+    moveVector: {x: 0, y: 0, z: 0}
