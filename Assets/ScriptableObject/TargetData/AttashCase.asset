@@ -15,8 +15,8 @@ MonoBehaviour:
   targetSettingData:
   - targetModel: {fileID: 5812863914351243455, guid: 7aab430df8bc99146bf17c999926c25e, type: 3}
     targetModelName: TutorialTerget
-    minPosition: {x: 0, y: 2, z: 10}
-    maxPosition: {x: 0, y: 2, z: 10}
+    minPosition: {x: 0, y: 8, z: 10}
+    maxPosition: {x: 0, y: 8, z: 10}
     maxSpawn: 1
     spawnWeight: 1
     hitScore: 0

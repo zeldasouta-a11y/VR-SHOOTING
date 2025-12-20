@@ -288,10 +288,10 @@ namespace VRShooting.Manager
                         int value = 0;
                         for (int k = 0; k < list.Count; k++)
                         {
-                            r -= list[j].SpawnWeight;//それぞれの重みで引き、初めて0以下になれば使用
+                            r -= list[k].SpawnWeight;//それぞれの重みで引き、初めて0以下になれば使用 //jをkに変更しました。
                             if (r < 0)
                             {
-                                value = j;
+                                value = k; //jをkに変更しました。
                                 break;
                             }
                         }
