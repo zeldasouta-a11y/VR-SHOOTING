@@ -325,6 +325,9 @@ namespace VRShooting.Weapon
             reserveAmmo += replenish;
         }
 
-        
+        public void SetOwner(IScoreCollector owner)
+        {
+            collector = owner;
+        }
     }
 }

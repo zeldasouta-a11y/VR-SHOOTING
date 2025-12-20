@@ -56,7 +56,7 @@ namespace VRShooting.Manager
             GameObject obj = bulletqueue.Count > 0 ? bulletqueue.Dequeue() : CreateInsitatce(type);
             ////弾の位置を、銃口の位置と同一にする。
             obj.transform.SetPositionAndRotation(pos, rot);
-            obj.GetComponent<BulletController>().SetIScoreCollector(collector);
+            obj.GetComponent<BulletController>().SetOwner(collector);
             obj.SetActive(true);
             return obj;
         }
