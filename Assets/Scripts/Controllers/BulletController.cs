@@ -32,10 +32,6 @@ namespace VRShooting.Bullet
             transform.position +=
                 transform.forward * bulletSpeed * Time.deltaTime;
         }
-        public void SetIScoreCollector(IScoreCollector collector)
-        {
-            this.collector = collector;
-        }
         public void Init(BulletData data)
         {
             bulletdata = data;
@@ -56,6 +52,11 @@ namespace VRShooting.Bullet
         public virtual void BulletHit()
         {
             
+        }
+
+        public void SetOwner(IScoreCollector owner)
+        {
+            this.collector = owner;
         }
     }
 }
