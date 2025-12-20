@@ -131,7 +131,7 @@ namespace VRShooting.Manager
             fullAutoBGM?.Stop();
             OnGameEnd?.Invoke(true);
         }
-        
+
         public void AddScore(int point, string name)
         {
             if (!ManagerLocator.Instance.Phase.IsIgnoreScoreMode)

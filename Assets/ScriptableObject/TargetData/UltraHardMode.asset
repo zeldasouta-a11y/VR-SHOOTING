@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 237cf9b20ab93e743992ed3152be0ee4, type: 3}
+  m_Name: UltraHardMode
+  m_EditorClassIdentifier: Assembly-CSharp::TargetDataSO
+  targetSettingData:
+  - targetModel: {fileID: 5461824144497596275, guid: 521db4cbc645b3543a77febe9f913bb0, type: 3}
+    targetModelName: UFO
+    minPosition: {x: -70, y: 0, z: 100}
+    maxPosition: {x: 70, y: 10, z: 200}
+    maxSpawn: 7
+    spawnWeight: 5
+    hitScore: 10000
+    hasVanishTime: 0
+    vanishTime: 20
+    isMovable: 1
+    moveType: 2
+    moveDurtation: 2
+    moveVector: {x: 15, y: 15, z: 15}
+  - targetModel: {fileID: 1669491610487658433, guid: 51d95ecbebb0b5f41b99867d57f6bef9, type: 3}
+    targetModelName: "\u5DE8\u5927\u6226\u8266"
+    minPosition: {x: -100, y: 30, z: 350}
+    maxPosition: {x: 100, y: 80, z: 450}
+    maxSpawn: 20
+    spawnWeight: 10
+    hitScore: 2000
+    hasVanishTime: 0
+    vanishTime: 20
+    isMovable: 0
+    moveType: 0
+    moveDurtation: 2
+    moveVector: {x: 15, y: 15, z: 15}
+  - targetModel: {fileID: 3789896600023451612, guid: 957b55cb6eb37ca448f6bf658f88d829, type: 3}
+    targetModelName: "\u5C0F\u821F"
+    minPosition: {x: -20, y: -10, z: 20}
+    maxPosition: {x: -10, y: 0, z: 35}
+    maxSpawn: 15
+    spawnWeight: 10
+    hitScore: 750
+    hasVanishTime: 1
+    vanishTime: 10
+    isMovable: 1
+    moveType: 1
+    moveDurtation: 2
+    moveVector: {x: 8, y: 0, z: 0}
+  - targetModel: {fileID: 977174749816992835, guid: 91abaed05ccca514d88c5cfdf0189d95, type: 3}
+    targetModelName: "\u8D64\u3044\u8239"
+    minPosition: {x: -80, y: -30, z: 100}
+    maxPosition: {x: 80, y: 0, z: 150}
+    maxSpawn: 15
+    spawnWeight: 10
+    hitScore: 1000
+    hasVanishTime: 1
+    vanishTime: 10
+    isMovable: 1
+    moveType: 0
+    moveDurtation: 2
+    moveVector: {x: 0, y: 10, z: 0}

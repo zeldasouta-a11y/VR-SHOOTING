@@ -8,11 +8,13 @@ namespace VRShooting.Bullet
     public class ExplodeWind : MonoBehaviour,IHitSender
     {
         SphereCollider sphereCollider;
-        [SerializeField] float vanishTime = 3.0f;
+        [SerializeField] float vanishTime = 0.1f;
         [SerializeField] float extendSize = 10;
+        [SerializeField] float extendInitialzie = -10;
+        float radius = 0;
         IScoreCollector collector;
 
-        public IScoreCollector GetScoreCollector => collector;
+        public IScoreCollector ScoreCollector => collector;
 
         public void OnHit(IHitReceiver receiver)
         {
@@ -25,6 +27,10 @@ namespace VRShooting.Bullet
             sphereCollider = GetComponent<SphereCollider>();
             StartCoroutine(Expload(vanishTime));
         }
+        public void SetExpand(float expand)
+        {
+            extendSize = expand;
+        }
 
         IEnumerator Expload(float vanishTime)
         {
@@ -32,9 +38,12 @@ namespace VRShooting.Bullet
             while (time < vanishTime)
             {
                 time += Time.deltaTime;
-                sphereCollider.radius += Time.deltaTime*extendSize;
+                radius = extendInitialzie + time*extendSize;
+                if(radius > 0)
+                    sphereCollider.radius = radius;
                 yield return null;
             }
+            sphereCollider.radius = 0;
         }
         void OnCollisionEnter(Collision collision)
         {

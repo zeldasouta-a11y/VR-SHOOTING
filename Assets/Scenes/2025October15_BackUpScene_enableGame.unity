@@ -496,62 +496,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CreateTargetManager
   mainCamera: {fileID: 752074434}
   baseprefab: {fileID: 4897060822646410914, guid: ba3755a610e593f44a461f8c0441b5d9, type: 3}
-  targetModels:
-  - targetModel: {fileID: 5587836066146359011, guid: df777f1a66a444443bfbfbb2f7fadd6d, type: 3}
-    minPosition: {x: -10, y: 1, z: 10}
-    maxPosition: {x: 10, y: 10, z: 100}
-    hitScore: 100
-    isVanish: 1
-    vanishTime: 10
-    isMovable: 0
-    isUFOMove: 0
-    isPendulumMove: 0
-    moveDurtation: 2
-    moveVector: {x: 10, y: 10, z: 10}
-  - targetModel: {fileID: 7575923230338825960, guid: 2f41ac8b8ecb2e14d9285ee2f278693a, type: 3}
-    minPosition: {x: -20, y: 1, z: 10}
-    maxPosition: {x: 20, y: 10, z: 100}
-    hitScore: 300
-    isVanish: 1
-    vanishTime: 10
-    isMovable: 1
-    isUFOMove: 0
-    isPendulumMove: 0
-    moveDurtation: 0
-    moveVector: {x: 0, y: 5, z: 0}
-  - targetModel: {fileID: 2263297054331644975, guid: a1c623815922a0b4d89bae91dba94562, type: 3}
-    minPosition: {x: -30, y: 1, z: 10}
-    maxPosition: {x: 30, y: 10, z: 100}
-    hitScore: 1000
-    isVanish: 1
-    vanishTime: 10
-    isMovable: 1
-    isUFOMove: 0
-    isPendulumMove: 0
-    moveDurtation: 0
-    moveVector: {x: 0, y: 15, z: 0}
-  - targetModel: {fileID: 4824409105279076034, guid: b809e2ce5e833ac45bff0328c396b32d, type: 3}
-    minPosition: {x: 0, y: 0, z: 60}
-    maxPosition: {x: 0, y: 0, z: 100}
-    hitScore: 10000
-    isVanish: 1
-    vanishTime: 10
-    isMovable: 1
-    isUFOMove: 1
-    isPendulumMove: 0
-    moveDurtation: 2
-    moveVector: {x: 15, y: 15, z: 15}
-  - targetModel: {fileID: 1120682584345497016, guid: 72b7745dd3b8822429f26c73553b2d8a, type: 3}
-    minPosition: {x: -1, y: 1, z: 50}
-    maxPosition: {x: 1, y: 2, z: 60}
-    hitScore: 500
-    isVanish: 1
-    vanishTime: 10
-    isMovable: 1
-    isUFOMove: 0
-    isPendulumMove: 0
-    moveDurtation: 0
-    moveVector: {x: 0, y: 10, z: 0}
+  initializePoolSize: 10
+  usePool: 0
+  defaultTargets: {fileID: 0}
 --- !u!4 &355095604
 Transform:
   m_ObjectHideFlags: 0
@@ -1074,13 +1021,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea87e9f22c0f4674484975677aefa3a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  minPosition: {x: -15, y: 0, z: 10}
-  maxPosition: {x: 15, y: 10, z: 50}
+  isCustomSeed: 1
+  gameSeed: 12345
+  fullAutoBGM: {fileID: 0}
+  enddingBGM: {fileID: 0}
   totalScore: 0
-  createDuration: 0.5
-  indexRange: 5
-  _createTargetManager: {fileID: 355095603}
-  scoreText: {fileID: 865984234}
+  fullAutoDuration: 35
+  tutorial: 0
 --- !u!4 &562927304
 Transform:
   m_ObjectHideFlags: 0
@@ -1267,32 +1214,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GunManager
   gundatas:
   - gunModel: {fileID: 4210100720087053141}
-    bulletPrefab: {fileID: 2617077460344055302, guid: 854813d7674d6b443acf5687a445c7e3, type: 3}
-    bulletData:
-      bulletSpeed: 3
-      bulletVanishTime: 0.1
+    bulletType: 0
     muzzlePos: {fileID: 4207727600238648025}
+    gunRespawnPoint: {fileID: 0}
     magazineCapacity: 20
     reloadConstant: 0
+    fireRate: 0.8
+    fullAutoFireRate: 0.1
+    fillAutoReloadConstant: 0
     shootSound: {fileID: 745427927}
-    fullAutoSound: {fileID: 745427925}
+    emptySound: {fileID: 0}
     reloadSound: {fileID: 745427924}
     remainText: {fileID: 736447837}
-    isFullAuto: 0
+    isInfiniteAmmo: 0
+    reserveAmmo: 700
+    reloadText: {fileID: 0}
+    reloadProgress: {fileID: 0}
   - gunModel: {fileID: 1598661556600780288}
-    bulletPrefab: {fileID: 2617077460344055302, guid: 854813d7674d6b443acf5687a445c7e3, type: 3}
-    bulletData:
-      bulletSpeed: 100
-      bulletVanishTime: 5
+    bulletType: 0
     muzzlePos: {fileID: 1069899900}
+    gunRespawnPoint: {fileID: 0}
     magazineCapacity: 20
     reloadConstant: 0
+    fireRate: 0.8
+    fullAutoFireRate: 0.1
+    fillAutoReloadConstant: 0
     shootSound: {fileID: 745427926}
-    fullAutoSound: {fileID: 745427925}
+    emptySound: {fileID: 0}
     reloadSound: {fileID: 745427924}
     remainText: {fileID: 736447837}
-    isFullAuto: 0
-  isFullAuto: 0
+    isInfiniteAmmo: 0
+    reserveAmmo: 700
+    reloadText: {fileID: 0}
+    reloadProgress: {fileID: 0}
 --- !u!4 &745427923
 Transform:
   m_ObjectHideFlags: 0

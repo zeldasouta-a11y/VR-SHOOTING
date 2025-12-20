@@ -133,7 +133,7 @@ namespace VRShooting.Target
         {
             if (isEnabled) return;
             if (pointCanvasObject != null) pointCanvasObject.SetActive(true);
-
+            //Debug.Log("hit by" + sender.ScoreCollector.ToString());
             //子供(VFXコントローラ)にもヒット通知を送る
             foreach (var receiver in receivers)
             {
@@ -141,7 +141,6 @@ namespace VRShooting.Target
                 if (receiver == (IHitReceiver)this) continue;//自身スキップ
                 receiver.OnHitNotify(sender);
             }
-
             DisableObject();
             if (targetDatas != null)
                 ManagerLocator.Instance.Game.AddScore(targetDatas.HitScore, targetDatas.ModelName);

@@ -35,7 +35,7 @@ namespace VRShooting.Manager
         private void InjectDependencies()
         {
             Game.SetEvent(Phase);
-            Gun.SetEvent(Game);
+            Gun.SetEvent(Game,Phase);
             Phase.SetEvent(Game);
             CreateTarget.SetEvent(Phase, Game);
             UI.SetEvent(Game, Phase);

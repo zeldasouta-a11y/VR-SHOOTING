@@ -18,10 +18,12 @@ namespace VRShooting.Weapon
     public class GunController : MonoBehaviour,IWeapon
     {
         [SerializeField] GunData gundata;
+        protected GunData GunDatas => gundata;
         /// <summary>
         /// 得点集める人
         /// </summary>
         private IScoreCollector collector;
+        protected IScoreCollector Collector => collector;
 
         // 弾管理
         private int bulletRemaining;
@@ -270,7 +272,11 @@ namespace VRShooting.Weapon
                     gundata.ReloadProgress.fillAmount = Mathf.Clamp01(t / seconds);
                 yield return null;
             }
-            gundata.ReloadSound?.Play();
+            if(gundata.ReloadSound != null)
+            {
+                gundata.ReloadSound.Play();
+            }
+            //gundata.ReloadSound?.Play();
             while (t < seconds)
             {
                 t += Time.deltaTime;
