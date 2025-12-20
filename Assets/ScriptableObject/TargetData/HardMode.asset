@@ -35,14 +35,14 @@ MonoBehaviour:
     hitScore: 2000
     hasVanishTime: 0
     vanishTime: 20
-    isMovable: 0
+    isMovable: 1
     moveType: 0
     moveDurtation: 2
-    moveVector: {x: 15, y: 15, z: 15}
+    moveVector: {x: 0, y: 0, z: 15}
   - targetModel: {fileID: 3789896600023451612, guid: 957b55cb6eb37ca448f6bf658f88d829, type: 3}
     targetModelName: "\u5C0F\u821F"
-    minPosition: {x: -20, y: -10, z: 20}
-    maxPosition: {x: -10, y: 0, z: 35}
+    minPosition: {x: -20, y: 0, z: 20}
+    maxPosition: {x: -10, y: 10, z: 35}
     maxSpawn: 10
     spawnWeight: 10
     hitScore: 750
@@ -64,4 +64,4 @@ MonoBehaviour:
     isMovable: 1
     moveType: 0
     moveDurtation: 2
-    moveVector: {x: 0, y: 10, z: 0}
+    moveVector: {x: 0, y: 10, z: 10}
