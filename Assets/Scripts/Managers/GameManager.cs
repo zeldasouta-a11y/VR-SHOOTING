@@ -28,6 +28,7 @@ namespace VRShooting.Manager
         public int GameSeed => gameSeed;
 
         [Header("BGM Setting")]
+        [SerializeField] AudioSource normalBGM;
         [SerializeField] AudioSource fullAutoBGM;
         [SerializeField] AudioSource enddingBGM;
         [Header("other")]
@@ -43,6 +44,8 @@ namespace VRShooting.Manager
         private GameState gamestate = GameState.Idle;
         public GameState State => gamestate;
         private bool isFullAutoMode = false;
+
+        private AudioSource currentBGM;
 
 
         //System Event
@@ -89,13 +92,25 @@ namespace VRShooting.Manager
             if (!isFullAutoMode)
                 StartCoroutine(FullAutoMode());
         }
+        public void UpdateBGM()
+        {
+            currentBGM?.Stop();
+            currentBGM = fullAutoBGM;
+            currentBGM.Play();
+        }
+        public void ResetBGM()
+        {
+            currentBGM?.Stop();
+            currentBGM = normalBGM;
+            currentBGM?.Play();
+        }
         private IEnumerator FullAutoMode()
         {
             isFullAutoMode = true;
-            fullAutoBGM.Play();
+            UpdateBGM();
             OnFullAutoChanged?.Invoke(true);
             yield return new WaitForSeconds(fullAutoDuration);
-            fullAutoBGM.Stop();
+            ResetBGM();
             OnFullAutoChanged?.Invoke(false);
             isFullAutoMode = false;
         }
@@ -117,6 +132,8 @@ namespace VRShooting.Manager
             }
             totalScore = 0;
             targetHitCount.Clear();
+            currentBGM = normalBGM;
+            currentBGM?.Play();
             gamestate = GameState.Playing;
             OnGameStart?.Invoke();
         }
@@ -127,8 +144,9 @@ namespace VRShooting.Manager
             Debug.Log("GameEnd!");
 #endif
             gamestate = GameState.Ended;
-            enddingBGM.Play();
-            fullAutoBGM?.Stop();
+            currentBGM?.Stop();
+            currentBGM = enddingBGM;
+            currentBGM?.Play();
             OnGameEnd?.Invoke(true);
         }
 
