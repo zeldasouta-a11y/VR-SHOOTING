@@ -38,11 +38,11 @@ MonoBehaviour:
     isMovable: 1
     moveType: 0
     moveDurtation: 2
-    moveVector: {x: 0, y: 0, z: 20}
+    moveVector: {x: 0, y: 0, z: -15}
   - targetModel: {fileID: 3789896600023451612, guid: 957b55cb6eb37ca448f6bf658f88d829, type: 3}
     targetModelName: "\u5C0F\u821F"
-    minPosition: {x: -20, y: 10, z: 20}
-    maxPosition: {x: -10, y: 20, z: 35}
+    minPosition: {x: -10, y: 10, z: 20}
+    maxPosition: {x: 10, y: 20, z: 35}
     maxSpawn: 15
     spawnWeight: 10
     hitScore: 750
@@ -54,8 +54,8 @@ MonoBehaviour:
     moveVector: {x: 8, y: 0, z: 0}
   - targetModel: {fileID: 977174749816992835, guid: 91abaed05ccca514d88c5cfdf0189d95, type: 3}
     targetModelName: "\u8D64\u3044\u8239"
-    minPosition: {x: -80, y: -30, z: 100}
-    maxPosition: {x: 80, y: -10, z: 150}
+    minPosition: {x: -80, y: -40, z: 250}
+    maxPosition: {x: 80, y: -20, z: 300}
     maxSpawn: 15
     spawnWeight: 10
     hitScore: 1000
@@ -64,4 +64,4 @@ MonoBehaviour:
     isMovable: 1
     moveType: 0
     moveDurtation: 2
-    moveVector: {x: 0, y: 10, z: 10}
+    moveVector: {x: 0, y: 5, z: -10}

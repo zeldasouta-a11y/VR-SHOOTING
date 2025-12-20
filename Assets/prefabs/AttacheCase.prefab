@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: 8281368045694484726}
   - component: {fileID: 6493693441129215327}
   - component: {fileID: 7291167951786717219}
+  - component: {fileID: 4078114005024911724}
   m_Layer: 0
   m_Name: AttacheCase
   m_TagString: Untagged
@@ -221,6 +222,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnItem
   spawnObject: {fileID: 668492722046726825, guid: e63c39601d5eddd44a2dab21e40f1608, type: 3}
+--- !u!114 &4078114005024911724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5812863914351243455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6786329ee94dbf40a9a630b9f126217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VRShooting.Item.ChangeBGM
 --- !u!1 &6971865363427651040
 GameObject:
   m_ObjectHideFlags: 0

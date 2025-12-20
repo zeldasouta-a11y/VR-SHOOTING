@@ -111,9 +111,9 @@ namespace VRShooting.Data
             reserveAmmo = data.ReserveAmmo;
             isInfiniteAmmo = data.IsInfiniteAmmo;
             gunRespawnPoint = data.GunRespawnPoint;
-            shootSound = ShootSound;
-            emptySound = EmptySound;
-            reloadSound = ReloadSound;
+            shootSound = data.ShootSound;
+            emptySound = data.EmptySound;
+            reloadSound = data.ReloadSound;
         }
     }
 
