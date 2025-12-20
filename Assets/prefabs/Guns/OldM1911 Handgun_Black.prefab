@@ -706,7 +706,7 @@ GameObject:
   - component: {fileID: 8995195382255030420}
   - component: {fileID: 6555816122037332618}
   m_Layer: 0
-  m_Name: M1911 Handgun_Black
+  m_Name: OldM1911 Handgun_Black
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

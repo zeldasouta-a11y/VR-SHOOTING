@@ -138,13 +138,6 @@ namespace VRShooting.Manager
         }
         public void ReturnPool(GameObject obj)
         {
-            Rigidbody rbody = obj.GetComponent<Rigidbody>();
-            //物理演算リセット
-            if (rbody != null)
-            {
-                rbody.linearVelocity = Vector3.zero;
-                rbody.angularVelocity = Vector3.zero;
-            }
             obj.SetActive(false);
             targetPool.Enqueue(obj);
         }

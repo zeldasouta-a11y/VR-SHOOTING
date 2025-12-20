@@ -190,7 +190,7 @@ GameObject:
   - component: {fileID: 1023598023361122936}
   - component: {fileID: 7896392468931136416}
   m_Layer: 0
-  m_Name: Sniper Fixed
+  m_Name: Old[Sniper Fixed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -76,12 +76,13 @@ namespace VRShooting.Item.Gun
         private bool isInitilalize = false;
         public bool IsExist{get;set;} = false;
         public bool IsRespwanable{get;set;} = true;
+        void Awake()
+        {
+            thisRigidbody = GetComponent<Rigidbody>();
+        }
 
         protected virtual void Start()
         {
-            bulletRemaining = gundata.MagazineCapacity;
-            reserveAmmo = gundata.IsInfiniteAmmo ? infiniteAmmo : gundata.ReserveAmmo;
-
             // XRイベント
             var xrGrab = this.gameObject.GetComponent<XRGrabInteractable>();
             if(xrGrab == null)
@@ -90,7 +91,6 @@ namespace VRShooting.Item.Gun
             }            xrGrab.activated.AddListener(Activate);
             xrGrab.deactivated.AddListener(Deactivate);
             xrGrab.lastHoverExited.AddListener(HoverExited);
-            thisRigidbody = GetComponent<Rigidbody>();
 
             ManagerLocator instance = ManagerLocator.Instance;
             //イベント購読
@@ -161,6 +161,8 @@ namespace VRShooting.Item.Gun
             }
             fireRate = gundata.FireRate;
             reloadConstant = gundata.ReloadConstant;
+            bulletRemaining = gundata.MagazineCapacity;
+            reserveAmmo = gundata.IsInfiniteAmmo ? infiniteAmmo : gundata.ReserveAmmo;
             UpdateUI();
             isInitilalize = true;
         }
@@ -252,16 +254,11 @@ namespace VRShooting.Item.Gun
         }
         public void Respawn()
         {
-            if(thisRigidbody == null)
-            {
-                Debug.LogError("[GunContller]this Rigidboduy is null");
-            }
-            else
+            if(thisRigidbody != null)
             {
                 thisRigidbody.linearVelocity = Vector3.zero;
                 thisRigidbody.angularVelocity = Vector3.zero;
             }
-
             
             this.transform.localPosition = gundata.GunRespawnPoint.localPosition;
         }

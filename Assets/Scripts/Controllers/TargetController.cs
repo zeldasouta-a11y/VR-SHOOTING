@@ -21,7 +21,7 @@ namespace VRShooting.Target
         private Vector3 inverseY = new Vector3(1, -1, 1);
         private Vector3 spawnPoint;
         private Vector3 moving;
-        private List<IHitReceiver> receivers = new();
+        private HashSet<IHitReceiver> receivers = new();
         private readonly WaitForSeconds fixedUpdate = new WaitForSeconds(1f);
         private float time = 0f;
         private bool isEnabled = false;

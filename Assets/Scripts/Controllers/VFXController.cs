@@ -27,6 +27,7 @@ namespace VRShooting.Effect
         void Start()
         {
             this.gameObject.SetActive(false);
+            if(Explosion != null) Explosion.SetActive(false);
         }
 
         //当たった時
@@ -93,8 +94,7 @@ namespace VRShooting.Effect
         {
             if(Explosion != null)
             {
-                // --- Instantiate new explosion option. I would recommend using an object pool ---
-                GameObject newExplosion = Instantiate(Explosion, transform.position, Explosion.transform.rotation, null);
+                Explosion.SetActive(true);
             }
             
         }
