@@ -9,7 +9,7 @@ namespace VRShooting.Bullet
     public class ProjectileController : BulletController
     {
         // --- Config ---
-        public float speed = 100;
+        public float speed = 500;
         private float elapsed = 0;
         public LayerMask collisionLayerMask;
 

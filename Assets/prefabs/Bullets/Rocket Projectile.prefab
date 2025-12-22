@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbdbbb7c8114898458891f950df29b38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VRShooting.Bullet.ProjectileController
-  speed: 100
+  speed: 500
   collisionLayerMask:
     serializedVersion: 2
     m_Bits: 1
