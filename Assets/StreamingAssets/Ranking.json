@@ -6244,6 +6244,37 @@
                     "BreakCount": 2
                 }
             ]
+        },
+        {
+            "Time": "2025/12/22 16:42:28",
+            "GameSeed": -1358238559,
+            "TotalScore": 88250,
+            "detail": [
+                {
+                    "TargetName": "TutorialTerget",
+                    "BreakCount": 10
+                },
+                {
+                    "TargetName": "小舟（静止）",
+                    "BreakCount": 15
+                },
+                {
+                    "TargetName": "小舟",
+                    "BreakCount": 19
+                },
+                {
+                    "TargetName": "巨大戦艦",
+                    "BreakCount": 12
+                },
+                {
+                    "TargetName": "UFO",
+                    "BreakCount": 5
+                },
+                {
+                    "TargetName": "赤い船",
+                    "BreakCount": 1
+                }
+            ]
         }
     ]
 }
