@@ -323,7 +323,7 @@ MonoBehaviour:
     isInstantlyChange: 0
     phaseTime: 30
     exitBreakCount: 0
-    isIgnoreScore: 1
+    isIgnoreScore: 0
     spawnTiming: 0
     createDuration: 4
     onSpawnTriggerCount: 1
